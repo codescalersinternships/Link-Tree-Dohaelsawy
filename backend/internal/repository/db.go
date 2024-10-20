@@ -9,25 +9,24 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func DbConnection() error {
+func DbConnection() (*sql.DB, error) {
 	driver, connStr := prepareDbConnectionString()
 	db, err := sql.Open(driver, connStr)
 
 	if err != nil {
-		log.Fatal(err)
-		return err
+		log.Printf("DB open failed, %s", err)
+		return nil, err
 	}
 
 	defer db.Close()
 
 	if err = db.Ping(); err != nil {
-		log.Println("DB Ping Failed")
-		log.Fatal(err)
-		return err
+		log.Printf("DB Ping Failed, %s", err)
+		return nil, err
 	}
 
 	log.Println("DB Connection started successfully")
-	return nil
+	return db, nil
 }
 
 func prepareDbConnectionString() (string, string) {
