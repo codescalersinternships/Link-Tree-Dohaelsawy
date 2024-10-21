@@ -1,5 +1,19 @@
 version: '3.9'
 services:
+  postgresdb:
+      image: postgres:latest
+      container_name: postgres_container
+      environment:
+        - POSTGRES_USER=${DB_USER}
+        - POSTGRES_PASSWORD=${DB_PASSWORD}
+        - POSTGRES_DB=${DB_NAME}
+        - DATABASE_HOST=${DB_HOST}
+      ports:
+        - '1234:5432'
+      volumes:
+        - ./backend/database/pg_data:/var/lib/postgresql/data
+      networks:
+        - linktreenet
   app:
     container_name: golang_container
     environment:
@@ -20,21 +34,7 @@ services:
     networks:
       - linktreenet
 
-  postgresdb:
-    image: postgres:latest
-    container_name: postgres_container
-    environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - DATABASE_HOST=${DB_HOST}
-    ports:
-      - '1234:5432'
-    volumes:
-      - ./backend/database/pg_data:/var/lib/postgresql/data
-    networks:
-      - linktreenet
-
+  
 volumes:
   pg_data:
 

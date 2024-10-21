@@ -11,5 +11,5 @@ func LinkRouters(router *gin.Engine) {
 	router.POST("/create_link", controllers.CreateLink())
 	router.GET("/get_links", controllers.GetLinks())
 	router.DELETE("/link/:link_id", controllers.DeleteLink())
-	router.PUT("/update_link", controllers.UpdateLink())
+	router.PUT("/update_link/:link_id", controllers.UpdateLink())
 }
