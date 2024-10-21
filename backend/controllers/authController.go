@@ -36,6 +36,9 @@ func NewAuthControllerImpl(Db repository.DbInstance, validate *validator.Validat
 	return &AuthController{Db: Db.DB, Validate: validate}
 }
 
+
+
+
 func (ac AuthController) Login(ctx *gin.Context) {
 	var reqBody LoginRequest
 
@@ -68,12 +71,28 @@ func (ac AuthController) Login(ctx *gin.Context) {
 	token, err := utils.CreateToken(existingUser.Email, time.Duration(time.Hour*24))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s",err.Error())})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
 
+	
+	if err := ac.Db.Save(&model.User{ID: existingUser.ID, Token: token}).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
+		return
+	}
+
+	ctx.SetSameSite(http.SameSiteLaxMode)
+	ctx.SetCookie("Authorization", token, 3600 * 24, "", "", false, true)
+
 	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
 }
+
+
+
+
+
+
+
 
 func (ac AuthController) Register(ctx *gin.Context) {
 	var reqBody RegisterRequest

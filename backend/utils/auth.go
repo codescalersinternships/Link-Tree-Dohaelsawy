@@ -1,12 +1,14 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 )
@@ -43,4 +45,38 @@ func CreateToken(email string, exp time.Duration) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func TokenValid(c *gin.Context) error {
+
+	tokenString, ok := ExtractToken(c)
+	if !ok {
+		return fmt.Errorf("Unauthorized")
+	}
+
+	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ExtractToken(c *gin.Context) (string, bool) {
+
+	token, err := c.Cookie("Authorization")
+
+	if err != nil {
+		return "", false
+	}
+
+	return token, true
 }

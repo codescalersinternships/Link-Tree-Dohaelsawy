@@ -1,9 +1,21 @@
 package middleware
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
+	"github.com/gin-gonic/gin"
+)
+
 
 func AuthMiddleware() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-
+	return func(c *gin.Context) {
+		err := utils.TokenValid(c)
+		if err != nil {
+			c.String(http.StatusUnauthorized, "Unauthorized")
+			c.Abort()
+			return
+		}
+		c.Next()
 	}
 }

@@ -7,18 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AuthRouter(db repository.DbInstance) *gin.Engine {
+func AuthRouters(db repository.DbInstance, router *gin.Engine) {
 
 	validate := validator.New()
 	authController := controllers.NewAuthControllerImpl(db, validate)
-	service := gin.Default()
+	
+	routeGroup :=router.Group("/auth")
 
-	router := service.Group("/auth")
-
-	router.POST("/register", authController.Register)
-	router.POST("/login", authController.Login)
-
-	return service
+	routeGroup.POST("/register", authController.Register)
+	routeGroup.POST("/login", authController.Login)
 }
 
 

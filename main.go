@@ -4,7 +4,8 @@ import (
 	"log"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
+	route "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -20,7 +21,10 @@ func main() {
 		return
 	}
 
-	routes := routers.AuthRouter(db)
+	router := gin.Default()
 
-	routes.Run()
+	route.LinkRouters(db, router)
+	route.AuthRouters(db, router)
+
+	router.Run()
 }
