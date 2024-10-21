@@ -27,9 +27,20 @@ func DbConnect() (DbInstance, error) {
 	return DbInstance{DB: db}, nil
 }
 
-func (db DbInstance) Migrate() {
-	db.DB.AutoMigrate(&model.User{})
+func (db DbInstance) Migrate() error{
+
+	err := db.DB.AutoMigrate(&model.User{})
+	if err != nil {
+		return err
+	} 
+	
+	err = db.DB.AutoMigrate(&model.Link{})
+	if err != nil {
+		return err
+	} 
+	
 	log.Println("Database Migration Completed!")
+	return nil
 }
 
 func prepareDbConnectionString() string {
@@ -37,6 +48,7 @@ func prepareDbConnectionString() string {
 
 	if err != nil {
 		log.Printf("Error loading .env file, %s\n", err)
+		return err.Error()
 	}
 
 	host := os.Getenv("DB_HOST")

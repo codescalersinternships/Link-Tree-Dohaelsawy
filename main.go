@@ -2,30 +2,25 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
-	"github.com/gin-gonic/gin"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
 )
 
 func main() {
 	db, err := repository.DbConnect()
-
 	if err != nil {
-		log.Printf("error: %s\n", err)
+		log.Printf("Error: %s\n", err)
+		return
 	}
 
-	db.Migrate()
-
-	router := gin.Default()
-
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"data": "hello world"})
-	})
-
+	err = db.Migrate()
 	if err != nil {
-		log.Printf("Error loading .env file, %s\n", err)
+		log.Printf("Error %s\n", err)
+		return
 	}
-	
-	router.Run()
+
+	routes := routers.AuthRouter(db)
+
+	routes.Run()
 }
