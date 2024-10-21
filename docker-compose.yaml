@@ -11,10 +11,10 @@ services:
     tty: true
     build: .
     ports:
-      - 8010:8080
+      - 8010:8010
     restart: on-failure
     volumes:
-      - ../.:/app
+      - .:/app
     depends_on:
       - postgresdb
     networks:
@@ -31,7 +31,7 @@ services:
     ports:
       - '1234:5432'
     volumes:
-      - ../backend/internal/pg_data:/var/lib/postgresql/data
+      - ./backend/database/pg_data:/var/lib/postgresql/data
     networks:
       - linktreenet
 
