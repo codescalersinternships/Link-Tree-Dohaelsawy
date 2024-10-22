@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"gorm.io/gorm"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
@@ -28,16 +27,13 @@ type RegisterRequest struct {
 }
 
 type AuthController struct {
-	Db       *gorm.DB
+	Db       repository.DbInstance
 	Validate *validator.Validate
 }
 
 func NewAuthControllerImpl(Db repository.DbInstance, validate *validator.Validate) *AuthController {
-	return &AuthController{Db: Db.DB, Validate: validate}
+	return &AuthController{Db: Db, Validate: validate}
 }
-
-
-
 
 func (ac AuthController) Login(ctx *gin.Context) {
 	var reqBody LoginRequest
@@ -55,8 +51,9 @@ func (ac AuthController) Login(ctx *gin.Context) {
 	}
 
 	var existingUser model.User
-	result := ac.Db.Where("email = ?", reqBody.Email).First(&existingUser)
-	if result.RowsAffected < 1 {
+
+	err := ac.Db.GetUserEmail(&existingUser, reqBody.Email)
+	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Email not found"})
 		return
 	}
@@ -75,24 +72,18 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	
-	if err := ac.Db.Save(&model.User{ID: existingUser.ID, Token: token}).Error; err != nil {
+	existingUser.Token = token
+
+	if err := ac.Db.PutOneUser(&existingUser); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
 
 	ctx.SetSameSite(http.SameSiteLaxMode)
-	ctx.SetCookie("Authorization", token, 3600 * 24, "", "", false, true)
+	ctx.SetCookie("Authorization", token, 3600*24, "", "", false, true)
 
 	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
 }
-
-
-
-
-
-
-
 
 func (ac AuthController) Register(ctx *gin.Context) {
 	var reqBody RegisterRequest
@@ -109,8 +100,10 @@ func (ac AuthController) Register(ctx *gin.Context) {
 	}
 
 	var existingUser model.User
-	result := ac.Db.Where("email = ?", reqBody.Email).First(&existingUser)
-	if result.RowsAffected > 0 {
+
+	err := ac.Db.GetUserEmail(&existingUser, reqBody.Email)
+
+	if err == nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
 		return
 	}
@@ -130,7 +123,7 @@ func (ac AuthController) Register(ctx *gin.Context) {
 		Password:  password,
 	}
 
-	if err := ac.Db.Create(&newUser).Error; err != nil {
+	if err := ac.Db.AddNewUser(&newUser); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
