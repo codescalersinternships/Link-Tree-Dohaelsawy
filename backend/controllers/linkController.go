@@ -6,16 +6,15 @@ import (
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"gorm.io/gorm"
 )
 
 type LinkController struct {
-	Db       *gorm.DB
+	Db       *repository.DbInstance
 	Validate *validator.Validate
 }
 
-func NewLinksController(Db repository.DbInstance, validate *validator.Validate) *LinkController {
-	return &LinkController{Db: Db.DB, Validate: validate}
+func NewLinksController(Db *repository.DbInstance, validate *validator.Validate) *LinkController {
+	return &LinkController{Db: Db, Validate: validate}
 }
 
 func (l LinkController) CreateLink(ctx *gin.Context) {
