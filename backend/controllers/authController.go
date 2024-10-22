@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -65,7 +64,7 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token, err := utils.CreateToken(existingUser.Email, time.Duration(time.Hour*24))
+	token, err := utils.CreateToken(string(existingUser.ID))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
@@ -78,9 +77,6 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
-
-	ctx.SetSameSite(http.SameSiteLaxMode)
-	ctx.SetCookie("Authorization", token, 3600*24, "", "", false, true)
 
 	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
 }
