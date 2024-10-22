@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -26,7 +25,7 @@ func ComparePassword(password, hash string) bool {
 	return err == nil
 }
 
-func CreateToken(id string) (string, error) {
+func CreateToken(id uint) (string, error) {
 	err := godotenv.Load(".env")
 
 	if err != nil {
@@ -41,8 +40,8 @@ func CreateToken(id string) (string, error) {
 	}
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": id,
-		"exp": time.Now().Add(time.Duration(token_lifespan)).Unix(),
+		"sup": id,
+		"exp": time.Now().Add(time.Hour * time.Duration(token_lifespan)).Unix(),
 		"iat": time.Now().Unix(),
 	})
 
@@ -64,13 +63,13 @@ func TokenValid(c *gin.Context) error {
 	}
 
 	tokenString, ok := ExtractToken(c)
-	
+
 	if !ok {
 		return errors.New("there is no token in header")
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return os.Getenv("JWT_SECRET"), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
 	if err != nil {
@@ -85,12 +84,13 @@ func TokenValid(c *gin.Context) error {
 }
 
 func ExtractToken(c *gin.Context) (string, bool) {
-	bearerToken := c.Request.Header.Get("Authorization")
+	token, err := c.Cookie("Authorization")
 
-	if len(strings.Split(bearerToken, " ")) == 2 {
-		return strings.Split(bearerToken, " ")[1], true
+	if err != nil {
+		return "", false
 	}
-	return "", false
+
+	return token, true
 }
 
 func ExtractTokenID(c *gin.Context) (uint, error) {
@@ -115,12 +115,18 @@ func ExtractTokenID(c *gin.Context) (uint, error) {
 		return 0, err
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		uid, err := strconv.ParseUint(fmt.Sprintf("%s", claims["user_id"]), 10, 32)
-		if err != nil {
-			return 0, err
-		}
-		return uint(uid), nil
+	if !ok && !token.Valid {
+		return 0, fmt.Errorf("can't fetch id from claims")
+
 	}
-	return 0, nil
+	fmt.Println(claims)
+	value, ok := claims["sub"].(float64)
+	if !ok {
+		// Handle non-float64 value
+	}
+	uid, err := strconv.ParseUint(fmt.Sprintf("%d", int64(value)), 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return uint(uid), nil
 }
