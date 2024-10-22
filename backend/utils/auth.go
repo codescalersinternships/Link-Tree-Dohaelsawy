@@ -3,7 +3,6 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"time"
@@ -13,6 +12,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
+)
+
+var (
+	ErrNoTokenCookie        = errors.New("there is no token in your cookies, login in first")
+	ErrInvalidToken         = errors.New("invalid token")
+	ErrWrongTokenMethod     = errors.New("unexpected signing method")
+	ErrExtractIDTokenClaims = errors.New("can't fetch id from claims")
 )
 
 func EncryptPassword(password string) (string, error) {
@@ -26,15 +32,13 @@ func ComparePassword(password, hash string) bool {
 }
 
 func CreateToken(id uint) (string, error) {
-	err := godotenv.Load(".env")
 
+	err := godotenv.Load(".env")
 	if err != nil {
-		log.Printf("Error loading .env file, %s\n", err)
 		return "", err
 	}
 
 	token_lifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
-
 	if err != nil {
 		return "", err
 	}
@@ -46,7 +50,6 @@ func CreateToken(id uint) (string, error) {
 	})
 
 	tokenString, err := claims.SignedString([]byte(os.Getenv("JWT_SECRET")))
-
 	if err != nil {
 		return "", err
 	}
@@ -55,37 +58,31 @@ func CreateToken(id uint) (string, error) {
 }
 
 func TokenValid(c *gin.Context) error {
-	err := godotenv.Load(".env")
 
+	err := godotenv.Load(".env")
 	if err != nil {
-		log.Printf("Error loading .env file, %s\n", err)
 		return err
 	}
 
 	tokenString, ok := ExtractToken(c)
-
 	if !ok {
-		return errors.New("there is no token in header")
+		return ErrNoTokenCookie
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
-	if err != nil {
+	if err != nil || !token.Valid {
 		return err
-	}
-
-	if !token.Valid {
-		return fmt.Errorf("invalid token")
 	}
 
 	return nil
 }
 
 func ExtractToken(c *gin.Context) (string, bool) {
-	token, err := c.Cookie("Authorization")
 
+	token, err := c.Cookie("Authorization")
 	if err != nil {
 		return "", false
 	}
@@ -94,39 +91,42 @@ func ExtractToken(c *gin.Context) (string, bool) {
 }
 
 func ExtractTokenID(c *gin.Context) (int, error) {
-	err := godotenv.Load(".env")
 
+	err := godotenv.Load(".env")
 	if err != nil {
-		log.Printf("Error loading .env file, %s\n", err)
 		return 0, err
 	}
 
 	tokenString, ok := ExtractToken(c)
 	if !ok {
-		return 0, errors.New("there is no token in your header")
+		return 0, ErrNoTokenCookie
 	}
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, ErrWrongTokenMethod
 		}
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
-	if err != nil {
+
+	if err != nil || !token.Valid {
 		return 0, err
 	}
+
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok && !token.Valid {
-		return 0, fmt.Errorf("can't fetch id from claims")
+		return 0, ErrExtractIDTokenClaims
+	}
 
-	}
-	fmt.Println(claims)
-	value, ok := claims["sub"].(float64)
+	value, ok := claims["sup"].(float64)
 	if !ok {
-		// Handle non-float64 value
+		return 0, ErrExtractIDTokenClaims
 	}
+
 	uid, err := strconv.ParseUint(fmt.Sprintf("%d", int64(value)), 10, 64)
 	if err != nil {
 		return 0, err
 	}
+
 	return int(uid), nil
 }
