@@ -18,27 +18,23 @@ type DbInstance struct {
 func DbConnect() (DbInstance, error) {
 	conString := prepareDbConnectionString()
 	print(conString)
-	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{
-		DisableForeignKeyConstraintWhenMigrating: false,
-	})
+	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{})
 	if err != nil {
 		log.Printf("error: %s", err)
 		return DbInstance{}, err
 	}
-	log.Println("Connected to Database!")
-	return DbInstance{DB: db}, nil
-}
 
-func (db DbInstance) Migrate() error {
+	err = db.AutoMigrate(&model.User{}, &model.Link{})
 
-	err := db.DB.AutoMigrate(&model.User{}, &model.Link{})
 	if err != nil {
-		return err
+		return DbInstance{}, err
 	}
 
 	log.Println("Database Migration Completed!")
-	return nil
+
+	return DbInstance{DB: db}, nil
 }
+
 
 func prepareDbConnectionString() string {
 	err := godotenv.Load(".env")

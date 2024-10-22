@@ -15,12 +15,6 @@ func main() {
 		return
 	}
 
-	err = db.Migrate()
-	if err != nil {
-		log.Printf("Error %s\n", err)
-		return
-	}
-
 	router := gin.Default()
 
 	route.LinkRouters(db, router)

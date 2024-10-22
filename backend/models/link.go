@@ -8,10 +8,10 @@ import (
 
 type Link struct {
 	gorm.Model
-	ID         string    `json:"id" gorm:"primaryKey"`
+	ID         int    `json:"id" gorm:"unique;primaryKey;autoIncrement"`
 	Name       string    `json:"name"`
 	Url        string    `json:"url" gorm:"unique"`
-	UserID     uint      `json:"user_id"`
+	UserID     int      `json:"user_id"`
 	ClickCount int       `json:"click_count"`
 	CreatedAt  time.Time `json:"created_at"`
 }

@@ -93,7 +93,7 @@ func ExtractToken(c *gin.Context) (string, bool) {
 	return token, true
 }
 
-func ExtractTokenID(c *gin.Context) (uint, error) {
+func ExtractTokenID(c *gin.Context) (int, error) {
 	err := godotenv.Load(".env")
 
 	if err != nil {
@@ -128,5 +128,5 @@ func ExtractTokenID(c *gin.Context) (uint, error) {
 	if err != nil {
 		return 0, err
 	}
-	return uint(uid), nil
+	return int(uid), nil
 }

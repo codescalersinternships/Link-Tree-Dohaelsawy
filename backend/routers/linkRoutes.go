@@ -12,7 +12,7 @@ import (
 func LinkRouters(db repository.DbInstance, router *gin.Engine) {
 
 	validate := validator.New()
-	linkController := controllers.NewLinksController(&db, validate)
+	linkController := controllers.NewLinksController(db, validate)
 
 	routeGroup := router.Group("/link")
 

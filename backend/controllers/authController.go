@@ -2,10 +2,14 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
@@ -26,12 +30,12 @@ type RegisterRequest struct {
 }
 
 type AuthController struct {
-	Db       repository.DbInstance
+	Db       *repository.DbInstance
 	Validate *validator.Validate
 }
 
 func NewAuthControllerImpl(Db repository.DbInstance, validate *validator.Validate) *AuthController {
-	return &AuthController{Db: Db, Validate: validate}
+	return &AuthController{Db: &Db, Validate: validate}
 }
 
 func (ac AuthController) Login(ctx *gin.Context) {
@@ -64,13 +68,12 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token, err := utils.CreateToken(string(existingUser.ID))
+	token, err := utils.CreateToken(uint(existingUser.ID))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
-	fmt.Println(token)
 
 	existingUser.Token = token
 
@@ -78,8 +81,23 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
+	err = godotenv.Load(".env")
 
-	ctx.Writer.Header().Set("Authorization", "bearer " + token)
+	if err != nil {
+		log.Printf("Error loading .env file, %s\n", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error loading .env file, %s\n", err)})
+		return
+	}
+
+	token_lifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error convert token life time to number, %s\n", err)})
+		return
+	}
+
+	ctx.SetSameSite(http.SameSiteLaxMode)
+	ctx.SetCookie("Authorization", token, 3600 * token_lifespan, "", "", false, true)
 
 	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
 }
