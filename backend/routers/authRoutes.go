@@ -16,6 +16,7 @@ func AuthRouters(db repository.DbInstance, router *gin.Engine) {
 
 	routeGroup.POST("/register", authController.Register)
 	routeGroup.POST("/login", authController.Login)
+	routeGroup.GET("/logout",authController.Logout)
 }
 
 

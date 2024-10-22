@@ -34,9 +34,6 @@ type AuthController struct {
 	Validate *validator.Validate
 }
 
-
-
-
 func NewAuthControllerImpl(Db repository.DbInstance, validate *validator.Validate) *AuthController {
 	return &AuthController{Db: &Db, Validate: validate}
 }
@@ -100,9 +97,9 @@ func (ac AuthController) Login(ctx *gin.Context) {
 	}
 
 	ctx.SetSameSite(http.SameSiteLaxMode)
-	ctx.SetCookie("Authorization", token, 3600 * token_lifespan, "", "", false, true)
+	ctx.SetCookie("Authorization", token, 3600*token_lifespan, "", "", false, true)
 
-	utils.SuccessRespondJSON(ctx,http.StatusOK, gin.H{"access_token": token})
+	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token})
 
 }
 
@@ -149,5 +146,9 @@ func (ac AuthController) Register(ctx *gin.Context) {
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx,http.StatusOK, gin.H{"message": "User registered successfully"})
+	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"message": "User registered successfully"})
+}
+
+func (ac AuthController) Logout(ctx *gin.Context) {
+	ctx.SetCookie("Authorization", "", 0, "", "", false, true)
 }
