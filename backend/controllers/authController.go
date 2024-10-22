@@ -70,6 +70,7 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
+	fmt.Println(token)
 
 	existingUser.Token = token
 
@@ -77,6 +78,8 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("JWT Error %s", err.Error())})
 		return
 	}
+
+	ctx.Writer.Header().Set("Authorization", "bearer " + token)
 
 	ctx.JSON(http.StatusOK, gin.H{"access_token": token})
 }

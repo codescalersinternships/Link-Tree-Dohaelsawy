@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,7 +18,9 @@ type DbInstance struct {
 func DbConnect() (DbInstance, error) {
 	conString := prepareDbConnectionString()
 	print(conString)
-	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: false,
+	})
 	if err != nil {
 		log.Printf("error: %s", err)
 		return DbInstance{}, err
@@ -27,18 +29,13 @@ func DbConnect() (DbInstance, error) {
 	return DbInstance{DB: db}, nil
 }
 
-func (db DbInstance) Migrate() error{
+func (db DbInstance) Migrate() error {
 
-	err := db.DB.AutoMigrate(&model.User{})
+	err := db.DB.AutoMigrate(&model.User{}, &model.Link{})
 	if err != nil {
 		return err
-	} 
-	
-	err = db.DB.AutoMigrate(&model.Link{})
-	if err != nil {
-		return err
-	} 
-	
+	}
+
 	log.Println("Database Migration Completed!")
 	return nil
 }

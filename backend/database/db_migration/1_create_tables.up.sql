@@ -3,7 +3,6 @@ CREATE TABLE "links"(
     "name" VARCHAR(255) NOT NULL,
     "url" VARCHAR(255) NOT NULL,
     "user_id" INTEGER NOT NULL,
-    "background" VARCHAR(255) NOT NULL,
     "click_count" INTEGER NOT NULL,
     "created_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
     "updated_at" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL

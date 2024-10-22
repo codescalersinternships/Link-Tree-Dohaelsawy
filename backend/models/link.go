@@ -1,6 +1,5 @@
 package model
 
-
 import (
 	"time"
 
@@ -9,11 +8,10 @@ import (
 
 type Link struct {
 	gorm.Model
-	ID         string `json:"id" gorm:"primaryKey"`
-	Name       string `json:"name"`
-	Url        string `json:"url" gorm:"unique"`
-	UserID     int    `json:"user_id"`
-	Background string `json:"background"`
-	ClickCount int    `json:"click_count"`
-	CreatedAt time.Time `json:"created_at"`
+	ID         string    `json:"id" gorm:"primaryKey"`
+	Name       string    `json:"name"`
+	Url        string    `json:"url" gorm:"unique"`
+	UserID     uint      `json:"user_id"`
+	ClickCount int       `json:"click_count"`
+	CreatedAt  time.Time `json:"created_at"`
 }
