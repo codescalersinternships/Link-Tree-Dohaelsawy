@@ -17,7 +17,7 @@ type DbInstance struct {
 
 func DbConnect() (DbInstance, error) {
 	conString := prepareDbConnectionString()
-	print(conString)
+	fmt.Println(conString)
 	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{})
 	if err != nil {
 		log.Printf("error: %s", err)
@@ -25,7 +25,6 @@ func DbConnect() (DbInstance, error) {
 	}
 
 	err = db.AutoMigrate(&model.User{}, &model.Link{})
-
 	if err != nil {
 		return DbInstance{}, err
 	}
@@ -34,7 +33,6 @@ func DbConnect() (DbInstance, error) {
 
 	return DbInstance{DB: db}, nil
 }
-
 
 func prepareDbConnectionString() string {
 	err := godotenv.Load(".env")

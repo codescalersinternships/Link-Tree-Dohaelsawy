@@ -16,9 +16,11 @@ func main() {
 	}
 
 	router := gin.Default()
-
+	
+	route.AccountRouters(db, router)
 	route.LinkRouters(db, router)
 	route.AuthRouters(db, router)
+	
 
 	router.Run()
 }

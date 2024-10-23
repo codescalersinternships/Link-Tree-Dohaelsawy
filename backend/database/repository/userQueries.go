@@ -1,12 +1,10 @@
 package repository
 
 import (
-	"fmt"
-
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 )
 
-func (db *DbInstance) GetUserID(u *model.User, id string) (err error) {
+func (db *DbInstance) GetUserID(u *model.User, id int) (err error) {
 	if err := db.DB.Where("id = ?", id).First(u).Error; err != nil {
 		return err
 	}
@@ -27,13 +25,12 @@ func (db *DbInstance) AddNewUser(u *model.User) (err error) {
 	return nil
 }
 
-func (db *DbInstance) PutOneUser(u *model.User) (err error) {
-	fmt.Println(u)
+func (db *DbInstance) PutOneUser(u *model.User, id int) (err error) {
 	db.DB.Save(u)
 	return nil
 }
 
-func (db *DbInstance) DeleteUser(u *model.User, id string) (err error) {
+func (db *DbInstance) DeleteUser(u *model.User, id int) (err error) {
 	db.DB.Where("id = ?", id).Delete(u)
 	return nil
 }

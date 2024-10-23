@@ -27,8 +27,8 @@ type LinkReq struct {
 	Url  string `validate:"required" json:"url"`
 }
 
-func NewLinksController(Db repository.DbInstance, validate *validator.Validate) *LinkController {
-	return &LinkController{Db: &Db, Validate: validate}
+func NewLinksController(Db repository.DbInstance, validate validator.Validate) *LinkController {
+	return &LinkController{Db: &Db, Validate: &validate}
 }
 
 func (l *LinkController) CreateLink(ctx *gin.Context) {
@@ -48,7 +48,6 @@ func (l *LinkController) CreateLink(ctx *gin.Context) {
 	}
 
 	user_id, err := utils.ExtractTokenID(ctx)
-	fmt.Printf("sdfgadf %d",user_id)
 
 	if err != nil {
 		errorMessage := fmt.Errorf("can't find your token %s", err)
@@ -61,6 +60,7 @@ func (l *LinkController) CreateLink(ctx *gin.Context) {
 		Url:    reqBody.Url,
 		UserID: user_id,
 	}
+
 
 	err = l.Db.AddNewLink(&link)
 	if err != nil {
@@ -154,3 +154,5 @@ func (l *LinkController) GetLinks(ctx *gin.Context) {
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, links)
 }
+
+

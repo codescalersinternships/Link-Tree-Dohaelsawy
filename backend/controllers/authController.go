@@ -1,8 +1,8 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -17,8 +17,8 @@ import (
 )
 
 type LoginRequest struct {
-	Email    string `validate:"required" json:"email"`
-	Password string `validate:"required" json:"password"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=8"`
 }
 
 type RegisterRequest struct {
@@ -26,7 +26,7 @@ type RegisterRequest struct {
 	LastName  string `validate:"required" json:"last_name"`
 	Username  string `validate:"required" json:"username"`
 	Email     string `validate:"required" json:"email"`
-	Password  string `validate:"required" json:"password"`
+	Password  string `validate:"required,min=8" json:"password"`
 }
 
 type AuthController struct {
@@ -34,11 +34,15 @@ type AuthController struct {
 	Validate *validator.Validate
 }
 
+var (
+	ErrEmailExist = errors.New("this email exist! ")
+)
+
 func NewAuthControllerImpl(Db repository.DbInstance, validate *validator.Validate) *AuthController {
 	return &AuthController{Db: &Db, Validate: validate}
 }
 
-func (ac AuthController) Login(ctx *gin.Context) {
+func (ac *AuthController) Login(ctx *gin.Context) {
 	var reqBody LoginRequest
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
@@ -46,10 +50,11 @@ func (ac AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	if err := ac.Validate.Struct(reqBody); err != nil {
+	if err := ac.Validate.Struct(&reqBody); err != nil {
 		validationErrors := err.(validator.ValidationErrors)
-		errorMessage := fmt.Errorf("validation failed for field: %s", validationErrors[0].Field())
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, errorMessage)
+		errorMessage := fmt.Errorf("validation failed for field: %v", validationErrors[0].Field())
+		// utils.ErrRespondJSON(ctx, http.StatusBadRequest, errorMessage)
+		ctx.JSON(http.StatusBadRequest, errorMessage)
 		return
 	}
 
@@ -77,14 +82,13 @@ func (ac AuthController) Login(ctx *gin.Context) {
 
 	existingUser.Token = token
 
-	if err := ac.Db.PutOneUser(&existingUser); err != nil {
+	if err := ac.Db.PutOneUser(&existingUser, existingUser.ID); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 	err = godotenv.Load(".env")
 
 	if err != nil {
-		log.Printf("Error loading .env file, %s\n", err)
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
@@ -103,7 +107,7 @@ func (ac AuthController) Login(ctx *gin.Context) {
 
 }
 
-func (ac AuthController) Register(ctx *gin.Context) {
+func (ac *AuthController) Register(ctx *gin.Context) {
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
@@ -122,7 +126,7 @@ func (ac AuthController) Register(ctx *gin.Context) {
 	err := ac.Db.GetUserEmail(&existingUser, reqBody.Email)
 
 	if err == nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, ErrEmailExist)
 		return
 	}
 
@@ -149,6 +153,6 @@ func (ac AuthController) Register(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
-func (ac AuthController) Logout(ctx *gin.Context) {
+func (ac *AuthController) Logout(ctx *gin.Context) {
 	ctx.SetCookie("Authorization", "", 0, "", "", false, true)
 }
