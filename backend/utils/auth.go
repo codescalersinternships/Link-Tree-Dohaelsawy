@@ -3,7 +3,6 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strconv"
 	"time"
 
@@ -11,7 +10,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 )
 
 var (
@@ -49,7 +47,7 @@ func CreateToken(id uint, token_lifespan int, secretToken string) (string, error
 
 func TokenValid(c *gin.Context) error {
 
-	err := godotenv.Load(".env")
+	config, err := NewConfigController()
 	if err != nil {
 		return err
 	}
@@ -60,7 +58,7 @@ func TokenValid(c *gin.Context) error {
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("JWT_SECRET")), nil
+		return []byte(config.JwtSecret), nil
 	})
 
 	if err != nil || !token.Valid {
@@ -82,7 +80,7 @@ func ExtractToken(c *gin.Context) (string, bool) {
 
 func ExtractTokenID(c *gin.Context) (int, error) {
 
-	err := godotenv.Load(".env")
+	config, err := NewConfigController()
 	if err != nil {
 		return 0, err
 	}
@@ -96,7 +94,7 @@ func ExtractTokenID(c *gin.Context) (int, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, ErrWrongTokenMethod
 		}
-		return []byte(os.Getenv("JWT_SECRET")), nil
+		return []byte(config.JwtSecret), nil
 	})
 
 	if err != nil || !token.Valid {
