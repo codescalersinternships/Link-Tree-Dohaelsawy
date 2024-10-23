@@ -13,7 +13,7 @@ type SuccessResponse struct {
 
 // ErrResponse represent error response
 type ErrResponse struct {
-	Err    error `json:"error"`
+	Err    string `json:"error"`
 	Status int   `json:"status_code"`
 }
 
@@ -26,9 +26,9 @@ func ErrRespondJSON(w *gin.Context, status int, err error) {
 	var errRes ErrResponse
 
 	errRes.Status = status
-	errRes.Err = err
+	errRes.Err = err.Error()
 
-	w.JSON(200, errRes)
+	w.JSON(errRes.Status, errRes)
 }
 
 func SuccessRespondJSON(w *gin.Context, status int, data interface{}) {
@@ -36,5 +36,5 @@ func SuccessRespondJSON(w *gin.Context, status int, data interface{}) {
 	successRes.Status = status
 	successRes.Data = data
 
-	w.JSON(200, successRes)
+	w.JSON(successRes.Status, successRes)
 }
