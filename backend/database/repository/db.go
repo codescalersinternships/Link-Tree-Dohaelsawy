@@ -12,11 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type DbInstance struct {
-	DB       *gorm.DB
-	Validate *validator.Validate
-}
-
 type Store interface {
 	AddNewLink(l *model.Link) (err error)
 	AddNewUser(u *model.User) (err error)
@@ -28,6 +23,11 @@ type Store interface {
 	GetUserID(u *model.User, id int) (err error)
 	PutOneLink(l *model.Link, id int) (err error)
 	PutOneUser(u *model.User, id int) (err error)
+}
+
+type DbInstance struct {
+	DB       *gorm.DB
+	Validate *validator.Validate
 }
 
 func NewDbInstance(db *gorm.DB) DbInstance {

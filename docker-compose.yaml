@@ -8,12 +8,29 @@ services:
         - POSTGRES_PASSWORD=${DB_PASSWORD}
         - POSTGRES_DB=${DB_NAME}
         - DATABASE_HOST=${DB_HOST}
+        
       ports:
         - '1234:5432'
       volumes:
         - ./backend/database/pg_data:/var/lib/postgresql/data
       networks:
         - linktreenet
+
+  postgresdbtest:
+    image: postgres:latest
+    container_name: postgres_test_container
+    environment:
+      - POSTGRES_USER=${DB_TEST_USER}
+      - POSTGRES_PASSWORD=${DB_TEST_PASSWORD}
+      - POSTGRES_DB=${DB_TEST_NAME}
+      - DATABASE_HOST=${DB_TEST_HOST}
+    ports:
+      - '4568:5432'
+    volumes:
+      - ./backend/database/pg_data_test:/var/lib/postgresql/data
+    networks:
+      - linktreenet
+  
   app:
     container_name: golang_container
     environment:
@@ -22,6 +39,11 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - DATABASE_HOST=${DB_HOST}
       - DATABASE_PORT=${DB_PORT}
+      - TEST_POSTGRES_USER=${DB_TEST_USER}
+      - TEST_POSTGRES_PASSWORD=${DB_TEST_PASSWORD}
+      - TEST_POSTGRES_DB=${DB_TEST_NAME}
+      - TEST_DATABASE_HOST=${DB_TEST_HOST}
+      - TEST_DATABASE_PORT=${DB_TEST_PORT}
     tty: true
     build: .
     ports:

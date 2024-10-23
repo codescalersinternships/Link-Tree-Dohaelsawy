@@ -27,3 +27,5 @@ go.work.sum
 backend/database/pg_data
 
 build/
+
+backend/database/pg_data_test
