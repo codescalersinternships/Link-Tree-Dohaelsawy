@@ -7,7 +7,7 @@ import (
 )
 
 func (db *DbInstance) GetAllLinksForUser(l *[]model.Link, user_id int) (err error) {
-	if err := db.DB.Where("user_id = ?", user_id).Find(l).Error; err != nil{
+	if err := db.DB.Where("user_id = ?", user_id).Find(l).Error; err != nil {
 		return err
 	}
 	return nil
@@ -29,7 +29,7 @@ func (db *DbInstance) AddNewLink(l *model.Link) (err error) {
 
 func (db *DbInstance) PutOneLink(l *model.Link, id int) (err error) {
 	fmt.Println(l)
-	if err = db.DB.Save(l).Error ; err!= nil {
+	if err = db.DB.Save(l).Error; err != nil {
 		return err
 	}
 	return nil

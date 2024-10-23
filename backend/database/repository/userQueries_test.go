@@ -6,19 +6,21 @@ import (
 
 func (suite *DatabaseTestSuite) TestLinkAddNewUser() {
 
-	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "x@gmail.com", Password: "password",Username: "do2333"}
-	
+	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "x@gmail.com", Password: "password", Username: "do2333"}
+
 	err := suite.dbInstance.AddNewUser(&user)
 	suite.Require().NoError(err, "Error adding user before testing")
 
 	var retrievedUser model.User
 	err = suite.dbInstance.GetUserEmail(&retrievedUser, user.Email)
 	suite.Require().NoError(err, "Error retrieving link record")
+	suite.Require().Equal(user.Email, retrievedUser.Email)
+	suite.Require().Equal(user.Password, retrievedUser.Password)
 }
 
 func (suite *DatabaseTestSuite) TestLinkDeleteUser() {
 
-	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "c@gmail.com", Password: "password",Username: "dosfs"}
+	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "c@gmail.com", Password: "password", Username: "dosfs"}
 
 	err := suite.dbInstance.DeleteUser(&user, user.ID)
 	suite.Require().NoError(err, "Error deleting link record")
@@ -30,8 +32,7 @@ func (suite *DatabaseTestSuite) TestLinkDeleteUser() {
 
 func (suite *DatabaseTestSuite) TestLinkPutOneUser() {
 
-	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "c@gmail.com", Password: "password",Username: "dosfs"}
-
+	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "c@gmail.com", Password: "password", Username: "dosfs"}
 
 	err := suite.dbInstance.AddNewUser(&user)
 	suite.Require().NoError(err, "Error adding user before testing")

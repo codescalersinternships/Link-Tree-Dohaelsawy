@@ -35,7 +35,7 @@ func (suite *DatabaseTestSuite) SetupSuite() {
 	err = suite.dbInstance.DB.AutoMigrate(&model.User{}, &model.Link{})
 	suite.Require().NoError(err, "Error auto-migrating database tables")
 
-	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "doha@gmail.com", Password: "password",Username: "do23"}
+	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "doha@gmail.com", Password: "password", Username: "do23"}
 	err = suite.dbInstance.AddNewUser(&user)
 	suite.Require().NoError(err, "Error adding user before testing")
 
@@ -52,7 +52,6 @@ func (suite *DatabaseTestSuite) TearDownSuite() {
 	err = suite.dbInstance.DB.Exec("DROP TABLE users;").Error
 	suite.Require().NoError(err, "Error dropping test table")
 
-	
 }
 
 // TestSuite runs the test suite.
@@ -63,11 +62,11 @@ func prepareDbTestingConnectionString(config model.Config) string {
 
 func NewTestConfigController() model.Config {
 	return model.Config{
-		DbHost:            os.Getenv("DB_TEST_HOST"),
-		DbUser:            os.Getenv("DB_TEST_USER"),
-		DbPassword:        os.Getenv("DB_TEST_PASSWORD"),
-		DbName:            os.Getenv("DB_TEST_NAME"),
-		DbPort:            os.Getenv("DB_TEST_PORT"),
+		DbHost:     os.Getenv("DB_TEST_HOST"),
+		DbUser:     os.Getenv("DB_TEST_USER"),
+		DbPassword: os.Getenv("DB_TEST_PASSWORD"),
+		DbName:     os.Getenv("DB_TEST_NAME"),
+		DbPort:     os.Getenv("DB_TEST_PORT"),
 	}
 }
 

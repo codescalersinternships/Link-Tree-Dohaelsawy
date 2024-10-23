@@ -14,6 +14,9 @@ func (suite *DatabaseTestSuite) TestLinkAddNewLink() {
 	var retrievedLink model.Link
 	err = suite.dbInstance.GetOneLink(&retrievedLink, link.ID)
 	suite.Require().NoError(err, "Error retrieving link record")
+
+	suite.Require().Equal(link.Name, retrievedLink.Name)
+	suite.Require().Equal(link.Url, retrievedLink.Url)
 }
 
 func (suite *DatabaseTestSuite) TestLinkDeleteLink() {
