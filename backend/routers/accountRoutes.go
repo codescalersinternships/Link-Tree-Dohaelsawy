@@ -11,14 +11,14 @@ import (
 func AccountRouters(db repository.DbInstance, router *gin.Engine) {
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
-	accountController := controllers.NewAccountControllerImpl(db, *validate)
+	DBController := controllers.NewDBControllerImpl(db, *validate)
 
 	routeGroup := router.Group("/account")
 
 	routeGroup.Use(middleware.AuthMiddleware())
-	routeGroup.POST("/edit_account/:user_id", accountController.EditAccount)
-	routeGroup.DELETE("/delete_account/:user_id", accountController.DeleteAccount)
-	routeGroup.GET("/get_account/:user_id",accountController.GetAccount)
-	routeGroup.GET("/create_link_tree_url",accountController.CreateLinkTreeUrl)
+	routeGroup.POST("/edit_account/:user_id", DBController.EditAccount)
+	routeGroup.DELETE("/delete_account/:user_id", DBController.DeleteAccount)
+	routeGroup.GET("/get_account/:user_id",DBController.GetAccount)
+	routeGroup.GET("/create_link_tree_url",DBController.CreateLinkTreeUrl)
 
 }

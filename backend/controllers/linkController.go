@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	"github.com/gin-gonic/gin"
@@ -17,21 +16,12 @@ var (
 	ErrNotFound = errors.New("not found")
 )
 
-type LinkController struct {
-	Db       *repository.DbInstance
-	Validate *validator.Validate
-}
-
 type LinkReq struct {
 	Name string `validate:"required" json:"name"`
 	Url  string `validate:"required" json:"url"`
 }
 
-func NewLinksController(Db repository.DbInstance, validate validator.Validate) *LinkController {
-	return &LinkController{Db: &Db, Validate: &validate}
-}
-
-func (l *LinkController) CreateLink(ctx *gin.Context) {
+func (l *DBController) CreateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -61,7 +51,6 @@ func (l *LinkController) CreateLink(ctx *gin.Context) {
 		UserID: user_id,
 	}
 
-
 	err = l.Db.AddNewLink(&link)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
@@ -71,7 +60,7 @@ func (l *LinkController) CreateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (l *LinkController) DeleteLink(ctx *gin.Context) {
+func (l *DBController) DeleteLink(ctx *gin.Context) {
 
 	var link model.Link
 
@@ -92,7 +81,7 @@ func (l *LinkController) DeleteLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (l *LinkController) UpdateLink(ctx *gin.Context) {
+func (l *DBController) UpdateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -136,7 +125,7 @@ func (l *LinkController) UpdateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (l *LinkController) GetLinks(ctx *gin.Context) {
+func (l *DBController) GetLinks(ctx *gin.Context) {
 
 	var links []model.Link
 
@@ -154,5 +143,3 @@ func (l *LinkController) GetLinks(ctx *gin.Context) {
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, links)
 }
-
-

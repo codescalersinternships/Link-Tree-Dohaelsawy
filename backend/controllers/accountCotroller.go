@@ -19,18 +19,14 @@ type AccountController struct {
 }
 
 type AccountReq struct {
-	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name"`
-	Phone       string `json:"phone" validate:"min=11,max=11"`
-	Photo       string `json:"photo"`
-	Bio         string `json:"bio"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Phone     string `json:"phone" validate:"min=11,max=11"`
+	Photo     string `json:"photo"`
+	Bio       string `json:"bio"`
 }
 
-func NewAccountControllerImpl(Db repository.DbInstance, validate validator.Validate) *AccountController {
-	return &AccountController{Db: &Db, Validate: &validate}
-}
-
-func (a *AccountController) DeleteAccount(ctx *gin.Context) {
+func (a *DBController) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
 
@@ -51,10 +47,9 @@ func (a *AccountController) DeleteAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (a *AccountController) EditAccount(ctx *gin.Context) {
+func (a *DBController) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
-
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, errors.New("here"))
@@ -85,7 +80,7 @@ func (a *AccountController) EditAccount(ctx *gin.Context) {
 	account.FirstName = reqBody.FirstName
 	account.LastName = reqBody.LastName
 	account.Phone = reqBody.Phone
-	account.Photo = reqBody.Photo             // TODO: need to handle upload image
+	account.Photo = reqBody.Photo // TODO: need to handle upload image
 	account.Bio = reqBody.Bio
 
 	err = a.Db.PutOneUser(&account, account.ID)
@@ -97,7 +92,7 @@ func (a *AccountController) EditAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (a *AccountController) GetAccount(ctx *gin.Context) {
+func (a *DBController) GetAccount(ctx *gin.Context) {
 
 	var account model.User
 
@@ -116,7 +111,7 @@ func (a *AccountController) GetAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (a AccountController) CreateLinkTreeUrl(ctx *gin.Context) {
+func (a DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	user_id, err := utils.ExtractTokenID(ctx)
 
@@ -127,7 +122,6 @@ func (a AccountController) CreateLinkTreeUrl(ctx *gin.Context) {
 	}
 
 	var account model.User
-
 
 	err = a.Db.GetUserID(&account, user_id)
 	if err != nil {

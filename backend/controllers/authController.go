@@ -11,7 +11,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 )
@@ -29,20 +28,11 @@ type RegisterRequest struct {
 	Password  string `validate:"required,min=8" json:"password"`
 }
 
-type AuthController struct {
-	Db       *repository.DbInstance
-	Validate *validator.Validate
-}
-
 var (
 	ErrEmailExist = errors.New("this email exist! ")
 )
 
-func NewAuthControllerImpl(Db repository.DbInstance, validate *validator.Validate) *AuthController {
-	return &AuthController{Db: &Db, Validate: validate}
-}
-
-func (ac *AuthController) Login(ctx *gin.Context) {
+func (ac *DBController) Login(ctx *gin.Context) {
 	var reqBody LoginRequest
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
@@ -107,7 +97,7 @@ func (ac *AuthController) Login(ctx *gin.Context) {
 
 }
 
-func (ac *AuthController) Register(ctx *gin.Context) {
+func (ac *DBController) Register(ctx *gin.Context) {
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
@@ -153,6 +143,6 @@ func (ac *AuthController) Register(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
-func (ac *AuthController) Logout(ctx *gin.Context) {
+func (ac *DBController) Logout(ctx *gin.Context) {
 	ctx.SetCookie("Authorization", "", 0, "", "", false, true)
 }

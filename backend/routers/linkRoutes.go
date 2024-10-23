@@ -12,13 +12,13 @@ import (
 func LinkRouters(db repository.DbInstance, router *gin.Engine) {
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
-	linkController := controllers.NewLinksController(db, *validate)
+	DBController := controllers.NewDBControllerImpl(db, *validate)
 
 	routeGroup := router.Group("/link")
 
 	routeGroup.Use(middleware.AuthMiddleware())
-	routeGroup.POST("/create_link", linkController.CreateLink)
-	routeGroup.GET("/get_links", linkController.GetLinks)
-	routeGroup.DELETE("/delete_link/:link_id", linkController.DeleteLink)
-	routeGroup.PUT("/update_link/:link_id", linkController.UpdateLink)
+	routeGroup.POST("/create_link", DBController.CreateLink)
+	routeGroup.GET("/get_links", DBController.GetLinks)
+	routeGroup.DELETE("/delete_link/:link_id", DBController.DeleteLink)
+	routeGroup.PUT("/update_link/:link_id", DBController.UpdateLink)
 }
