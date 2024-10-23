@@ -92,6 +92,7 @@ func (ds *DBService) Login(ctx *gin.Context) {
 }
 
 func (ds *DBService) Register(ctx *gin.Context) {
+	
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
