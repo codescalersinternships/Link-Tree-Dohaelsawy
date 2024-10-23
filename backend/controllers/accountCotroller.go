@@ -1,22 +1,14 @@
 package controllers
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
-
-type AccountController struct {
-	Db       *repository.DbInstance
-	Validate *validator.Validate
-}
 
 type AccountReq struct {
 	FirstName string `json:"first_name"`
@@ -52,7 +44,7 @@ func (a *DBController) EditAccount(ctx *gin.Context) {
 	var reqBody AccountReq
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, errors.New("here"))
+		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
@@ -113,6 +105,12 @@ func (a *DBController) GetAccount(ctx *gin.Context) {
 
 func (a DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
+	config, err := utils.NewConfigController()
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	user_id, err := utils.ExtractTokenID(ctx)
 
 	if err != nil {
@@ -129,11 +127,7 @@ func (a DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 		return
 	}
 
-	account.LinkTreeURL, err = utils.GenerateLinkTreeUrl(account.Username)
-	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
+	account.LinkTreeURL = utils.GenerateLinkTreeUrl(account.Username, config.BaseUrl)
 
 	err = a.Db.PutOneUser(&account, account.ID)
 	if err != nil {

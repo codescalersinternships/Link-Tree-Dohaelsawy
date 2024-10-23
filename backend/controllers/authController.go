@@ -2,14 +2,10 @@ package controllers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
-	"github.com/joho/godotenv"
 
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
@@ -33,6 +29,21 @@ var (
 )
 
 func (ac *DBController) Login(ctx *gin.Context) {
+
+	config, err := utils.NewConfigController()
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	secreToken := config.JwtSecret
+	tokenLifeTime, err := strconv.Atoi(config.TokenHourLifeTime)
+
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	var reqBody LoginRequest
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
@@ -41,16 +52,13 @@ func (ac *DBController) Login(ctx *gin.Context) {
 	}
 
 	if err := ac.Validate.Struct(&reqBody); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
-		errorMessage := fmt.Errorf("validation failed for field: %v", validationErrors[0].Field())
-		// utils.ErrRespondJSON(ctx, http.StatusBadRequest, errorMessage)
-		ctx.JSON(http.StatusBadRequest, errorMessage)
+		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
 
 	var existingUser model.User
 
-	err := ac.Db.GetUserEmail(&existingUser, reqBody.Email)
+	err = ac.Db.GetUserEmail(&existingUser, reqBody.Email)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusNotFound, err)
 		return
@@ -63,7 +71,7 @@ func (ac *DBController) Login(ctx *gin.Context) {
 		return
 	}
 
-	token, err := utils.CreateToken(uint(existingUser.ID))
+	token, err := utils.CreateToken(uint(existingUser.ID), tokenLifeTime, secreToken)
 
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
@@ -76,22 +84,9 @@ func (ac *DBController) Login(ctx *gin.Context) {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
-	err = godotenv.Load(".env")
-
-	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	token_lifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
-
-	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
 
 	ctx.SetSameSite(http.SameSiteLaxMode)
-	ctx.SetCookie("Authorization", token, 3600*token_lifespan, "", "", false, true)
+	ctx.SetCookie("Authorization", token, 3600*tokenLifeTime, "", "", false, true)
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token})
 
@@ -105,9 +100,7 @@ func (ac *DBController) Register(ctx *gin.Context) {
 	}
 
 	if err := ac.Validate.Struct(reqBody); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
-		errorMessage := fmt.Errorf("validation failed for field: %s", validationErrors[0].Field())
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, errorMessage)
+		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 

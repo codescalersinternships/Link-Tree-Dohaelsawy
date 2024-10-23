@@ -31,17 +31,7 @@ func ComparePassword(password, hash string) bool {
 	return err == nil
 }
 
-func CreateToken(id uint) (string, error) {
-
-	err := godotenv.Load(".env")
-	if err != nil {
-		return "", err
-	}
-
-	token_lifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
-	if err != nil {
-		return "", err
-	}
+func CreateToken(id uint, token_lifespan int, secretToken string) (string, error) {
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sup": id,
@@ -49,7 +39,7 @@ func CreateToken(id uint) (string, error) {
 		"iat": time.Now().Unix(),
 	})
 
-	tokenString, err := claims.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	tokenString, err := claims.SignedString([]byte(secretToken))
 	if err != nil {
 		return "", err
 	}

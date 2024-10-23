@@ -9,7 +9,6 @@ import (
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 var (
@@ -31,9 +30,7 @@ func (l *DBController) CreateLink(ctx *gin.Context) {
 	}
 
 	if err := l.Validate.Struct(reqBody); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
-		errorMessage := fmt.Errorf("validation failed for field: %s", validationErrors[0].Field())
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, errorMessage)
+		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
@@ -91,9 +88,7 @@ func (l *DBController) UpdateLink(ctx *gin.Context) {
 	}
 
 	if err := l.Validate.Struct(reqBody); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
-		errorMessage := fmt.Errorf("validation failed for field: %s", validationErrors[0].Field())
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, errorMessage)
+		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 

@@ -3,10 +3,10 @@ package repository
 import (
 	"fmt"
 	"log"
-	"os"
 
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-	"github.com/joho/godotenv"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -16,8 +16,16 @@ type DbInstance struct {
 }
 
 func DbConnect() (DbInstance, error) {
-	conString := prepareDbConnectionString()
+
+	conString, err := prepareDbConnectionString()
+
+	if err != nil {
+		log.Printf("error: %s", err)
+		return DbInstance{}, err
+	}
+
 	fmt.Println(conString)
+
 	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{})
 	if err != nil {
 		log.Printf("error: %s", err)
@@ -34,19 +42,13 @@ func DbConnect() (DbInstance, error) {
 	return DbInstance{DB: db}, nil
 }
 
-func prepareDbConnectionString() string {
-	err := godotenv.Load(".env")
+func prepareDbConnectionString() (string, error) {
 
+	config, err := utils.NewConfigController()
 	if err != nil {
-		log.Printf("Error loading .env file, %s\n", err)
-		return err.Error()
+		return "", err
 	}
 
-	host := os.Getenv("DB_HOST")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-	port := os.Getenv("DB_PORT")
-
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable ", host, user, password, dbName, port)
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbName, config.DbPort),
+		nil
 }
