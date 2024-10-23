@@ -16,11 +16,12 @@ func main() {
 	}
 
 	router := gin.Default()
-	
-	route.AccountRouters(db, router)
-	route.LinkRouters(db, router)
-	route.AuthRouters(db, router)
-	
+
+	dbInstance := repository.NewDbInstance(db)
+
+	route.AccountRouters(dbInstance, router)
+	route.LinkRouters(dbInstance, router)
+	route.AuthRouters(dbInstance, router)
 
 	router.Run()
 }

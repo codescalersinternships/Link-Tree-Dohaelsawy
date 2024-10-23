@@ -28,7 +28,7 @@ var (
 	ErrEmailExist = errors.New("this email exist! ")
 )
 
-func (ac *DBController) Login(ctx *gin.Context) {
+func (ds *DBService) Login(ctx *gin.Context) {
 
 	config, err := utils.NewConfigController()
 	if err != nil {
@@ -51,14 +51,14 @@ func (ac *DBController) Login(ctx *gin.Context) {
 		return
 	}
 
-	if err := ac.Validate.Struct(&reqBody); err != nil {
+	if err := ds.Validate.Struct(&reqBody); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
 
 	var existingUser model.User
 
-	err = ac.Db.GetUserEmail(&existingUser, reqBody.Email)
+	err = ds.store.GetUserEmail(&existingUser, reqBody.Email)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusNotFound, err)
 		return
@@ -80,7 +80,7 @@ func (ac *DBController) Login(ctx *gin.Context) {
 
 	existingUser.Token = token
 
-	if err := ac.Db.PutOneUser(&existingUser, existingUser.ID); err != nil {
+	if err := ds.store.PutOneUser(&existingUser, existingUser.ID); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
@@ -89,24 +89,23 @@ func (ac *DBController) Login(ctx *gin.Context) {
 	ctx.SetCookie("Authorization", token, 3600*tokenLifeTime, "", "", false, true)
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token})
-
 }
 
-func (ac *DBController) Register(ctx *gin.Context) {
+func (ds *DBService) Register(ctx *gin.Context) {
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := ac.Validate.Struct(reqBody); err != nil {
+	if err := ds.Validate.Struct(reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	var existingUser model.User
 
-	err := ac.Db.GetUserEmail(&existingUser, reqBody.Email)
+	err := ds.store.GetUserEmail(&existingUser, reqBody.Email)
 
 	if err == nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, ErrEmailExist)
@@ -128,7 +127,7 @@ func (ac *DBController) Register(ctx *gin.Context) {
 		Password:  password,
 	}
 
-	if err := ac.Db.AddNewUser(&newUser); err != nil {
+	if err := ds.store.AddNewUser(&newUser); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
@@ -136,6 +135,6 @@ func (ac *DBController) Register(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
-func (ac *DBController) Logout(ctx *gin.Context) {
+func (ac *DBService) Logout(ctx *gin.Context) {
 	ctx.SetCookie("Authorization", "", 0, "", "", false, true)
 }

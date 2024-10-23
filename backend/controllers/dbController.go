@@ -5,11 +5,11 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type DBController struct {
-	Db       *repository.DbInstance
+type DBService struct {
+	store repository.Store
 	Validate *validator.Validate
 }
 
-func NewDBControllerImpl(Db repository.DbInstance, validate validator.Validate) *DBController {
-	return &DBController{Db: &Db, Validate: &validate}
+func NewDBService(db *repository.DbInstance) *DBService {
+	return &DBService{store: db,Validate: validator.New()}
 }

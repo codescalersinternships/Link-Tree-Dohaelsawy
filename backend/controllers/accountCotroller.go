@@ -18,7 +18,7 @@ type AccountReq struct {
 	Bio       string `json:"bio"`
 }
 
-func (a *DBController) DeleteAccount(ctx *gin.Context) {
+func (ds *DBService) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
 
@@ -30,7 +30,7 @@ func (a *DBController) DeleteAccount(ctx *gin.Context) {
 		return
 	}
 
-	err = a.Db.DeleteUser(&account, id)
+	err = ds.store.DeleteUser(&account, id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -39,7 +39,7 @@ func (a *DBController) DeleteAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (a *DBController) EditAccount(ctx *gin.Context) {
+func (ds *DBService) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
 
@@ -48,7 +48,7 @@ func (a *DBController) EditAccount(ctx *gin.Context) {
 		return
 	}
 
-	if err := a.Validate.Struct(&reqBody); err != nil {
+	if err := ds.Validate.Struct(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
@@ -63,7 +63,7 @@ func (a *DBController) EditAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	err = a.Db.GetUserID(&account, id)
+	err = ds.store.GetUserID(&account, id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -75,7 +75,7 @@ func (a *DBController) EditAccount(ctx *gin.Context) {
 	account.Photo = reqBody.Photo // TODO: need to handle upload image
 	account.Bio = reqBody.Bio
 
-	err = a.Db.PutOneUser(&account, account.ID)
+	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -84,7 +84,7 @@ func (a *DBController) EditAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (a *DBController) GetAccount(ctx *gin.Context) {
+func (ds *DBService) GetAccount(ctx *gin.Context) {
 
 	var account model.User
 
@@ -94,7 +94,7 @@ func (a *DBController) GetAccount(ctx *gin.Context) {
 		return
 	}
 
-	err = a.Db.GetUserID(&account, user_id)
+	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -103,7 +103,7 @@ func (a *DBController) GetAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (a DBController) CreateLinkTreeUrl(ctx *gin.Context) {
+func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	config, err := utils.NewConfigController()
 	if err != nil {
@@ -121,7 +121,7 @@ func (a DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	var account model.User
 
-	err = a.Db.GetUserID(&account, user_id)
+	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -129,7 +129,7 @@ func (a DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	account.LinkTreeURL = utils.GenerateLinkTreeUrl(account.Username, config.BaseUrl)
 
-	err = a.Db.PutOneUser(&account, account.ID)
+	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return

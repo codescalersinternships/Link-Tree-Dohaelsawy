@@ -20,7 +20,7 @@ type LinkReq struct {
 	Url  string `validate:"required" json:"url"`
 }
 
-func (l *DBController) CreateLink(ctx *gin.Context) {
+func (l *DBService) CreateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -48,7 +48,7 @@ func (l *DBController) CreateLink(ctx *gin.Context) {
 		UserID: user_id,
 	}
 
-	err = l.Db.AddNewLink(&link)
+	err = l.store.AddNewLink(&link)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -57,7 +57,7 @@ func (l *DBController) CreateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (l *DBController) DeleteLink(ctx *gin.Context) {
+func (l *DBService) DeleteLink(ctx *gin.Context) {
 
 	var link model.Link
 
@@ -69,7 +69,7 @@ func (l *DBController) DeleteLink(ctx *gin.Context) {
 		return
 	}
 
-	err = l.Db.DeleteLink(&link, id)
+	err = l.store.DeleteLink(&link, id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -78,7 +78,7 @@ func (l *DBController) DeleteLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (l *DBController) UpdateLink(ctx *gin.Context) {
+func (l *DBService) UpdateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -102,7 +102,7 @@ func (l *DBController) UpdateLink(ctx *gin.Context) {
 
 	var link model.Link
 
-	err = l.Db.GetOneLink(&link, id)
+	err = l.store.GetOneLink(&link, id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -111,7 +111,7 @@ func (l *DBController) UpdateLink(ctx *gin.Context) {
 	link.Url = reqBody.Url
 	link.Name = reqBody.Name
 
-	err = l.Db.PutOneLink(&link, link.ID)
+	err = l.store.PutOneLink(&link, link.ID)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -120,7 +120,7 @@ func (l *DBController) UpdateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (l *DBController) GetLinks(ctx *gin.Context) {
+func (l *DBService) GetLinks(ctx *gin.Context) {
 
 	var links []model.Link
 
@@ -130,7 +130,7 @@ func (l *DBController) GetLinks(ctx *gin.Context) {
 		return
 	}
 
-	err = l.Db.GetAllLinksForUser(&links, user_id)
+	err = l.store.GetAllLinksForUser(&links, user_id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
