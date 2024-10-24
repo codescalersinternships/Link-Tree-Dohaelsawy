@@ -164,7 +164,7 @@ func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 	suite.Require().NoError(err)
 	file.Seek(0, io.SeekStart)
 
-	part, err := writer.CreateFormFile("user_photo", filepath.Base(file.Name()))
+	part, err := writer.CreateFormFile("user_photo", filepath.Base("testdata/"+file.Name()))
 	suite.Require().NoError(err)
 
 	_, err = io.Copy(part, file)
