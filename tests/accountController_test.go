@@ -48,12 +48,12 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 		router := SetupAccountRouter(suite)
 		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
-		router.POST("/edit_account/:user_id", dbService.EditAccount)
+		router.POST("/edit_account", dbService.EditAccount)
 
 		jsonValue, err := json.Marshal(test.user)
 		suite.Require().NoError(err, "Error can't marshal user to json")
 
-		req, err := http.NewRequest("POST", "/edit_account/11", bytes.NewBuffer(jsonValue))
+		req, err := http.NewRequest("POST", "/edit_account", bytes.NewBuffer(jsonValue))
 		suite.Require().NoError(err, "Error create http request")
 		req.AddCookie(&http.Cookie{
 			Name:     "Authorization",
@@ -77,13 +77,13 @@ func (suite *DatabaseTestSuite) TestDeleteAccount() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
-	router.POST("/delete_account/:user_id", dbService.DeleteAccount)
+	router.POST("/delete_account", dbService.DeleteAccount)
 
-	req, err := http.NewRequest("POST", "/delete_account/1", nil)
+	req, err := http.NewRequest("POST", "/delete_account", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NjAwMTcsImlhdCI6MTcyOTc3MzYxNywic3VwIjoxM30.M06Hr3QWA-fKkrbpsiQA9VAwmg4JlNXY_knn6iB6kZE",
 		Path:     "",
 		Domain:   "",
 		Secure:   false,
