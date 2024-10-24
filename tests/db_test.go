@@ -15,17 +15,20 @@ import (
 type DatabaseTestSuite struct {
 	suite.Suite
 	DbInstance repository.DbInstance
+	config model.Config
 }
 
 func TestSuite(t *testing.T) {
+
 	setEnvVariables()
+
 	suite.Run(t, new(DatabaseTestSuite))
 }
 
 func (suite *DatabaseTestSuite) SetupSuite() {
 
-	config := NewTestConfigController()
-	conString := prepareDbTestingConnectionString(config)
+	suite.config = NewTestConfigController()
+	conString := prepareDbTestingConnectionString(suite.config)
 	fmt.Println(conString)
 
 	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{})
@@ -36,7 +39,7 @@ func (suite *DatabaseTestSuite) SetupSuite() {
 	err = suite.DbInstance.DB.AutoMigrate(&model.User{}, &model.Link{})
 	suite.Require().NoError(err, "Error auto-migrating database tables")
 
-	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "doha@gmail.com", Password: "password", Username: "do23"}
+	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "a@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "newusername"}
 	err = suite.DbInstance.AddNewUser(&user)
 	suite.Require().NoError(err, "Error adding user before testing")
 
@@ -68,6 +71,10 @@ func NewTestConfigController() model.Config {
 		DbPassword: os.Getenv("DB_TEST_PASSWORD"),
 		DbName:     os.Getenv("DB_TEST_NAME"),
 		DbPort:     os.Getenv("DB_TEST_PORT"),
+		Port:              os.Getenv("PORT"),
+		JwtSecret:         os.Getenv("JWT_SECRET"),
+		TokenHourLifeTime: os.Getenv("TOKEN_HOUR_LIFESPAN"),
+		BaseUrl:           os.Getenv("BASE_URL"),
 	}
 }
 
@@ -77,4 +84,8 @@ func setEnvVariables() {
 	os.Setenv("DB_TEST_PASSWORD", "adminpassword")
 	os.Setenv("DB_TEST_NAME", "linktreedbtest")
 	os.Setenv("DB_TEST_PORT", "4568")
+	os.Setenv("PORT", "8010")
+	os.Setenv("JWT_SECRET", "super_secure")
+	os.Setenv("TOKEN_HOUR_LIFESPAN", "24")
+	os.Setenv("BASE_URL", "http://localhost:8010")
 }
