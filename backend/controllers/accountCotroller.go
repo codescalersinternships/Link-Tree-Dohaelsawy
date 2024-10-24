@@ -105,11 +105,7 @@ func (ds *DBService) GetAccount(ctx *gin.Context) {
 
 func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 
-	config, err := utils.NewConfigController()
-	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
+	config := ds.Config
 
 	user_id, err := utils.ExtractTokenID(ctx)
 

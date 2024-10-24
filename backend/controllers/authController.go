@@ -25,20 +25,17 @@ type RegisterRequest struct {
 }
 
 var (
-	ErrEmailExist = errors.New("this email exist! ")
+	ErrEmailExist    = errors.New("this email exist! ")
+	ErrWrongPassword = errors.New("wrong password!! ")
 )
 
 func (ds *DBService) Login(ctx *gin.Context) {
 
-	config, err := utils.NewConfigController()
-	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
+	config := ds.Config
 
-	secreToken := config.JwtSecret
+	secretToken := config.JwtSecret
+
 	tokenLifeTime, err := strconv.Atoi(config.TokenHourLifeTime)
-
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -67,12 +64,11 @@ func (ds *DBService) Login(ctx *gin.Context) {
 	valid := utils.ComparePassword(reqBody.Password, existingUser.Password)
 
 	if !valid {
-		utils.ErrRespondJSON(ctx, http.StatusUnauthorized, err)
+		utils.ErrRespondJSON(ctx, http.StatusUnauthorized, ErrWrongPassword)
 		return
 	}
 
-	token, err := utils.CreateToken(uint(existingUser.ID), tokenLifeTime, secreToken)
-
+	token, err := utils.CreateToken(uint(existingUser.ID), tokenLifeTime, secretToken)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -92,7 +88,7 @@ func (ds *DBService) Login(ctx *gin.Context) {
 }
 
 func (ds *DBService) Register(ctx *gin.Context) {
-	
+
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
