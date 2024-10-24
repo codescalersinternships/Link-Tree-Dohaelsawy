@@ -88,7 +88,7 @@ func (ds *DBService) GetAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	user_id, err := utils.ExtractTokenID(ctx)
+	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -107,7 +107,7 @@ func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	config := ds.Config
 
-	user_id, err := utils.ExtractTokenID(ctx)
+	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 
 	if err != nil {
 		errorMessage := fmt.Errorf("can't find your token %s", err)

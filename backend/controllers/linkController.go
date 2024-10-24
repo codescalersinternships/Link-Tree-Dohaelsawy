@@ -20,7 +20,7 @@ type LinkReq struct {
 	Url  string `validate:"required" json:"url"`
 }
 
-func (l *DBService) CreateLink(ctx *gin.Context) {
+func (ds *DBService) CreateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -29,12 +29,12 @@ func (l *DBService) CreateLink(ctx *gin.Context) {
 		return
 	}
 
-	if err := l.Validate.Struct(reqBody); err != nil {
+	if err := ds.Validate.Struct(reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	user_id, err := utils.ExtractTokenID(ctx)
+	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 
 	if err != nil {
 		errorMessage := fmt.Errorf("can't find your token %s", err)
@@ -48,7 +48,7 @@ func (l *DBService) CreateLink(ctx *gin.Context) {
 		UserID: user_id,
 	}
 
-	err = l.store.AddNewLink(&link)
+	err = ds.store.AddNewLink(&link)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -57,7 +57,7 @@ func (l *DBService) CreateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (l *DBService) DeleteLink(ctx *gin.Context) {
+func (ds *DBService) DeleteLink(ctx *gin.Context) {
 
 	var link model.Link
 
@@ -69,7 +69,7 @@ func (l *DBService) DeleteLink(ctx *gin.Context) {
 		return
 	}
 
-	err = l.store.DeleteLink(&link, id)
+	err = ds.store.DeleteLink(&link, id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -78,7 +78,7 @@ func (l *DBService) DeleteLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (l *DBService) UpdateLink(ctx *gin.Context) {
+func (ds *DBService) UpdateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -87,7 +87,7 @@ func (l *DBService) UpdateLink(ctx *gin.Context) {
 		return
 	}
 
-	if err := l.Validate.Struct(reqBody); err != nil {
+	if err := ds.Validate.Struct(reqBody); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
@@ -102,7 +102,7 @@ func (l *DBService) UpdateLink(ctx *gin.Context) {
 
 	var link model.Link
 
-	err = l.store.GetOneLink(&link, id)
+	err = ds.store.GetOneLink(&link, id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -111,7 +111,7 @@ func (l *DBService) UpdateLink(ctx *gin.Context) {
 	link.Url = reqBody.Url
 	link.Name = reqBody.Name
 
-	err = l.store.PutOneLink(&link, link.ID)
+	err = ds.store.PutOneLink(&link, link.ID)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -120,17 +120,17 @@ func (l *DBService) UpdateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (l *DBService) GetLinks(ctx *gin.Context) {
+func (ds *DBService) GetLinks(ctx *gin.Context) {
 
 	var links []model.Link
 
-	user_id, err := utils.ExtractTokenID(ctx)
+	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = l.store.GetAllLinksForUser(&links, user_id)
+	err = ds.store.GetAllLinksForUser(&links, user_id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return

@@ -8,6 +8,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -45,12 +46,8 @@ func CreateToken(id uint, token_lifespan int, secretToken string) (string, error
 	return tokenString, nil
 }
 
-func TokenValid(c *gin.Context) error {
+func TokenValid(c *gin.Context, config model.Config) error {
 
-	config, err := NewConfigController()
-	if err != nil {
-		return err
-	}
 
 	tokenString, ok := ExtractToken(c)
 	if !ok {
@@ -78,12 +75,7 @@ func ExtractToken(c *gin.Context) (string, bool) {
 	return token, true
 }
 
-func ExtractTokenID(c *gin.Context) (int, error) {
-
-	config, err := NewConfigController()
-	if err != nil {
-		return 0, err
-	}
+func ExtractTokenID(c *gin.Context, config model.Config) (int, error) {
 
 	tokenString, ok := ExtractToken(c)
 	if !ok {

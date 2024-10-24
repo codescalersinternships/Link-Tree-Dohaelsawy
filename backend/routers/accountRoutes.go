@@ -14,10 +14,10 @@ func AccountRouters(db repository.DbInstance, config model.Config, router *gin.E
 
 	routeGroup := router.Group("/account")
 
-	routeGroup.Use(middleware.AuthMiddleware())
+	routeGroup.Use(middleware.AuthMiddleware(*DBController.Config))
 	routeGroup.POST("/edit_account/:user_id", DBController.EditAccount)
 	routeGroup.DELETE("/delete_account/:user_id", DBController.DeleteAccount)
-	routeGroup.GET("/get_account/", DBController.GetAccount)
+	routeGroup.GET("/get_account", DBController.GetAccount)
 	routeGroup.GET("/create_link_tree_url", DBController.CreateLinkTreeUrl)
 
 }
