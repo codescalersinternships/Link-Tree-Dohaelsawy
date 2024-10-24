@@ -19,5 +19,6 @@ func AccountRouters(db repository.DbInstance, config model.Config, router *gin.E
 	routeGroup.DELETE("/delete_account", DBController.DeleteAccount)
 	routeGroup.GET("/get_account", DBController.GetAccount)
 	routeGroup.GET("/create_link_tree_url", DBController.CreateLinkTreeUrl)
+	routeGroup.POST("/add_photo",DBController.UploadUserPhoto)
 
 }

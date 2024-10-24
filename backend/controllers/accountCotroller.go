@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"fmt"
+	"mime/multipart"
 	"net/http"
+	"path/filepath"
 
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
@@ -13,8 +14,11 @@ type AccountReq struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Phone     string `json:"phone" validate:"min=11,max=11"`
-	Photo     string `json:"photo"`
 	Bio       string `json:"bio"`
+}
+
+type UserPhotoReq struct {
+	Photo *multipart.FileHeader `form:"user_photo"`
 }
 
 func (ds *DBService) DeleteAccount(ctx *gin.Context) {
@@ -67,7 +71,6 @@ func (ds *DBService) EditAccount(ctx *gin.Context) {
 	account.FirstName = reqBody.FirstName
 	account.LastName = reqBody.LastName
 	account.Phone = reqBody.Phone
-	account.Photo = reqBody.Photo // TODO: need to handle upload image
 	account.Bio = reqBody.Bio
 
 	err = ds.store.PutOneUser(&account, account.ID)
@@ -102,11 +105,10 @@ func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	config := ds.Config
 
-	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	user_id, err := utils.ExtractTokenID(ctx, *config)
 
 	if err != nil {
-		errorMessage := fmt.Errorf("can't find your token %s", err)
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, errorMessage)
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -127,4 +129,50 @@ func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 	}
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
+}
+
+func (ds *DBService) UploadUserPhoto(ctx *gin.Context) {
+
+	file, err := ctx.FormFile("user_photo")
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	config := ds.Config
+	user_id, err := utils.ExtractTokenID(ctx, *config)
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	var account model.User
+	err = ds.store.GetUserID(&account, user_id)
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	// Retrieve file information
+	extension := filepath.Ext(file.Filename)
+	// Generate random file name for the new uploaded file so it doesn't override the old file with same name
+	newFileName := ds.Config.UserPhotoPath + account.Username + extension
+
+	// The file is received, so let's save it
+	if err := ctx.SaveUploadedFile(file, newFileName); err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	account.Photo = newFileName
+
+	err = ds.store.PutOneUser(&account, account.ID)
+	if err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{
+		"user_photo_path": newFileName,
+	})
 }

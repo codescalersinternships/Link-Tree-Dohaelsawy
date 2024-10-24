@@ -3,8 +3,12 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
+	"io"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/controllers"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
@@ -25,7 +29,6 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 				FirstName: "doha",
 				LastName:  "elsawy",
 				Phone:     "12345678901",
-				Photo:     "",
 				Bio:       "it's me",
 			},
 			status: http.StatusOK,
@@ -36,7 +39,6 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 				FirstName: "doha",
 				LastName:  "elsawy",
 				Phone:     "12345",
-				Photo:     "",
 				Bio:       "it's me",
 			},
 			status: http.StatusBadRequest,
@@ -144,6 +146,49 @@ func (suite *DatabaseTestSuite) TestCreateLinkTreeUrl() {
 	router.ServeHTTP(w, req)
 
 	suite.Require().Equal(http.StatusOK, w.Code)
+}
+
+func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
+	router := SetupAccountRouter(suite)
+	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	router.POST("/add_photo", dbService.UploadUserPhoto)
+
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+
+	file, err := os.CreateTemp("testdata", "image.jpeg")
+	suite.Require().NoError(err)
+	defer os.Remove(file.Name())
+
+	_, err = file.Write([]byte("This is a test image"))
+	suite.Require().NoError(err)
+	file.Seek(0, io.SeekStart)
+
+	part, err := writer.CreateFormFile("user_photo", filepath.Base(file.Name()))
+	suite.Require().NoError(err)
+
+	_, err = io.Copy(part, file)
+	suite.Require().NoError(err)
+
+	writer.Close()
+
+	req := httptest.NewRequest(http.MethodPost, "/add_photo", body)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	req.AddCookie(&http.Cookie{
+		Name:     "Authorization",
+		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+		Path:     "",
+		Domain:   "",
+		Secure:   false,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	})
+
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+	suite.Require().Equal(http.StatusOK, w.Code)
+
 }
 
 func SetupAccountRouter(suite *DatabaseTestSuite) *gin.Engine {
