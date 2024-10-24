@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
@@ -22,15 +21,13 @@ func (ds *DBService) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	idString := ctx.Params.ByName("user_id")
-
-	id, err := strconv.Atoi(idString)
+	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = ds.store.DeleteUser(&account, id)
+	err = ds.store.DeleteUser(&account, user_id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -53,9 +50,7 @@ func (ds *DBService) EditAccount(ctx *gin.Context) {
 		return
 	}
 
-	idString := ctx.Params.ByName("user_id")
-
-	id, err := strconv.Atoi(idString)
+	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -63,7 +58,7 @@ func (ds *DBService) EditAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	err = ds.store.GetUserID(&account, id)
+	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
