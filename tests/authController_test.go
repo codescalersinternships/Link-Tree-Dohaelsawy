@@ -120,9 +120,9 @@ func (suite *DatabaseTestSuite) TestLogout() {
 	router := SetupAuthRouter(suite)
 
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
-	router.POST("/logout", dbService.Logout)
+	router.GET("/logout", dbService.Logout)
 
-	req, err := http.NewRequest("POST", "/logout", nil)
+	req, err := http.NewRequest("GET", "/logout", nil)
 	suite.Require().NoError(err, "Error create http request")
 
 	w := httptest.NewRecorder()

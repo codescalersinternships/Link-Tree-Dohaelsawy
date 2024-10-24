@@ -16,8 +16,8 @@ var (
 )
 
 type LinkReq struct {
-	Name string `validate:"required" json:"name"`
-	Url  string `validate:"required" json:"url"`
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
 func (ds *DBService) CreateLink(ctx *gin.Context) {

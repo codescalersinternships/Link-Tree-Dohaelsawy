@@ -13,33 +13,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (suite *DatabaseTestSuite) TestEditAccount() {
+func (suite *DatabaseTestSuite) TestCreateLink() {
 	testcase := []struct {
 		title  string
-		user   controllers.AccountReq
+		link   controllers.LinkReq
 		status int
 	}{
 		{
-			title: "valid user input",
-			user: controllers.AccountReq{
-				FirstName: "doha",
-				LastName:  "elsawy",
-				Phone:     "12345678901",
-				Photo:     "",
-				Bio:       "it's me",
+			title: "valid link input",
+			link: controllers.LinkReq{
+				Name: "website",
+				Url:  "website.com",
 			},
 			status: http.StatusOK,
-		},
-		{
-			title: "violates user phone validation less than 11 numbers",
-			user: controllers.AccountReq{
-				FirstName: "doha",
-				LastName:  "elsawy",
-				Phone:     "12345",
-				Photo:     "",
-				Bio:       "it's me",
-			},
-			status: http.StatusBadRequest,
 		},
 	}
 
@@ -48,12 +34,12 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 		router := SetupAccountRouter(suite)
 		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
-		router.PUT("/edit_account", dbService.EditAccount)
+		router.POST("/create_link", dbService.CreateLink)
 
-		jsonValue, err := json.Marshal(test.user)
+		jsonValue, err := json.Marshal(test.link)
 		suite.Require().NoError(err, "Error can't marshal user to json")
 
-		req, err := http.NewRequest("PUT", "/edit_account", bytes.NewBuffer(jsonValue))
+		req, err := http.NewRequest("POST", "/create_link", bytes.NewBuffer(jsonValue))
 		suite.Require().NoError(err, "Error create http request")
 		req.AddCookie(&http.Cookie{
 			Name:     "Authorization",
@@ -73,13 +59,13 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 	}
 }
 
-func (suite *DatabaseTestSuite) TestDeleteAccount() {
+func (suite *DatabaseTestSuite) TestDeleteLink() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
-	router.DELETE("/delete_account", dbService.DeleteAccount)
+	router.DELETE("/delete_link/:link_id", dbService.DeleteLink)
 
-	req, err := http.NewRequest("DELETE", "/delete_account", nil)
+	req, err := http.NewRequest("DELETE", "/delete_link/2", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
@@ -97,13 +83,59 @@ func (suite *DatabaseTestSuite) TestDeleteAccount() {
 	suite.Require().Equal(http.StatusOK, w.Code)
 }
 
-func (suite *DatabaseTestSuite) TestGetAccount() {
+func (suite *DatabaseTestSuite) TestUpdateLink() {
+	testcase := []struct {
+		title  string
+		link   controllers.LinkReq
+		status int
+	}{
+		{
+			title: "valid link input",
+			link: controllers.LinkReq{
+				Url:  "jdhfajdsh",
+				Name: "kjhkfhk",
+			},
+			status: http.StatusOK,
+		},
+	}
+
+	for _, test := range testcase {
+		router := SetupAccountRouter(suite)
+		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+
+		router.PUT("/update_link/:link_id", dbService.UpdateLink)
+
+		jsonValue, err := json.Marshal(test.link)
+		suite.Require().NoError(err, "Error can't marshal user to json")
+
+		req, err := http.NewRequest("PUT", "/update_link/3", bytes.NewBuffer(jsonValue))
+		suite.Require().NoError(err, "Error create http request")
+		req.AddCookie(&http.Cookie{
+			Name:     "Authorization",
+			Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+			Path:     "",
+			Domain:   "",
+			Secure:   false,
+			HttpOnly: true,
+			SameSite: http.SameSiteLaxMode,
+		})
+
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
+
+		suite.Require().Equal(http.StatusOK, w.Code)
+	}
+
+}
+
+func (suite *DatabaseTestSuite) TestGetLinks() {
+
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
-	router.GET("/get_account/", dbService.GetAccount)
+	router.GET("/get_links", dbService.CreateLinkTreeUrl)
 
-	req, err := http.NewRequest("GET", "/get_account/", nil)
+	req, err := http.NewRequest("GET", "/get_links", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
@@ -121,36 +153,11 @@ func (suite *DatabaseTestSuite) TestGetAccount() {
 	suite.Require().Equal(http.StatusOK, w.Code)
 }
 
-func (suite *DatabaseTestSuite) TestCreateLinkTreeUrl() {
-
-	router := SetupAccountRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
-
-	router.GET("/create_link_tree_url", dbService.CreateLinkTreeUrl)
-
-	req, err := http.NewRequest("GET", "/create_link_tree_url", nil)
-	suite.Require().NoError(err, "Error create http request")
-	req.AddCookie(&http.Cookie{
-		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
-		Path:     "",
-		Domain:   "",
-		Secure:   false,
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
-
-	w := httptest.NewRecorder()
-	router.ServeHTTP(w, req)
-
-	suite.Require().Equal(http.StatusOK, w.Code)
-}
-
-func SetupAccountRouter(suite *DatabaseTestSuite) *gin.Engine {
+func SetupLinkRouter(suite *DatabaseTestSuite) *gin.Engine {
 
 	router := gin.Default()
 	router.Use(middleware.AuthMiddleware(suite.config))
-	route.AccountRouters(suite.DbInstance, suite.config, router)
+	route.LinkRouters(suite.DbInstance, suite.config, router)
 
 	return router
 }
