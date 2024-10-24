@@ -81,7 +81,7 @@ func (suite *DatabaseTestSuite) TestLogin() {
 		{
 			title: "valid user input",
 			user: controllers.LoginRequest{
-				Email:    "a@gmail.com",
+				Email:    "aaad@gmail.com",
 				Password: "12341234",
 			},
 			status: http.StatusOK,
@@ -116,21 +116,20 @@ func (suite *DatabaseTestSuite) TestLogin() {
 	}
 }
 
-
 func (suite *DatabaseTestSuite) TestLogout() {
 	router := SetupAuthRouter(suite)
 
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
-		router.POST("/logout", dbService.Logout)
+	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	router.POST("/logout", dbService.Logout)
 
-		req, err := http.NewRequest("POST", "/logout", nil)
-		suite.Require().NoError(err, "Error create http request")
+	req, err := http.NewRequest("POST", "/logout", nil)
+	suite.Require().NoError(err, "Error create http request")
 
-		w := httptest.NewRecorder()
-		router.ServeHTTP(w, req)
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
 
-		suite.Require().Equal(http.StatusOK, w.Code)
-		suite.Require().Empty(w.Result().Cookies()[0].Value)
+	suite.Require().Equal(http.StatusOK, w.Code)
+	suite.Require().Empty(w.Result().Cookies()[0].Value)
 
 }
 

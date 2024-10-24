@@ -15,7 +15,7 @@ import (
 type DatabaseTestSuite struct {
 	suite.Suite
 	DbInstance repository.DbInstance
-	config model.Config
+	config     model.Config
 }
 
 func TestSuite(t *testing.T) {
@@ -39,11 +39,11 @@ func (suite *DatabaseTestSuite) SetupSuite() {
 	err = suite.DbInstance.DB.AutoMigrate(&model.User{}, &model.Link{})
 	suite.Require().NoError(err, "Error auto-migrating database tables")
 
-	user := model.User{FirstName: "doha", LastName: "elsawy", Email: "a@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "newusername"}
+	user := model.User{ID:11,FirstName: "doha", LastName: "elsawy", Email: "aaad@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "newusdfername", Token: ""}
 	err = suite.DbInstance.AddNewUser(&user)
 	suite.Require().NoError(err, "Error adding user before testing")
 
-	link := model.Link{Name: "youtube", Url: "youtube.com", UserID: 1}
+	link := model.Link{Name: "youtube", Url: "youtube.com", UserID: 11}
 	err = suite.DbInstance.AddNewLink(&link)
 	suite.Require().NoError(err, "Error creating link record")
 }
@@ -66,11 +66,11 @@ func prepareDbTestingConnectionString(config model.Config) string {
 
 func NewTestConfigController() model.Config {
 	return model.Config{
-		DbHost:     os.Getenv("DB_TEST_HOST"),
-		DbUser:     os.Getenv("DB_TEST_USER"),
-		DbPassword: os.Getenv("DB_TEST_PASSWORD"),
-		DbName:     os.Getenv("DB_TEST_NAME"),
-		DbPort:     os.Getenv("DB_TEST_PORT"),
+		DbHost:            os.Getenv("DB_TEST_HOST"),
+		DbUser:            os.Getenv("DB_TEST_USER"),
+		DbPassword:        os.Getenv("DB_TEST_PASSWORD"),
+		DbName:            os.Getenv("DB_TEST_NAME"),
+		DbPort:            os.Getenv("DB_TEST_PORT"),
 		Port:              os.Getenv("PORT"),
 		JwtSecret:         os.Getenv("JWT_SECRET"),
 		TokenHourLifeTime: os.Getenv("TOKEN_HOUR_LIFESPAN"),

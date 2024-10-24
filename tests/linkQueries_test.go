@@ -6,7 +6,7 @@ import (
 
 func (suite *DatabaseTestSuite) TestLinkAddNewLink() {
 
-	link := model.Link{Name: "youtube", Url: "youtube.com", UserID: 1}
+	link := model.Link{Name: "youtube", Url: "youtube.com", UserID: 11}
 
 	err := suite.DbInstance.AddNewLink(&link)
 	suite.Require().NoError(err, "Error creating link record")
@@ -48,7 +48,7 @@ func (suite *DatabaseTestSuite) TestLinkPutOneLink() {
 func (suite *DatabaseTestSuite) TestLinkGetAllLinksForUser() {
 	var links []model.Link
 
-	err := suite.DbInstance.GetAllLinksForUser(&links, 1)
+	err := suite.DbInstance.GetAllLinksForUser(&links, 11)
 
 	suite.Require().NoError(err, "Error retrieving links for specified user record")
 	suite.Require().NotZero(links)
