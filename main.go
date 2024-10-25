@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	
 	db, err := repository.DbConnect()
 	if err != nil {
 		log.Printf("Error: %s\n", err)

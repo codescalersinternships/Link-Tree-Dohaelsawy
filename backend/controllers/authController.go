@@ -29,7 +29,7 @@ var (
 	ErrWrongPassword = errors.New("wrong password!! ")
 )
 
-func (ds *DBService) Login(ctx *gin.Context) {
+func (ds *DBController) Login(ctx *gin.Context) {
 
 	config := ds.Config
 
@@ -87,7 +87,7 @@ func (ds *DBService) Login(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token})
 }
 
-func (ds *DBService) Register(ctx *gin.Context) {
+func (ds *DBController) Register(ctx *gin.Context) {
 
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
@@ -132,6 +132,6 @@ func (ds *DBService) Register(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
-func (ac *DBService) Logout(ctx *gin.Context) {
+func (ac *DBController) Logout(ctx *gin.Context) {
 	ctx.SetCookie("Authorization", "", 0, "", "", false, true)
 }

@@ -16,7 +16,8 @@ func LinkRouters(db repository.DbInstance, config model.Config, router *gin.Engi
 	router.GET("/link_tree/:username", DBController.GetLinks) 
 
 	routeGroup := router.Group("/link")
-	routeGroup.Use(middleware.AuthMiddleware(*DBController.Config))
+	
+	routeGroup.Use(middleware.AuthMiddleware(config))
 	routeGroup.POST("/create_link", DBController.CreateLink)
 	routeGroup.DELETE("/delete_link/:link_id", DBController.DeleteLink)
 	routeGroup.PUT("/update_link/:link_id", DBController.UpdateLink)

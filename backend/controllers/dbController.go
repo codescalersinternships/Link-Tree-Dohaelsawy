@@ -6,12 +6,12 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type DBService struct {
+type DBController struct {
 	store    repository.Store
 	Validate *validator.Validate
 	Config   *model.Config
 }
 
-func NewDBService(db *repository.DbInstance, config model.Config) *DBService {
-	return &DBService{store: db, Validate: validator.New(), Config: &config}
+func NewDBService(db *repository.DbInstance, config model.Config) *DBController {
+	return &DBController{store: db, Validate: validator.New(), Config: &config}
 }

@@ -20,7 +20,7 @@ type LinkReq struct {
 	Url  string `json:"url"`
 }
 
-func (ds *DBService) CreateLink(ctx *gin.Context) {
+func (ds *DBController) CreateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -57,7 +57,7 @@ func (ds *DBService) CreateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (ds *DBService) DeleteLink(ctx *gin.Context) {
+func (ds *DBController) DeleteLink(ctx *gin.Context) {
 
 	var link model.Link
 
@@ -78,7 +78,7 @@ func (ds *DBService) DeleteLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (ds *DBService) UpdateLink(ctx *gin.Context) {
+func (ds *DBController) UpdateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -120,7 +120,7 @@ func (ds *DBService) UpdateLink(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, link)
 }
 
-func (ds *DBService) GetLinks(ctx *gin.Context) {
+func (ds *DBController) GetLinks(ctx *gin.Context) {
 
 	var user model.User
 	username := ctx.Params.ByName("username")
@@ -142,7 +142,7 @@ func (ds *DBService) GetLinks(ctx *gin.Context) {
 }
 
 
-func getGuestUsername(ctx *gin.Context,ds *DBService, user_id int) {
+func getGuestUsername(ctx *gin.Context,ds *DBController, user_id int) {
 
 	guest_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil{

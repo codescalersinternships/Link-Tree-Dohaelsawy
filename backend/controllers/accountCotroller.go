@@ -21,7 +21,7 @@ type UserImageReq struct {
 	Image *multipart.FileHeader `form:"image"`
 }
 
-func (ds *DBService) DeleteAccount(ctx *gin.Context) {
+func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
 
@@ -40,7 +40,7 @@ func (ds *DBService) DeleteAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-func (ds *DBService) EditAccount(ctx *gin.Context) {
+func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
 
@@ -82,7 +82,7 @@ func (ds *DBService) EditAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (ds *DBService) GetAccount(ctx *gin.Context) {
+func (ds *DBController) GetAccount(ctx *gin.Context) {
 
 	var account model.User
 
@@ -101,7 +101,7 @@ func (ds *DBService) GetAccount(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
+func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	config := ds.Config
 
@@ -131,7 +131,7 @@ func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (ds *DBService) UploadUserImage(ctx *gin.Context) {
+func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 
 	file, err := ctx.FormFile("image")
 	if err != nil {

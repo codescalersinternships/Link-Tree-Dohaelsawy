@@ -14,6 +14,6 @@ func AnalyticsRouters(db repository.DbInstance, config model.Config, router *gin
 
 	routeGroup := router.Group("/analytics")
 
-	routeGroup.Use(middleware.AuthMiddleware(*DBController.Config))
+	routeGroup.Use(middleware.AuthMiddleware(config))
 	routeGroup.GET("/get_analytics/:user_id", DBController.GetAnalytics)
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (ds *DBService) GetAnalytics(ctx *gin.Context) {
+func (ds *DBController) GetAnalytics(ctx *gin.Context) {
 
 	var analytics []model.Analytics
 
@@ -30,11 +30,8 @@ func (ds *DBService) GetAnalytics(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, analytics)
 }
 
-func (ds *DBService) CalculateAnalytics(ctx *gin.Context, guestUsername string, user_id int) {
-	// 1- if for the same user linktree the guest user name exist then the counter will increase
-	// 2- if for the same user linktree the gurst username is not exist then will add
-	// 3- if for the user that is not exist then return error
-
+func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername string, user_id int) {
+	
 	var analytics model.Analytics
 
 	if err := ds.store.GetAnalyticsForGuestUsername(&analytics, guestUsername, user_id); err != nil {
