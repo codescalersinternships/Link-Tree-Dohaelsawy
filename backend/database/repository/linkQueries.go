@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 )
 
@@ -28,7 +26,6 @@ func (db *DbInstance) AddNewLink(l *model.Link) (err error) {
 }
 
 func (db *DbInstance) PutOneLink(l *model.Link, id int) (err error) {
-	fmt.Println(l)
 	if err = db.DB.Save(l).Error; err != nil {
 		return err
 	}

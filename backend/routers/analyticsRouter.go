@@ -5,19 +5,15 @@ import (
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-
 	"github.com/gin-gonic/gin"
 )
 
-func LinkRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
+func AnalyticsRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
 
 	DBController := controllers.NewDBService(&db, config)
 
-	router.GET("/link_tree/:username", DBController.GetLinks) 
+	routeGroup := router.Group("/analytics")
 
-	routeGroup := router.Group("/link")
 	routeGroup.Use(middleware.AuthMiddleware(*DBController.Config))
-	routeGroup.POST("/create_link", DBController.CreateLink)
-	routeGroup.DELETE("/delete_link/:link_id", DBController.DeleteLink)
-	routeGroup.PUT("/update_link/:link_id", DBController.UpdateLink)
+	routeGroup.GET("/get_analytics/:user_id", DBController.GetAnalytics)
 }

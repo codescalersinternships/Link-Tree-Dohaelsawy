@@ -11,4 +11,5 @@ type Config struct {
 	TokenHourLifeTime string
 	BaseUrl           string
 	UserImagePath     string
+	LinkTreePath      string
 }

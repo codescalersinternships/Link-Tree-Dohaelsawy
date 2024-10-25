@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	
 	db, err := repository.DbConnect()
 	if err != nil {
 		log.Printf("Error: %s\n", err)
@@ -17,16 +18,19 @@ func main() {
 	}
 
 	router := gin.Default()
+
 	config, err := utils.NewConfigController()
 	if err != nil {
 		log.Printf("Error: %s\n", err)
 		return
 	}
+
 	dbInstance := repository.NewDbInstance(db)
 
 	route.AccountRouters(dbInstance, config, router)
 	route.LinkRouters(dbInstance, config, router)
 	route.AuthRouters(dbInstance, config, router)
+	route.AnalyticsRouters(dbInstance, config, router)
 
 	router.Run()
 }

@@ -18,6 +18,13 @@ func (db *DbInstance) GetUserEmail(u *model.User, email string) (err error) {
 	return nil
 }
 
+func (db *DbInstance) GetUserUsername(u *model.User, username string) (err error) {
+	if err := db.DB.Where("username = ?", username).First(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (db *DbInstance) AddNewUser(u *model.User) (err error) {
 	if err = db.DB.Create(u).Error; err != nil {
 		return err

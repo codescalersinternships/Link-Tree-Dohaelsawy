@@ -120,7 +120,7 @@ func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 		return
 	}
 
-	account.LinkTreeURL = utils.GenerateLinkTreeUrl(account.Username, config.BaseUrl)
+	account.LinkTreeURL = utils.GenerateLinkTreeUrl(config.BaseUrl, config.LinkTreePath, account.Username)
 
 	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {

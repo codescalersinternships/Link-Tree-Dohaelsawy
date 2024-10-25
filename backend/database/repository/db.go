@@ -23,6 +23,11 @@ type Store interface {
 	GetUserID(u *model.User, id int) (err error)
 	PutOneLink(l *model.Link, id int) (err error)
 	PutOneUser(u *model.User, id int) (err error)
+	GetAllAnalyticsForUser(a *[]model.Analytics, user_id int) (err error)
+	AddNewVisitor(a *model.Analytics) (err error)
+	UpdateAnalytics(a *model.Analytics, id int) (err error)
+	GetAnalyticsForGuestUsername(a *model.Analytics, guestUsername string, userId int) (err error)
+	GetUserUsername(u *model.User, username string) (err error)
 }
 
 type DbInstance struct {
@@ -51,7 +56,7 @@ func DbConnect() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	err = db.AutoMigrate(&model.User{}, &model.Link{})
+	err = db.AutoMigrate(&model.User{}, &model.Link{}, &model.Analytics{})
 	if err != nil {
 		return nil, err
 	}

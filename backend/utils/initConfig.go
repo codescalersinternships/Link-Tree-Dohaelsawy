@@ -25,5 +25,6 @@ func NewConfigController() (model.Config, error) {
 		TokenHourLifeTime: os.Getenv("TOKEN_HOUR_LIFESPAN"),
 		BaseUrl:           os.Getenv("BASE_URL"),
 		UserImagePath:     os.Getenv("USERS_IMAGE_SAVE_PATH"),
+		LinkTreePath:      os.Getenv("LINK_TREE_URL"),
 	}, nil
 }

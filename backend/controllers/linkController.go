@@ -122,19 +122,43 @@ func (ds *DBService) UpdateLink(ctx *gin.Context) {
 
 func (ds *DBService) GetLinks(ctx *gin.Context) {
 
+	var user model.User
+	username := ctx.Params.ByName("username")
+
+	if err := ds.store.GetUserUsername(&user,username); err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	var links []model.Link
-
-	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
-	if err != nil {
+	if err := ds.store.GetAllLinksForUser(&links, user.ID); err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = ds.store.GetAllLinksForUser(&links, user_id)
-	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
+	getGuestUsername(ctx,ds,user.ID)
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, links)
+}
+
+
+func getGuestUsername(ctx *gin.Context,ds *DBService, user_id int) {
+
+	guest_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	if err != nil{
+		ds.CalculateAnalytics(ctx,"unknown",user_id)
+		return
+	}
+
+	if guest_id == user_id {
+		return
+	}
+
+	var guest model.User
+	if err := ds.store.GetUserID(&guest,guest_id); err != nil {
+		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	ds.CalculateAnalytics(ctx,guest.Username,user_id)
 }
