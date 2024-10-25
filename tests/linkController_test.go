@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/controllers"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
 	route "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
 
 	"github.com/gin-gonic/gin"
@@ -130,22 +129,13 @@ func (suite *DatabaseTestSuite) TestUpdateLink() {
 
 func (suite *DatabaseTestSuite) TestGetLinks() {
 
-	router := SetupAccountRouter(suite)
+	router := gin.Default()
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
-	router.GET("/get_links", dbService.CreateLinkTreeUrl)
+	router.GET("/link_tree/:username", dbService.GetLinks)
 
-	req, err := http.NewRequest("GET", "/get_links", nil)
+	req, err := http.NewRequest("GET", "/link_tree/newusdfername", nil)
 	suite.Require().NoError(err, "Error create http request")
-	req.AddCookie(&http.Cookie{
-		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
-		Path:     "",
-		Domain:   "",
-		Secure:   false,
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
 
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
@@ -156,7 +146,7 @@ func (suite *DatabaseTestSuite) TestGetLinks() {
 func SetupLinkRouter(suite *DatabaseTestSuite) *gin.Engine {
 
 	router := gin.Default()
-	router.Use(middleware.AuthMiddleware(suite.config))
+	router.Use()
 	route.LinkRouters(suite.DbInstance, suite.config, router)
 
 	return router
