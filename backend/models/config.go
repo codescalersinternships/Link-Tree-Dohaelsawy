@@ -10,5 +10,5 @@ type Config struct {
 	JwtSecret         string
 	TokenHourLifeTime string
 	BaseUrl           string
-	UserPhotoPath     string
+	UserImagePath     string
 }

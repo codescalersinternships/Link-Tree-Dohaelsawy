@@ -17,8 +17,8 @@ type AccountReq struct {
 	Bio       string `json:"bio"`
 }
 
-type UserPhotoReq struct {
-	Photo *multipart.FileHeader `form:"user_photo"`
+type UserImageReq struct {
+	Image *multipart.FileHeader `form:"image"`
 }
 
 func (ds *DBService) DeleteAccount(ctx *gin.Context) {
@@ -131,9 +131,9 @@ func (ds *DBService) CreateLinkTreeUrl(ctx *gin.Context) {
 	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
-func (ds *DBService) UploadUserPhoto(ctx *gin.Context) {
+func (ds *DBService) UploadUserImage(ctx *gin.Context) {
 
-	file, err := ctx.FormFile("user_photo")
+	file, err := ctx.FormFile("image")
 	if err != nil {
 		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
@@ -156,7 +156,7 @@ func (ds *DBService) UploadUserPhoto(ctx *gin.Context) {
 	// Retrieve file information
 	extension := filepath.Ext(file.Filename)
 	// Generate random file name for the new uploaded file so it doesn't override the old file with same name
-	newFileName := ds.Config.UserPhotoPath + account.Username + extension
+	newFileName := ds.Config.UserImagePath + account.Username + extension
 
 	// The file is received, so let's save it
 	if err := ctx.SaveUploadedFile(file, newFileName); err != nil {
@@ -164,7 +164,7 @@ func (ds *DBService) UploadUserPhoto(ctx *gin.Context) {
 		return
 	}
 
-	account.Photo = newFileName
+	account.Image = newFileName
 
 	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
@@ -173,6 +173,6 @@ func (ds *DBService) UploadUserPhoto(ctx *gin.Context) {
 	}
 
 	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{
-		"user_photo_path": newFileName,
+		"user_image_path": newFileName,
 	})
 }

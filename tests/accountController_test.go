@@ -151,7 +151,7 @@ func (suite *DatabaseTestSuite) TestCreateLinkTreeUrl() {
 func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
-	router.POST("/add_photo", dbService.UploadUserPhoto)
+	router.POST("/add_photo", dbService.UploadUserImage)
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
@@ -164,7 +164,7 @@ func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 	suite.Require().NoError(err)
 	file.Seek(0, io.SeekStart)
 
-	part, err := writer.CreateFormFile("user_photo", filepath.Base(file.Name()))
+	part, err := writer.CreateFormFile("image", filepath.Base(file.Name()))
 	suite.Require().NoError(err)
 
 	_, err = io.Copy(part, file)

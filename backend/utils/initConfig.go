@@ -24,6 +24,6 @@ func NewConfigController() (model.Config, error) {
 		JwtSecret:         os.Getenv("JWT_SECRET"),
 		TokenHourLifeTime: os.Getenv("TOKEN_HOUR_LIFESPAN"),
 		BaseUrl:           os.Getenv("BASE_URL"),
-		UserPhotoPath:     os.Getenv("USERS_PHOTO_SAVE_PATH"),
+		UserImagePath:     os.Getenv("USERS_IMAGE_SAVE_PATH"),
 	}, nil
 }
