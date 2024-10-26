@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"errors"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
+	"slices"
 
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
@@ -18,45 +20,74 @@ type AccountReq struct {
 }
 
 type UserImageReq struct {
-	Image *multipart.FileHeader `form:"image"`
+	Image *multipart.FileHeader `json:"image" form:"image"` 
 }
 
+var (
+	ErrImageTypeNotSupported = errors.New("we don't support this image extension, only png, jpj, jpeg")
+)
+
+//	@Summary		Delete Account
+//	@Description	delete account
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/delete_account [delete]
 func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
 
 	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	err = ds.store.DeleteUser(&account, user_id)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx, http.StatusOK, "deleted")
+	SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
+//	@Summary		Edit Account
+//	@Description	Edit Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/edit_account [put]
 func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
 
 	if err := ctx.BindJSON(&reqBody); err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
+		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := ds.Validate.Struct(&reqBody); err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
+		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -64,7 +95,7 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -75,32 +106,56 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
+	SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
+//	@Summary		Get Account
+//	@Description	Get Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/get_account [get]
 func (ds *DBController) GetAccount(ctx *gin.Context) {
 
 	var account model.User
 
 	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
+	SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
+//	@Summary		create link tree url
+//	@Description	create link tree url
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/create_link_tree_url [get]
 func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	config := ds.Config
@@ -108,7 +163,7 @@ func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 	user_id, err := utils.ExtractTokenID(ctx, *config)
 
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -116,7 +171,7 @@ func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -124,43 +179,60 @@ func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx, http.StatusOK, account)
+	SuccessRespondJSON(ctx, http.StatusOK, account)
 }
 
+//	@Summary		Upload User Image
+//	@Description	Upload User Image
+//	@Tags			account
+//	@Accept			mpfd
+//	@Produce		json
+//	@Param			UserImageReq	body	UserImageReq	true	"image"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/add_photo [post]
 func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 
 	file, err := ctx.FormFile("image")
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusBadRequest, err)
+		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	config := ds.Config
 	user_id, err := utils.ExtractTokenID(ctx, *config)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	var account model.User
 	err = ds.store.GetUserID(&account, user_id)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	// Retrieve file information
 	extension := filepath.Ext(file.Filename)
-	// Generate random file name for the new uploaded file so it doesn't override the old file with same name
+	imageType := []string{".png", ".jpg", "jpeg"}
+
+	if ok := slices.Contains(imageType, extension); !ok {
+		ErrRespondJSON(ctx, http.StatusBadRequest, ErrImageTypeNotSupported)
+		return
+	}
 	newFileName := ds.Config.UserImagePath + account.Username + extension
 
-	// The file is received, so let's save it
+
 	if err := ctx.SaveUploadedFile(file, newFileName); err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -168,11 +240,11 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 
 	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx, http.StatusOK, gin.H{
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{
 		"user_image_path": newFileName,
 	})
 }

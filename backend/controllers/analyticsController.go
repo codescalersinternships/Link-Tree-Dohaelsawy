@@ -5,10 +5,23 @@ import (
 	"strconv"
 
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	"github.com/gin-gonic/gin"
 )
 
+
+//	@Summary		Get Analytics
+//	@Description	Get Analytics properties of how many users view the tree links and their users name 
+//	@Tags			analytics
+//	@Accept			json
+//	@Produce		json
+//	@Param			user_id	path	int	true	"user ID"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/analytics/get_analytics/{user_id} [get]
 func (ds *DBController) GetAnalytics(ctx *gin.Context) {
 
 	var analytics []model.Analytics
@@ -17,21 +30,21 @@ func (ds *DBController) GetAnalytics(ctx *gin.Context) {
 
 	user_id, err := strconv.Atoi(idString)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	err = ds.store.GetAllAnalyticsForUser(&analytics, user_id)
 	if err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	utils.SuccessRespondJSON(ctx, http.StatusOK, analytics)
+	SuccessRespondJSON(ctx, http.StatusOK, analytics)
 }
 
 func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername string, user_id int) {
-	
+
 	var analytics model.Analytics
 
 	if err := ds.store.GetAnalyticsForGuestUsername(&analytics, guestUsername, user_id); err != nil {
@@ -43,7 +56,7 @@ func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername strin
 		}
 
 		if err = ds.store.AddNewVisitor(&analytics); err != nil {
-			utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+			ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 			return
 		}
 
@@ -51,7 +64,7 @@ func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername strin
 	analytics.ClickCount += 1
 
 	if err := ds.store.UpdateAnalytics(&analytics, analytics.ID); err != nil {
-		utils.ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 }

@@ -9,13 +9,15 @@ import (
 )
 
 func AuthMiddleware(config model.Config) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		err := utils.TokenValid(c,config)
+	return func(ctx *gin.Context) {
+		err := utils.TokenValid(ctx,config)
 		if err != nil {
-			c.String(http.StatusUnauthorized, err.Error())
-			c.Abort()
+			ctx.String(http.StatusUnauthorized, err.Error())
+			ctx.Abort()
 			return
 		}
-		c.Next()
+		token ,_ := utils.ExtractToken(ctx)
+		ctx.Header("Authorization", token)
+		ctx.Next()
 	}
 }

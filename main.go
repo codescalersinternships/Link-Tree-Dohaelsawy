@@ -4,10 +4,24 @@ import (
 	"log"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
+	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	route "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
+	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+//	@title			LinkTree
+//	@version		1.0
+//	@description	platform that allows users to share social media profiles, or other important links defined in a single place
+
+//	@host	localhost:8010
+//	@BasePath
+
+//	@securityDefinitions.basic	BasicAuth
 
 func main() {
 	db, err := repository.DbConnect()
@@ -17,6 +31,8 @@ func main() {
 	}
 
 	router := gin.Default()
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	config, err := utils.NewConfigController()
 	if err != nil {
