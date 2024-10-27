@@ -19,6 +19,5 @@ type User struct {
 	LinkTreeURL  string `json:"link_tree_url"`
 	Bio          string `json:"bio"`
 	Token        string `json:"token"`
-	Links        []Link `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE; foreignKey:UserID"`
 	CreatedAt time.Time `gorm:"created_at"`
 }
