@@ -40,7 +40,7 @@ func (ds *DBController) GetAnalytics(ctx *gin.Context) {
 		return
 	}
 
-	SuccessRespondJSON(ctx, http.StatusOK, analytics)
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"analytics": analytics} )
 }
 
 func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername string, user_id int) {

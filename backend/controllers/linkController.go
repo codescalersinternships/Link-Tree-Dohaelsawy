@@ -96,6 +96,10 @@ func (ds *DBController) DeleteLink(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
+	if err := ds.store.GetOneLink(&link, id); err != nil {
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
 
 	err = ds.store.DeleteLink(&link, id)
 	if err != nil {
@@ -160,7 +164,7 @@ func (ds *DBController) UpdateLink(ctx *gin.Context) {
 		return
 	}
 
-	SuccessRespondJSON(ctx, http.StatusOK, link)
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"link" :link})
 }
 
 //	@Summary		Get Links
@@ -194,7 +198,7 @@ func (ds *DBController) GetLinks(ctx *gin.Context) {
 
 	getGuestUsername(ctx, ds, user.ID)
 
-	SuccessRespondJSON(ctx, http.StatusOK, links)
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"links" :links})
 }
 
 func getGuestUsername(ctx *gin.Context, ds *DBController, user_id int) {

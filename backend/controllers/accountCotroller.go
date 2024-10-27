@@ -49,6 +49,12 @@ func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 		return
 	}
 
+	err = ds.store.GetUserID(&account, user_id)
+	if err != nil {
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	err = ds.store.DeleteUser(&account, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
@@ -110,7 +116,7 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 		return
 	}
 
-	SuccessRespondJSON(ctx, http.StatusOK, account)
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
 
 //	@Summary		Get Account
@@ -141,7 +147,7 @@ func (ds *DBController) GetAccount(ctx *gin.Context) {
 		return
 	}
 
-	SuccessRespondJSON(ctx, http.StatusOK, account)
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
 
 //	@Summary		create link tree url
@@ -183,7 +189,7 @@ func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 		return
 	}
 
-	SuccessRespondJSON(ctx, http.StatusOK, account)
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
 
 //	@Summary		Upload User Image
@@ -244,7 +250,5 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 		return
 	}
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{
-		"user_image_path": newFileName,
-	})
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
