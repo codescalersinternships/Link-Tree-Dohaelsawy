@@ -1,0 +1,29 @@
+import axios from 'axios'
+
+const axiosInstance = axios.create({
+    baseURL: "http://localhost:8010"
+})
+
+
+axiosInstance.interceptors.request.use((config) => {
+
+    const token =localStorage.getItem('Authorization');
+    if (token) {
+
+        config.headers = config.headers || {};
+        const unprotectedURls = ['/auth/login/', '/auth/register/'];
+
+        if (config.url && !unprotectedURls.includes(config.url)) {
+
+            config.headers.Authorization = token ? `${token}` : '';
+
+        }
+
+    }
+
+    return config
+
+})
+
+
+export default axiosInstance;
