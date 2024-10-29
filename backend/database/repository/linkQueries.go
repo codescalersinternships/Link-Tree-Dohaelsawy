@@ -26,7 +26,7 @@ func (db *DbInstance) AddNewLink(l *model.Link) (err error) {
 }
 
 func (db *DbInstance) PutOneLink(l *model.Link, id int) (err error) {
-	if err = db.DB.Save(l).Error; err != nil {
+	if err = db.DB.Model(&model.Link{}).Where("id = ?", id).Updates(model.Link{Name: l.Name, Url: l.Url}).Error; err != nil {
 		return err
 	}
 	return nil

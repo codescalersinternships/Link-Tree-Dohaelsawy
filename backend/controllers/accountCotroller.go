@@ -115,6 +115,7 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
+	account.Password = ""
 
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
@@ -146,6 +147,7 @@ func (ds *DBController) GetAccount(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
+	account.Password = ""
 
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
@@ -188,6 +190,7 @@ func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
+	account.Password = ""
 
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }
@@ -249,6 +252,7 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
+	account.Password = ""
 
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
 }

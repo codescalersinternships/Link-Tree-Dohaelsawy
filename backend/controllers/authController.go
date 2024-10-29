@@ -99,7 +99,7 @@ func (ds *DBController) Login(ctx *gin.Context) {
 
 	ctx.Header("Authorization", token)
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token})
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token, "username":existingUser.Username , "user_id":existingUser.ID})
 }
 
 //	@Summary		Register
