@@ -99,7 +99,9 @@ func (ds *DBController) Login(ctx *gin.Context) {
 
 	ctx.Header("Authorization", token)
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token, "username":existingUser.Username , "user_id":existingUser.ID})
+	existingUser.Password = ""
+
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token, "user": existingUser})
 }
 
 //	@Summary		Register
@@ -144,14 +146,14 @@ func (ds *DBController) Register(ctx *gin.Context) {
 	}
 
 	newUser := model.User{
-		FirstName: reqBody.FirstName,
-		LastName:  reqBody.LastName,
-		Username:  reqBody.Username,
-		Email:     reqBody.Email,
-		Password:  password,
-		LinkTreeURL: ds.Config.BaseUrl + ds.Config.LinkTreePath +reqBody.Username,
+		FirstName:   reqBody.FirstName,
+		LastName:    reqBody.LastName,
+		Username:    reqBody.Username,
+		Email:       reqBody.Email,
+		Password:    password,
+		LinkTreeURL: utils.GenerateLinkTreeUrl(ds.Config.BaseUrl,ds.Config.LinkTreePath, reqBody.Username ),
 	}
-
+	
 	if err := ds.store.AddNewUser(&newUser); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
