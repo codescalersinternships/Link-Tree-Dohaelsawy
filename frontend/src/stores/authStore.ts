@@ -13,21 +13,12 @@ export const useAuthStore = defineStore('AuthStore', {
 
     getters: {
         returnIsLogin(): boolean {
-            return this.isLogin;
+            return localStorage.getItem("currentUserID") !== ""
           },
     },
 
 
     actions: {
-
-        turnOnLogin() {
-            this.isLogin = true;
-        },
-
-        turnOffLogin() {
-            this.isLogin = false;
-        },
-
 
         async registerUser(form: Record<string, string>) {
 
@@ -91,9 +82,8 @@ export const useAuthStore = defineStore('AuthStore', {
 
                 try {
                     const { data } = await axios.get('/auth/logout', {});
-                    localStorage.removeItem("Authorization");
-                    localStorage.removeItem("currentUserID");
-                    localStorage.removeItem("currentUsername");
+                    localStorage.setItem("currentUserID", "");
+                    localStorage.setItem("currentUsername", "");
                     this.isLogin = true;
                     resolve(data)
                 } catch (error) {

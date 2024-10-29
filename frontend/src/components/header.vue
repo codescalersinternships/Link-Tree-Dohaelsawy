@@ -8,13 +8,12 @@ import { ref } from 'vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const isLogin = ref(false)
+const isLogin = authStore.returnIsLogin
 
 const onSubmitLogout = async () => {
     try {
-        isLogin.value = false
         await authStore.logoutUser();
-        router.push('/');
+        window.location.reload();
     } catch (error) {
         console.error('Logout failed', error);
     }
@@ -22,7 +21,6 @@ const onSubmitLogout = async () => {
 
 
 const onSubmitLogin = async () => {
-    isLogin.value = true
     router.push('/auth/login');
 };
 
@@ -78,11 +76,11 @@ const getIsLogin = (isLogin: boolean) => {
     justify-content: center;
 }
 
-.nav-item {
+.nav-item a{
     color: #fff;
     text-decoration: none;
     font-weight: 500;
     margin: 0px 20px;
-
+    padding: 10px;
 }
 </style>
