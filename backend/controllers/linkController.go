@@ -20,19 +20,19 @@ type LinkReq struct {
 	Url  string `json:"url"`
 }
 
-// @Summary		Create Link
-// @Description	Create Link
-// @Tags			link
-// @Accept			json
-// @Produce		json
-// @Param			LinkReq	body	LinkReq	true	"link attribute"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/link/create_link [post]
+//	@Summary		Create Link
+//	@Description	Create Link
+//	@Tags			link
+//	@Accept			json
+//	@Produce		json
+//	@Param			LinkReq	body	LinkReq	true	"link attribute"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/link/create_link [post]
 func (ds *DBController) CreateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
@@ -70,19 +70,19 @@ func (ds *DBController) CreateLink(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"link": link})
 }
 
-// @Summary		Delete Link
-// @Description	Delete Link
-// @Tags			link
-// @Accept			json
-// @Produce		json
-// @Param			link_id	path	int	true	"link id"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/link/delete_link/{link_id} [delete]
+//	@Summary		Delete Link
+//	@Description	Delete Link
+//	@Tags			link
+//	@Accept			json
+//	@Produce		json
+//	@Param			link_id	path	int	true	"link id"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/link/delete_link/{link_id} [delete]
 func (ds *DBController) DeleteLink(ctx *gin.Context) {
 
 	var link model.Link
@@ -108,20 +108,20 @@ func (ds *DBController) DeleteLink(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-// @Summary		Update Link
-// @Description	Update Link
-// @Tags			link
-// @Accept			json
-// @Produce		json
-// @Param			link_id	path	int	true	"link_id"
-// @Param			LinkReq	body	LinkReq	true	"Link Req"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/link/update_link/{link_id} [put]
+//	@Summary		Update Link
+//	@Description	Update Link
+//	@Tags			link
+//	@Accept			json
+//	@Produce		json
+//	@Param			link_id	path	int		true	"link_id"
+//	@Param			LinkReq	body	LinkReq	true	"Link Req"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/link/update_link/{link_id} [put]
 func (ds *DBController) UpdateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
@@ -169,19 +169,19 @@ func (ds *DBController) UpdateLink(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"link": link})
 }
 
-// @Summary		Get Links
-// @Description	Get Links
-// @Tags			link
-// @Accept			json
-// @Produce		json
-// @Param			username	path	string	true	"username"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/link_tree/{username} [get]
+//	@Summary		Get Links
+//	@Description	Get Links
+//	@Tags			link
+//	@Accept			json
+//	@Produce		json
+//	@Param			username	path	string	true	"username"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/link_tree/{username} [get]
 func (ds *DBController) GetLinks(ctx *gin.Context) {
 
 	var user model.User

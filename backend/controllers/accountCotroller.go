@@ -27,18 +27,18 @@ var (
 	ErrImageTypeNotSupported = errors.New("we don't support this image extension, only png, jpj, jpeg")
 )
 
-// @Summary		Delete Account
-// @Description	delete account
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/delete_account [delete]
+//	@Summary		Delete Account
+//	@Description	delete account
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/delete_account [delete]
 func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
@@ -64,19 +64,19 @@ func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-// @Summary		Edit Account
-// @Description	Edit Account data
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/edit_account [put]
+//	@Summary		Edit Account
+//	@Description	Edit Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/edit_account [put]
 func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
@@ -128,18 +128,18 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		Get Account
-// @Description	Get Account data
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/get_account [get]
+//	@Summary		Get Account
+//	@Description	Get Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/get_account [get]
 func (ds *DBController) GetAccount(ctx *gin.Context) {
 
 	var account model.User
@@ -160,19 +160,19 @@ func (ds *DBController) GetAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		Upload User Image
-// @Description	Upload User Image
-// @Tags			account
-// @Accept			mpfd
-// @Produce		json
-// @Param			UserImageReq	body	UserImageReq	true	"image"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/add_photo [post]
+//	@Summary		Upload User Image
+//	@Description	Upload User Image
+//	@Tags			account
+//	@Accept			mpfd
+//	@Produce		json
+//	@Param			UserImageReq	body	UserImageReq	true	"image"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/add_photo [post]
 func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 
 	file, err := ctx.FormFile("image")
