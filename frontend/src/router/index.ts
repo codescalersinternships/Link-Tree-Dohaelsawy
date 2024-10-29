@@ -4,6 +4,8 @@ import Login from '../views/Auth/login.vue'
 import Register from '../views/Auth/register.vue'
 import Links from '../views/links/links.vue'
 import LiveDemo from '@/views/links/liveDemo.vue'
+import Profile from '@/views/account/profile.vue'
+
 
 
 const router = createRouter({
@@ -33,6 +35,11 @@ const router = createRouter({
       path: '/link_tree/:username',
       name: 'links-demo',
       component: LiveDemo
+    },
+    {
+      path: '/account/get_account/',
+      name: 'links-demo',
+      component: Profile
     },
   ]
 })

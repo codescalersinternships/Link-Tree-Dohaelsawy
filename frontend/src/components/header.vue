@@ -23,11 +23,10 @@ const onSubmitLogout = async () => {
 const onSubmitLogin = async () => {
     router.push('/auth/login');
 };
+const onSubmitProfile = async () => {
+    router.push('/account/get_account/');
+};
 
-
-const getIsLogin = (isLogin: boolean) => {
-    return isLogin
-}
 
 </script>
 
@@ -48,7 +47,7 @@ const getIsLogin = (isLogin: boolean) => {
                     <Button variant="secondary" @click="onSubmitLogin">Login</Button>
                 </li>
                 <li v-else class="nav-item">
-                    <a href="/link_tree/" class="nav-link">Profile</a>
+                    <a class="nav-link"  @click="onSubmitProfile">Profile</a>
                     <Button variant="secondary" @click="onSubmitLogout">Logout</Button>
                 </li>
             </ul>

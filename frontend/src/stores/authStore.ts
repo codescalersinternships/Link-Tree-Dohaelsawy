@@ -13,7 +13,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
     getters: {
         returnIsLogin(): boolean {
-            return localStorage.getItem("currentUserID") !== ""
+            return localStorage.getItem("currentUser") !== ""
           },
     },
 
@@ -47,7 +47,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
                 try {
 
-                    const { data } = await axios.post<APIResponse<{ access_token: string, user_id: number, username: string }>>('/auth/login', {
+                    const { data } = await axios.post<APIResponse<{ access_token: string, user: User}>>('/auth/login', {
                         ...form
                     });
                     console.log('Success Login ana henaaaaa', data.data.access_token);
@@ -59,8 +59,8 @@ export const useAuthStore = defineStore('AuthStore', {
                     }
 
                     setCookie("Authorization", data.data.access_token, 3);
-                    localStorage.setItem("currentUserID", String(data.data.user_id));
-                    localStorage.setItem("currentUsername", data.data.username);
+                    localStorage.setItem("currentUser", String(data.data.user));
+                    localStorage.setItem("currentUsername", data.data.user.username);
                     this.isLogin = true;
 
                     resolve(data.data.access_token)
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
                 try {
                     const { data } = await axios.get('/auth/logout', {});
-                    localStorage.setItem("currentUserID", "");
+                    localStorage.setItem("currentUser", "");
                     localStorage.setItem("currentUsername", "");
                     this.isLogin = true;
                     resolve(data)
