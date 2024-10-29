@@ -149,6 +149,7 @@ func (ds *DBController) Register(ctx *gin.Context) {
 		Username:  reqBody.Username,
 		Email:     reqBody.Email,
 		Password:  password,
+		LinkTreeURL: ds.Config.BaseUrl + ds.Config.LinkTreePath +reqBody.Username,
 	}
 
 	if err := ds.store.AddNewUser(&newUser); err != nil {

@@ -160,49 +160,6 @@ func (ds *DBController) GetAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		create link tree url
-// @Description	create link tree url
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/create_link_tree_url [get]
-func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
-
-	config := ds.Config
-
-	user_id, err := utils.ExtractTokenID(ctx, *config)
-
-	if err != nil {
-		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	var account model.User
-
-	err = ds.store.GetUserID(&account, user_id)
-	if err != nil {
-		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	account.LinkTreeURL = utils.GenerateLinkTreeUrl(config.BaseUrl, config.LinkTreePath, account.Username)
-
-	err = ds.store.PutOneUser(&account, account.ID)
-	if err != nil {
-		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
-		return
-	}
-	account.Password = ""
-
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
-}
-
 // @Summary		Upload User Image
 // @Description	Upload User Image
 // @Tags			account
