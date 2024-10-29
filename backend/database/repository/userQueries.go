@@ -33,7 +33,9 @@ func (db *DbInstance) AddNewUser(u *model.User) (err error) {
 }
 
 func (db *DbInstance) PutOneUser(u *model.User, id int) (err error) {
-	db.DB.Save(u)
+	if err = db.DB.Model(&model.User{}).Where("id = ?", id).Updates(model.User{FirstName: u.FirstName, LastName: u.LastName,Phone: u.Phone, Bio: u.Bio}).Error; err != nil {
+		return err
+	}
 	return nil
 }
 

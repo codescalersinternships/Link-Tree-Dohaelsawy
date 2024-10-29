@@ -20,25 +20,25 @@ type AccountReq struct {
 }
 
 type UserImageReq struct {
-	Image *multipart.FileHeader `json:"image" form:"image"` 
+	Image *multipart.FileHeader `json:"image" form:"image"`
 }
 
 var (
 	ErrImageTypeNotSupported = errors.New("we don't support this image extension, only png, jpj, jpeg")
 )
 
-//	@Summary		Delete Account
-//	@Description	delete account
-//	@Tags			account
-//	@Accept			json
-//	@Produce		json
-//	@Security		basic
-//	@Success		200	{object}	SuccessResponse
-//	@Failure		400	{object}	ErrResponse
-//	@Failure		401	{object}	ErrResponse
-//	@Failure		404	{object}	ErrResponse
-//	@Failure		500	{object}	ErrResponse
-//	@Router			/account/delete_account [delete]
+// @Summary		Delete Account
+// @Description	delete account
+// @Tags			account
+// @Accept			json
+// @Produce		json
+// @Security		basic
+// @Success		200	{object}	SuccessResponse
+// @Failure		400	{object}	ErrResponse
+// @Failure		401	{object}	ErrResponse
+// @Failure		404	{object}	ErrResponse
+// @Failure		500	{object}	ErrResponse
+// @Router			/account/delete_account [delete]
 func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
@@ -64,19 +64,19 @@ func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-//	@Summary		Edit Account
-//	@Description	Edit Account data
-//	@Tags			account
-//	@Accept			json
-//	@Produce		json
-//	@Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
-//	@Security		basic
-//	@Success		200	{object}	SuccessResponse
-//	@Failure		400	{object}	ErrResponse
-//	@Failure		401	{object}	ErrResponse
-//	@Failure		404	{object}	ErrResponse
-//	@Failure		500	{object}	ErrResponse
-//	@Router			/account/edit_account [put]
+// @Summary		Edit Account
+// @Description	Edit Account data
+// @Tags			account
+// @Accept			json
+// @Produce		json
+// @Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
+// @Security		basic
+// @Success		200	{object}	SuccessResponse
+// @Failure		400	{object}	ErrResponse
+// @Failure		401	{object}	ErrResponse
+// @Failure		404	{object}	ErrResponse
+// @Failure		500	{object}	ErrResponse
+// @Router			/account/edit_account [put]
 func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
@@ -105,10 +105,18 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 		return
 	}
 
-	account.FirstName = reqBody.FirstName
-	account.LastName = reqBody.LastName
-	account.Phone = reqBody.Phone
-	account.Bio = reqBody.Bio
+	if !checkEmpty(reqBody.FirstName) {
+		account.FirstName = reqBody.FirstName
+	}
+	if !checkEmpty(reqBody.LastName) {
+		account.LastName = reqBody.LastName
+	}
+	if !checkEmpty(reqBody.Phone) {
+		account.Phone = reqBody.Phone
+	}
+	if !checkEmpty(reqBody.Bio) {
+		account.Bio = reqBody.Bio
+	}
 
 	err = ds.store.PutOneUser(&account, account.ID)
 	if err != nil {
@@ -117,21 +125,21 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 	}
 	account.Password = ""
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-//	@Summary		Get Account
-//	@Description	Get Account data
-//	@Tags			account
-//	@Accept			json
-//	@Produce		json
-//	@Security		basic
-//	@Success		200	{object}	SuccessResponse
-//	@Failure		400	{object}	ErrResponse
-//	@Failure		401	{object}	ErrResponse
-//	@Failure		404	{object}	ErrResponse
-//	@Failure		500	{object}	ErrResponse
-//	@Router			/account/get_account [get]
+// @Summary		Get Account
+// @Description	Get Account data
+// @Tags			account
+// @Accept			json
+// @Produce		json
+// @Security		basic
+// @Success		200	{object}	SuccessResponse
+// @Failure		400	{object}	ErrResponse
+// @Failure		401	{object}	ErrResponse
+// @Failure		404	{object}	ErrResponse
+// @Failure		500	{object}	ErrResponse
+// @Router			/account/get_account [get]
 func (ds *DBController) GetAccount(ctx *gin.Context) {
 
 	var account model.User
@@ -149,21 +157,21 @@ func (ds *DBController) GetAccount(ctx *gin.Context) {
 	}
 	account.Password = ""
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-//	@Summary		create link tree url
-//	@Description	create link tree url
-//	@Tags			account
-//	@Accept			json
-//	@Produce		json
-//	@Security		basic
-//	@Success		200	{object}	SuccessResponse
-//	@Failure		400	{object}	ErrResponse
-//	@Failure		401	{object}	ErrResponse
-//	@Failure		404	{object}	ErrResponse
-//	@Failure		500	{object}	ErrResponse
-//	@Router			/account/create_link_tree_url [get]
+// @Summary		create link tree url
+// @Description	create link tree url
+// @Tags			account
+// @Accept			json
+// @Produce		json
+// @Security		basic
+// @Success		200	{object}	SuccessResponse
+// @Failure		400	{object}	ErrResponse
+// @Failure		401	{object}	ErrResponse
+// @Failure		404	{object}	ErrResponse
+// @Failure		500	{object}	ErrResponse
+// @Router			/account/create_link_tree_url [get]
 func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 
 	config := ds.Config
@@ -192,22 +200,22 @@ func (ds *DBController) CreateLinkTreeUrl(ctx *gin.Context) {
 	}
 	account.Password = ""
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-//	@Summary		Upload User Image
-//	@Description	Upload User Image
-//	@Tags			account
-//	@Accept			mpfd
-//	@Produce		json
-//	@Param			UserImageReq	body	UserImageReq	true	"image"
-//	@Security		basic
-//	@Success		200	{object}	SuccessResponse
-//	@Failure		400	{object}	ErrResponse
-//	@Failure		401	{object}	ErrResponse
-//	@Failure		404	{object}	ErrResponse
-//	@Failure		500	{object}	ErrResponse
-//	@Router			/account/add_photo [post]
+// @Summary		Upload User Image
+// @Description	Upload User Image
+// @Tags			account
+// @Accept			mpfd
+// @Produce		json
+// @Param			UserImageReq	body	UserImageReq	true	"image"
+// @Security		basic
+// @Success		200	{object}	SuccessResponse
+// @Failure		400	{object}	ErrResponse
+// @Failure		401	{object}	ErrResponse
+// @Failure		404	{object}	ErrResponse
+// @Failure		500	{object}	ErrResponse
+// @Router			/account/add_photo [post]
 func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 
 	file, err := ctx.FormFile("image")
@@ -239,7 +247,6 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 	}
 	newFileName := ds.Config.UserImagePath + account.Username + extension
 
-
 	if err := ctx.SaveUploadedFile(file, newFileName); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -254,5 +261,5 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 	}
 	account.Password = ""
 
-	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user":account})
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
