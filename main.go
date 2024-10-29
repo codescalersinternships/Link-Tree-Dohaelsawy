@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
 //	@title			LinkTree
@@ -29,8 +30,9 @@ func main() {
 		log.Printf("Error: %s\n", err)
 		return
 	}
-
+	
 	router := gin.Default()
+	router.Use(cors.Default())
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

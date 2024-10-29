@@ -32,26 +32,22 @@ export const useLinkStore = defineStore('LinkStore', {
         },
 
 
-        // async UpdateLink(form: Record<string, string>) {
+        async updateLink(link_id:number, form: Record<string, string>) {
 
-        //     return new Promise<Link>(async (resolve, reject) => {
+            return new Promise<Link>(async (resolve, reject) => {
 
-        //         try {
+                try {
 
-        //             const { data } = await axios.post<APIResponse<{ link: Link }>>('/link/update_link', {
-        //                 ...form
-        //             });
-        //             console.log('Success creating link', data.data.link);
-
-
-        //             resolve(data.data.link)
-        //         } catch (error) {
-        //             reject(error)
-        //         }
-
-        //     })
-
-        // },
+                    const { data } = await axios.put<APIResponse<{ link: Link }>>(`/link/update_link/${link_id}`, {
+                        ...form
+                    });
+                    console.log('Success updating link', data.data.link);
+                    resolve(data.data.link)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        },
 
         async getLinks(username: string): Promise<Link[]> {
             return new Promise<Link[]>(async (resolve, reject) => {
@@ -67,7 +63,7 @@ export const useLinkStore = defineStore('LinkStore', {
 
         },
 
-        async deleteProduct(link_id: string) {
+        async deleteLink(link_id: number) {
             return new Promise(async (resolve, reject) => {
                 try {
 

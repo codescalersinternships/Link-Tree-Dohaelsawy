@@ -1,8 +1,10 @@
 <script setup lang="ts">
 
 import { Button } from '@/components/ui/button'
-import { computed, onMounted, ref } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import Header from '@/components/header.vue'
+
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
 
@@ -10,22 +12,12 @@ import { useAuthStore } from '@/stores/authStore';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const loginFlag = computed (() => (authStore.isLogin))
-
 const onSubmit = async () => {
   router.push('/auth/login');
 };
 
 
-const handleLogout = async () => {
-  try {
-    await authStore.logoutUser();
-    authStore.turnOffLogin()
-    router.push('/');
-  } catch (error) {
-    console.error('Logout failed', error);
-  }
-};
+
 
 
 </script>
@@ -34,35 +26,10 @@ const handleLogout = async () => {
 
   <div class="wrapper">
     <div class="content">
-      <header>
-        <nav class="navbar">
-          <ul class="nav-links">
-            <li class="nav-item">
-              <a href="/" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">About</a>
-            </li>
-            <li class="nav-item">
-              <a href="/link_tree/" class="nav-link">Link Tree</a>
-            </li>
-            <div v-if="loginFlag">
-              <li class="nav-item">
-                <a href="/account/get_account" class="nav-link">Profile</a>
-              </li>
-              <Button variant="secondary" @click="handleLogout">Logout</Button>
-            </div>
-            <div v-else>
-              <Button variant="secondary" @click="onSubmit">Login</Button>
-            </div>
-
-          </ul>
-        </nav>
-      </header>
-
+      <Header></Header>
       <div class="main">
         <p class="fancy-word">Your Links, Your Story</p>
-        <p class="normal">Let's share it!</p>
+        <p class="normal">share it!</p>
         <Button class="start-button" @click="onSubmit">Get Started!</Button>
       </div>
     </div>
@@ -81,11 +48,11 @@ const handleLogout = async () => {
 .main {
   display: flex;
   text-align: center;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   color: #fff;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 

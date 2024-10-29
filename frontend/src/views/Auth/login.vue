@@ -26,7 +26,6 @@ const store = useAuthStore();
 const onSubmit = async () => {
   try {
     await store.loginUser(form.value);
-    store.turnOnLogin()
     router.push('/');
   } catch (error) {
     console.log(error);

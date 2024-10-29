@@ -11,22 +11,23 @@ export const useAuthStore = defineStore('AuthStore', {
         isLogin: false,
     }),
 
+    getters: {
+        returnIsLogin(): boolean {
+            return this.isLogin;
+          },
+    },
+
 
     actions: {
 
         turnOnLogin() {
             this.isLogin = true;
         },
+
         turnOffLogin() {
             this.isLogin = false;
         },
 
-        // async logout() {
-        //     if (localStorage.getItem("currentUserID") === null) {
-        //         this.isLogin = false;
-        //         console.log(this.isLogin)
-        //     }
-        // },
 
         async registerUser(form: Record<string, string>) {
 
@@ -38,7 +39,6 @@ export const useAuthStore = defineStore('AuthStore', {
                         ...form
                     });
                     console.log('Success Registration', data.data);
-
 
                     resolve(data.data)
                 } catch (error) {
@@ -70,6 +70,7 @@ export const useAuthStore = defineStore('AuthStore', {
                     setCookie("Authorization", data.data.access_token, 3);
                     localStorage.setItem("currentUserID", String(data.data.user_id));
                     localStorage.setItem("currentUsername", data.data.username);
+                    this.isLogin = true;
 
                     resolve(data.data.access_token)
                 } catch (error) {
@@ -93,6 +94,7 @@ export const useAuthStore = defineStore('AuthStore', {
                     localStorage.removeItem("Authorization");
                     localStorage.removeItem("currentUserID");
                     localStorage.removeItem("currentUsername");
+                    this.isLogin = true;
                     resolve(data)
                 } catch (error) {
                     console.log(error)

@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import Login from '../views/Auth/login.vue'
 import Register from '../views/Auth/register.vue'
 import Links from '../views/links/links.vue'
+import LiveDemo from '@/views/links/liveDemo.vue'
 
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/link_tree/',
       name: 'links',
       component: Links
+    },
+    {
+      path: '/link_tree/:username',
+      name: 'links-demo',
+      component: LiveDemo
     },
   ]
 })
