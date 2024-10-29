@@ -225,8 +225,5 @@ func getGuestUsername(ctx *gin.Context, ds *DBController, user_id int) {
 }
 
 func checkEmpty(item string) bool {
-	if item == "" {
-		return true
-	}
-	return false
+	return item == ""
 }
