@@ -202,8 +202,8 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusBadRequest, ErrImageTypeNotSupported)
 		return
 	}
-	newFileName := ds.Config.UserImagePath + account.Username + extension
 
+	newFileName := ds.Config.UserImagePath + account.Username + extension
 	if err := ctx.SaveUploadedFile(file, newFileName); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
