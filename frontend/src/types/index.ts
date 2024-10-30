@@ -5,14 +5,14 @@ export interface APIResponse<T> {
 
 export type User = {
     id: number,
-    firstName: string,
-    lastName: string,
+    first_name: string,
+    last_name: string,
     username: string,
     image: string,
     email: string,
     password: string,
     phone: string,
-    linkTreeUrl: string,
+    link_tree_url: string,
     bio: string,
     token: string,
     createdAt: string,

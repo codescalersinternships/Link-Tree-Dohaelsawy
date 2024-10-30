@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
 import type { APIResponse, User } from '../types/index'
 import { ref } from 'vue';
+import router from '@/router';
 
 axios.defaults.withCredentials = true;
 
@@ -13,7 +14,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
     getters: {
         returnIsLogin(): boolean {
-            return localStorage.getItem("currentUser") !== ""
+            return localStorage.getItem("currentUsername") !== ""
           },
     },
 
@@ -59,7 +60,7 @@ export const useAuthStore = defineStore('AuthStore', {
                     }
 
                     setCookie("Authorization", data.data.access_token, 3);
-                    localStorage.setItem("currentUser", String(data.data.user));
+                    localStorage.setItem("currentUser", JSON.stringify(data.data.user));
                     localStorage.setItem("currentUsername", data.data.user.username);
                     this.isLogin = true;
 
@@ -85,6 +86,7 @@ export const useAuthStore = defineStore('AuthStore', {
                     localStorage.setItem("currentUser", "");
                     localStorage.setItem("currentUsername", "");
                     this.isLogin = true;
+                    router.push("/");
                     resolve(data)
                 } catch (error) {
                     console.log(error)

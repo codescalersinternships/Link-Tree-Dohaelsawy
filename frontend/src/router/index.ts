@@ -4,7 +4,7 @@ import Login from '../views/Auth/login.vue'
 import Register from '../views/Auth/register.vue'
 import Links from '../views/links/links.vue'
 import LiveDemo from '@/views/links/liveDemo.vue'
-import Profile from '@/views/account/profile.vue'
+import Profile from "@/views/account/profile.vue"
 
 
 
@@ -38,7 +38,7 @@ const router = createRouter({
     },
     {
       path: '/account/get_account/',
-      name: 'links-demo',
+      name: 'profile',
       component: Profile
     },
   ]

@@ -3,8 +3,7 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useLinkStore } from '@/stores/linkStore'
 import type { Link } from '@/types/index';
 import Header from '@/components/header.vue';
-
-props: ['username'];
+import Profile from '@/components/profile.vue';
 
 const isEmpty = ref(true);
 
@@ -38,20 +37,12 @@ onMounted(fetchLinks);
 
             <div class="container">
                 <div class="sub-container">
-                    <div class="circular--landscape">
-                        <img src="../../assets/profile.png" />
-                    </div>
-                    <div class="username">
-                        <p class="username">{{ username }}</p>
-                    </div>
-                    <div class="account-content">
-                        
-                       
-                    </div>
+
+                    <Profile></Profile>
                 </div>
             </div>
-
         </div>
+
     </div>
 </template>
 
@@ -67,7 +58,7 @@ onMounted(fetchLinks);
 .wrapper {
     position: relative;
     width: 100%;
-    background-image: url("../src/assets/pexels-codioful-6985048.jpg");
+    background-image: url("../../src/assets/pexels-codioful-6985048.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: repeat-y;
@@ -130,8 +121,8 @@ Button {
 
 
 .circular--landscape {
-    display: inline-block;
-    position: relative;
+    /* display: inline-block;
+    position: relative; */
     width: 200px;
     height: 120px;
     overflow: hidden;

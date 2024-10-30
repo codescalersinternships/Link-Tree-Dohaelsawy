@@ -11,31 +11,12 @@ import Header from '@/components/header.vue';
 import type { Link } from '@/types/index';
 
 
-props: ['username'];
-
 const isEmpty = ref(true);
 
 const username = ref(localStorage.getItem("currentUsername"));
 const linkStore = useLinkStore();
 
 const links: Ref<Link[]> = ref([]);
-const fetchLinks = async () => {
-    try {
-        if (username.value !== null) {
-            links.value = await linkStore.getLinks(username.value);
-
-            if (links.value.length !== 0) {
-                isEmpty.value = false;
-            }
-        }
-    } catch (error) {
-        console.error("Error fetching links:", error);
-    }
-}
-type PAYLOAD = {
-    name: string;
-    url: string;
-};
 
 type UpdateLink = {
     link_id: number;
@@ -47,6 +28,10 @@ const wantUpdateLink = ref<UpdateLink>({
 });
 const wantAddLink = ref(false);
 
+type PAYLOAD = {
+    name: string;
+    url: string;
+};
 
 const form = ref<PAYLOAD>({
     name: '',
@@ -85,6 +70,20 @@ const onSubmitUpdateLink = async (link_id: number) => {
         window.location.reload();
     } catch (error) {
         console.error('Logout failed', error);
+    }
+}
+
+const fetchLinks = async () => {
+    try {
+        if (username.value !== null) {
+            links.value = await linkStore.getLinks(username.value);
+
+            if (links.value.length !== 0) {
+                isEmpty.value = false;
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching links:", error);
     }
 }
 onMounted(fetchLinks);
@@ -175,7 +174,7 @@ onMounted(fetchLinks);
 .wrapper {
     position: relative;
     width: 100%;
-    background-image: url("../src/assets/pexels-codioful-6985048.jpg");
+    background-image: url("../src/assets/pexels-codioful-7130560.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: repeat-y;
