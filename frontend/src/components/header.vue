@@ -64,32 +64,3 @@ const onSubmitProfile = async () => {
         </nav>
     </header>
 </template>
-
-
-<style>
-.navbar {
-    padding-top: 20px;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center
-}
-
-
-.nav-links {
-    flex-direction: row;
-    list-style: none;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-item a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    margin: 0px 20px;
-    padding: 10px;
-}
-</style>

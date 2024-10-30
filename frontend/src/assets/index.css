@@ -1,0 +1,254 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.main {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.fancy-word {
+  font-family: "Lobster", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 120px;
+}
+
+.normal {
+  font-size: 50px;
+  font-family: "Poiret One", sans-serif;
+  font-weight: 100;
+}
+
+.start-button {
+  width: 200px;
+  height: 50px;
+  font-size: large;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  background-image: url("pexels-codioful-7130560.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat-y;
+  font-family: "Noto Sans Mono", monospace;
+}
+
+.content {
+  background-color: #00000050;
+  padding-bottom: 50px;
+  min-height: 100vh;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.container {
+  top: 0;
+  bottom: 0;
+  margin-top: 60px;
+  padding: 10px;
+  display: flex;
+  border: 10px;
+  border-radius: 20px;
+  background-color: rgba(255, 245, 232, 0.341);
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sub-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: max-content;
+}
+
+Button {
+  width: 150px;
+  height: 100px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.username {
+  font-weight: 800;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.circular--landscape {
+  display: inline-block;
+    position: relative;
+  width: 200px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.circular--landscape img {
+  width: 100px;
+  height: 100px;
+  margin-left: 50px;
+}
+
+.link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px 10px;
+  text-align: center;
+  background-color: #0807435b;
+  border-radius: 20px;
+  margin: 20px 20px;
+  min-width: 360px;
+  height: max-content;
+  border-radius: 10px;
+  color: #e8fef5;
+}
+
+.link-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+i {
+  padding: 5px 10px;
+}
+
+.link-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.link-name {
+  color: #e8fef5;
+  padding: 5px;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.navbar {
+    padding-top: 20px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center
+}
+
+
+.nav-links {
+    flex-direction: row;
+    list-style: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0px 20px;
+    padding: 10px;
+}
+
+
+.edit-profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9a3;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #120909;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+.profile-image {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.profile-image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.save-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}

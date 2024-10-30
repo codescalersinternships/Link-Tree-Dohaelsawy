@@ -17,17 +17,17 @@ type PAYLOAD = {
   first_name: string;
   last_name: string;
   username: string;
-  email:string;
+  email: string;
   password: string;
-  
+
 };
 const confirm_password = ""
 const form = ref<PAYLOAD>({
   password: '',
   username: '',
   first_name: '',
-  last_name:'',
-  email:'',
+  last_name: '',
+  email: '',
 });
 const router = useRouter();
 const store = useAuthStore();
@@ -44,46 +44,51 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center min-h-screen">
-    <div class="mx-auto w-full max-w-md">
-      <form @submit.prevent="onSubmit">
-        <Card class="overflow-y-auto">
-          <CardHeader class="space-y-1">
-            <CardTitle class="text-2xl"> Create an account </CardTitle>
-          </CardHeader>
-          <CardContent class="grid gap-4">
-            <div class="grid gap-2">
-              <Label for="first_name">First Name</Label>
-              <Input id="first_name" type="text" placeholder="first name" v-model="form.first_name" />
-            </div>
-            <div class="grid gap-2">
-              <Label for="last_name">Last Name</Label>
-              <Input id="last_name" type="text" placeholder="last name" v-model="form.last_name" />
-            </div>
-            <div class="grid gap-2">
-              <Label for="email">Email</Label>
-              <Input id="email" type="text" placeholder="email" v-model="form.email" />
-            </div>
-            <div class="grid gap-2">
-              <Label for="username">Username</Label>
-              <Input id="username" type="text" placeholder="username" v-model="form.username" />
-            </div>
-            <div class="grid gap-2">
-              <Label for="password">Password</Label>
-              <Input id="password" type="password" v-model="form.password" />
-            </div>
-          </CardContent>
-          <CardFooter class="flex-col space-y-2">
-            <Button class="w-full" type="submit"> Register </Button>
-            <p>
-              Already have an account?
-              <RouterLink to="/auth/login" class="border-b border-gray-500 text-muted-foreground hover:text-primary">
-                Login
-              </RouterLink>
-            </p>
-          </CardFooter>
-        </Card>
-      </form>
+  <div class="wrapper">
+    <div class="content">
+      <div class="flex flex-col justify-center items-center min-h-screen">
+        <div class="mx-auto w-full max-w-md">
+          <form @submit.prevent="onSubmit">
+            <Card class="overflow-y-auto">
+              <CardHeader class="space-y-1">
+                <CardTitle class="text-2xl"> Create an account </CardTitle>
+              </CardHeader>
+              <CardContent class="grid gap-4">
+                <div class="grid gap-2">
+                  <Label for="first_name">First Name</Label>
+                  <Input id="first_name" type="text" placeholder="first name" v-model="form.first_name" />
+                </div>
+                <div class="grid gap-2">
+                  <Label for="last_name">Last Name</Label>
+                  <Input id="last_name" type="text" placeholder="last name" v-model="form.last_name" />
+                </div>
+                <div class="grid gap-2">
+                  <Label for="email">Email</Label>
+                  <Input id="email" type="text" placeholder="email" v-model="form.email" />
+                </div>
+                <div class="grid gap-2">
+                  <Label for="username">Username</Label>
+                  <Input id="username" type="text" placeholder="username" v-model="form.username" />
+                </div>
+                <div class="grid gap-2">
+                  <Label for="password">Password</Label>
+                  <Input id="password" type="password" v-model="form.password" />
+                </div>
+              </CardContent>
+              <CardFooter class="flex-col space-y-2">
+                <Button class="w-full" type="submit"> Register </Button>
+                <p>
+                  Already have an account?
+                  <RouterLink to="/auth/login"
+                    class="border-b border-gray-500 text-muted-foreground hover:text-primary">
+                    Login
+                  </RouterLink>
+                </p>
+              </CardFooter>
+            </Card>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
