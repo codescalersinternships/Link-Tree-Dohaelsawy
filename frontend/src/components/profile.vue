@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button';
 
 const accountStore = useAccountStore();
 const defaultImage = '/src/assets/user.png';
-const formData = new FormData();
 // const user = ref<User>();
-const username = ref(localStorage.getItem("currentUser"));
+const username = ref(localStorage.getItem("currentUsername"));
 const userReq = ref({
     first_name: accountStore.user.first_name,
     last_name: accountStore.user.last_name,
@@ -18,12 +17,12 @@ const userReq = ref({
 });
 console.log(userReq.value)
 
-
+const formData = new FormData();
 const handleImageUpload = async (event: Event) => {
     const target = event.target as HTMLInputElement;
 
     if (target && target.files && username.value) {
-        formData.append(username.value, target.files[0], target.name);
+        formData.append("image", target.files[0],target.files[0].name);
     }
 
 };

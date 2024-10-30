@@ -66,7 +66,12 @@ export const useAccountStore = defineStore('AccountStore', {
             return new Promise<User>(async (resolve, reject) => {
 
                 try {
-                    const { data } = await axios.post( '/single-file',image,{headers: {'Content-Type': 'multipart/form-data'}});
+                    const { data } = await axios.post( 
+                        '/account/add_photo/',
+                        image,
+                        {headers: 
+                            {'Content-Type': 'multipart/form-data'}
+                        });
                     resolve(data.data.user)
                 } catch (error) {
                     console.log(error)
