@@ -15,7 +15,7 @@ import (
 type AccountReq struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
-	Phone     string `json:"phone" validate:"min=11,max=11"`
+	Phone     string `json:"phone"`
 	Bio       string `json:"bio"`
 }
 

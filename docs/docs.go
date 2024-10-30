@@ -718,9 +718,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "phone": {
-                    "type": "string",
-                    "maxLength": 11,
-                    "minLength": 11
+                    "type": "string"
                 }
             }
         },

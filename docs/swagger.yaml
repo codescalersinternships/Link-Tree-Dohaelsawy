@@ -8,8 +8,6 @@ definitions:
       last_name:
         type: string
       phone:
-        maxLength: 11
-        minLength: 11
         type: string
     type: object
   controllers.ErrResponse:

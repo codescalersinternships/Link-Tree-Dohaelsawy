@@ -61,15 +61,13 @@ export const useAccountStore = defineStore('AccountStore', {
 
 
 
-        async updateImageAccount() {
+        async updateImageAccount(image: FormData) {
 
-            return new Promise<string>(async (resolve, reject) => {
+            return new Promise<User>(async (resolve, reject) => {
 
                 try {
-                    const { data } = await axios.get('/account/add_photo/', {
-                        
-                    });
-                    resolve(data)
+                    const { data } = await axios.post( '/single-file',image,{headers: {'Content-Type': 'multipart/form-data'}});
+                    resolve(data.data.user)
                 } catch (error) {
                     console.log(error)
                     reject(error)
