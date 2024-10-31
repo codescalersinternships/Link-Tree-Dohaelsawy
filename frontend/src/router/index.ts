@@ -5,6 +5,8 @@ import Register from '../views/Auth/register.vue'
 import Links from '../views/links/links.vue'
 import LiveDemo from '@/views/links/liveDemo.vue'
 import Profile from "@/views/account/profile.vue"
+import analytics from "@/views/account/analytics.vue"
+
 
 
 
@@ -40,6 +42,11 @@ const router = createRouter({
       path: '/account/get_account/',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/get_analytics/:user_id',
+      name: 'analytics',
+      component: analytics
     },
   ]
 })

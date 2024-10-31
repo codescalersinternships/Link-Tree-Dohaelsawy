@@ -30,3 +30,13 @@ export type Link = {
 export type ErrorRes = {
     error: string
 }
+
+export type Analytics = {
+    id: number,
+    click_count: number,
+    url: string,
+    user_id: number,
+    guest_username: string,
+    created_at: string,
+    updated_at: string,
+}

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
-import type { APIResponse, ErrorRes, User } from '../types/index'
+import type { Analytics, APIResponse, ErrorRes, User } from '../types/index'
 import type { AxiosError } from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -12,13 +12,32 @@ export const useAccountStore = defineStore('AccountStore', {
 
     actions: {
 
+
+        async getAnalytics(user_id: string): Promise<Analytics[]> {
+            return new Promise<Analytics[]>(async (resolve, reject) => {
+                try {
+                    const { data } = await axios.get<APIResponse<{ analytics: Analytics[]}>>(
+                        `/analytics/get_analytics/${user_id}`
+                    );
+                    console.log('Success getting analytics', data.data.analytics);
+                    resolve(data.data.analytics);
+                } catch (error) {
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
+                    reject(error);
+                }
+            })
+        },
+
         async getAccount(): Promise<User> {
             return new Promise<User>(async (resolve, reject) => {
                 try {
                     const { data } = await axios.get<APIResponse<{ user: User }>>(
                         '/account/get_account'
-                    );  
-                    this.user = data.data.user           
+                    );
+                    this.user = data.data.user
                     console.log('Success fetching account', data.data.user);
                     resolve(this.user);
                 } catch (error) {
@@ -75,11 +94,12 @@ export const useAccountStore = defineStore('AccountStore', {
             return new Promise<User>(async (resolve, reject) => {
 
                 try {
-                    const { data } = await axios.post( 
+                    const { data } = await axios.post(
                         '/account/add_photo/',
                         image,
-                        {headers: 
-                            {'Content-Type': 'multipart/form-data'}
+                        {
+                            headers:
+                                { 'Content-Type': 'multipart/form-data' }
                         });
                     resolve(data.data.user)
                 } catch (error) {

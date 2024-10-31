@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const accountStore = useAccountStore();
 const defaultImage = '/src/assets/user.png';
-// const user = ref<User>();
+const isImageExist = ref(false)
 const username = ref(localStorage.getItem("currentUsername"));
 const userReq = ref({
     first_name: accountStore.user.first_name,
@@ -23,6 +23,7 @@ const handleImageUpload = async (event: Event) => {
 
     if (target && target.files && username.value) {
         formData.append("image", target.files[0],target.files[0].name);
+        isImageExist.value = true
     }
 
 };
@@ -40,9 +41,11 @@ const getAccountData = async () => {
 const updateProfile = async () => {
     try {
         userReq.value = await accountStore.updateAccount(userReq.value);
-        userReq.value = await accountStore.updateImageAccount(formData);
+        if (isImageExist.value === true) {
+            userReq.value = await accountStore.updateImageAccount(formData);
+        }
+        window.location.reload();
         console.log(userReq.value)
-
     } catch (error) {
         console.error("Error fetching user:", error);
         alert(error)
@@ -56,7 +59,6 @@ onMounted(getAccountData);
 
 
 <template>
-    <h2>Edit Profile</h2>
     <div class="edit-profile-container">
         <div v-if="userReq">
             <form @submit.prevent="updateProfile" enctype="multipart/form-data">

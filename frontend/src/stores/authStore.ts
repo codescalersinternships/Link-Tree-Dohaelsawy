@@ -66,6 +66,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
                     setCookie("Authorization", data.data.access_token, 3);
                     localStorage.setItem("currentUser", JSON.stringify(data.data.user));
+                    localStorage.setItem("currentUserID", String(data.data.user.id));
                     localStorage.setItem("currentUsername", data.data.user.username);
                     this.isLogin = true;
 

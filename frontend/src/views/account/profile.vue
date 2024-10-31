@@ -26,6 +26,9 @@ const fetchLinks = async () => {
     }
 }
 
+const analyticsUrl = ref(`/get_analytics/${localStorage.getItem("currentUserID")}`);
+console.log(analyticsUrl.value);
+
 onMounted(fetchLinks);
 
 </script>
@@ -33,12 +36,13 @@ onMounted(fetchLinks);
 <template>
     <div class="wrapper">
         <div class="content">
-
             <Header></Header>
-
             <div class="container">
                 <div class="sub-container">
-
+                    <div class="profile-bar">
+                        <a href="/account/get_account/">Edit Profile</a>
+                        <a :href="analyticsUrl"> Show Analytics</a>
+                    </div>
                     <Profile></Profile>
                 </div>
             </div>

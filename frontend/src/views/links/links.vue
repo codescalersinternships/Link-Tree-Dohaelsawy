@@ -103,6 +103,7 @@ onMounted(fetchLinks);
             <div class="container">
                 <div class="sub-container">
                     <div v-if="isEmpty" class="empty">
+                        <h2>Nothing!..</h2>
                         <img src="../../assets/website-design.png" alt="empty">
                     </div>
                     <div v-else>
@@ -118,10 +119,9 @@ onMounted(fetchLinks);
                                 <div v-if="wantUpdateLink.wantUpdate === true && wantUpdateLink.link_id === link.id">
                                     <form @submit.prevent="onSubmitUpdateLink(link.id)">
                                         <div class="grid gap-2 flex flex-col justify-center items-center">
-                                            <div class="link-content ">
-                                                <Input id="name" type="text" placeholder="link name"
-                                                    v-model="form.name" />
-                                                <Input id="url" type="text" placeholder="link url" v-model="form.url" />
+                                            <div class="link-content">
+                                                <Input id="name" type="text" v-model="form.name" />
+                                                <Input id="url" type="text" v-model="form.url" />
                                                 <Button variant="outline">Submit</Button>
                                             </div>
                                         </div>
