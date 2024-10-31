@@ -33,6 +33,9 @@ func (suite *DatabaseTestSuite) TestCreateLink() {
 		router := SetupAccountRouter(suite)
 		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
+		Token_11, err := createTestToken(11, suite.config.JwtSecret)
+		suite.Require().NoError(err, "Error token generating err")
+
 		router.POST("/create_link", dbService.CreateLink)
 
 		jsonValue, err := json.Marshal(test.link)
@@ -42,7 +45,7 @@ func (suite *DatabaseTestSuite) TestCreateLink() {
 		suite.Require().NoError(err, "Error create http request")
 		req.AddCookie(&http.Cookie{
 			Name:     "Authorization",
-			Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+			Value:    Token_11,
 			Path:     "",
 			Domain:   "",
 			Secure:   false,
@@ -62,13 +65,16 @@ func (suite *DatabaseTestSuite) TestDeleteLink() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
+	Token_11, err := createTestToken(11, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
 	router.DELETE("/delete_link/:link_id", dbService.DeleteLink)
 
 	req, err := http.NewRequest("DELETE", "/delete_link/2", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NjAwMTcsImlhdCI6MTcyOTc3MzYxNywic3VwIjoxM30.M06Hr3QWA-fKkrbpsiQA9VAwmg4JlNXY_knn6iB6kZE",
+		Value:    Token_11,
 		Path:     "",
 		Domain:   "",
 		Secure:   false,
@@ -102,6 +108,9 @@ func (suite *DatabaseTestSuite) TestUpdateLink() {
 		router := SetupAccountRouter(suite)
 		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
+		Token_11, err := createTestToken(11, suite.config.JwtSecret)
+		suite.Require().NoError(err, "Error token generating err")
+
 		router.PUT("/update_link/:link_id", dbService.UpdateLink)
 
 		jsonValue, err := json.Marshal(test.link)
@@ -111,7 +120,7 @@ func (suite *DatabaseTestSuite) TestUpdateLink() {
 		suite.Require().NoError(err, "Error create http request")
 		req.AddCookie(&http.Cookie{
 			Name:     "Authorization",
-			Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+			Value:    Token_11,
 			Path:     "",
 			Domain:   "",
 			Secure:   false,

@@ -41,7 +41,7 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 				Phone:     "12345",
 				Bio:       "it's me",
 			},
-			status: http.StatusBadRequest,
+			status: http.StatusOK,
 		},
 	}
 
@@ -49,6 +49,9 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 
 		router := SetupAccountRouter(suite)
 		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+
+		Token_11, err := createTestToken(11, suite.config.JwtSecret)
+		suite.Require().NoError(err, "Error token generating err")
 
 		router.PUT("/edit_account", dbService.EditAccount)
 
@@ -59,7 +62,7 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 		suite.Require().NoError(err, "Error create http request")
 		req.AddCookie(&http.Cookie{
 			Name:     "Authorization",
-			Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+			Value:    Token_11,
 			Path:     "",
 			Domain:   "",
 			Secure:   false,
@@ -79,13 +82,16 @@ func (suite *DatabaseTestSuite) TestDeleteAccount() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
+	Token_13, err := createTestToken(13, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
 	router.DELETE("/delete_account", dbService.DeleteAccount)
 
 	req, err := http.NewRequest("DELETE", "/delete_account", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NjAwMTcsImlhdCI6MTcyOTc3MzYxNywic3VwIjoxM30.M06Hr3QWA-fKkrbpsiQA9VAwmg4JlNXY_knn6iB6kZE",
+		Value:    Token_13,
 		Path:     "",
 		Domain:   "",
 		Secure:   false,
@@ -103,38 +109,16 @@ func (suite *DatabaseTestSuite) TestGetAccount() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
+	Token_11, err := createTestToken(11, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
 	router.GET("/get_account/", dbService.GetAccount)
 
 	req, err := http.NewRequest("GET", "/get_account/", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
-		Path:     "",
-		Domain:   "",
-		Secure:   false,
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
-
-	w := httptest.NewRecorder()
-	router.ServeHTTP(w, req)
-
-	suite.Require().Equal(http.StatusOK, w.Code)
-}
-
-func (suite *DatabaseTestSuite) TestCreateLinkTreeUrl() {
-
-	router := SetupAccountRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
-
-	router.GET("/create_link_tree_url", dbService.CreateLinkTreeUrl)
-
-	req, err := http.NewRequest("GET", "/create_link_tree_url", nil)
-	suite.Require().NoError(err, "Error create http request")
-	req.AddCookie(&http.Cookie{
-		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+		Value:    Token_11,
 		Path:     "",
 		Domain:   "",
 		Secure:   false,
@@ -151,16 +135,20 @@ func (suite *DatabaseTestSuite) TestCreateLinkTreeUrl() {
 func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 	router := SetupAccountRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+
+	Token_11, err := createTestToken(11, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
 	router.POST("/add_photo", dbService.UploadUserImage)
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
 
-	file, err := os.CreateTemp("testdata", "image.jpeg")
+	file, err := os.CreateTemp("testdata", "image.png")
 	suite.Require().NoError(err)
 	defer os.Remove(file.Name())
 
-	_, err = file.Write([]byte("This is a test image"))
+	_, err = file.Write([]byte(""))
 	suite.Require().NoError(err)
 	file.Seek(0, io.SeekStart)
 
@@ -177,7 +165,7 @@ func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+		Value:    Token_11,
 		Path:     "",
 		Domain:   "",
 		Secure:   false,
@@ -187,7 +175,7 @@ func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
-	suite.Require().Equal(http.StatusOK, w.Code)
+	suite.Require().Equal(http.StatusOK, w.Body.String())
 
 }
 

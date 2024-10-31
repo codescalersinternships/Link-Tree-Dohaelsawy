@@ -7,6 +7,7 @@ import (
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -39,11 +40,17 @@ func (suite *DatabaseTestSuite) SetupSuite() {
 	err = suite.DbInstance.DB.AutoMigrate(&model.User{}, &model.Link{}, &model.Analytics{})
 	suite.Require().NoError(err, "Error auto-migrating database tables")
 
-	user := model.User{ID: 11, FirstName: "doha", LastName: "elsawy", Email: "aaad@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "newusdfername", Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q"}
+	Token_11, err := createTestToken(11, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
+	user := model.User{ID: 11, FirstName: "doha", LastName: "elsawy", Email: "aaad@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "newusdfername", Token: Token_11}
 	err = suite.DbInstance.AddNewUser(&user)
 	suite.Require().NoError(err, "Error adding user before testing")
 
-	deleteUser := model.User{ID: 13, FirstName: "doha", LastName: "elsawy", Email: "delete@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "delete", Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NjAwMTcsImlhdCI6MTcyOTc3MzYxNywic3VwIjoxM30.M06Hr3QWA-fKkrbpsiQA9VAwmg4JlNXY_knn6iB6kZE"}
+	Token_13, err := createTestToken(13, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
+	deleteUser := model.User{ID: 13, FirstName: "doha", LastName: "elsawy", Email: "delete@gmail.com", Password: "$2a$14$SqGrotGlHpurAd6c.zfNt./oIW7Bh3fp1DAnh4nNTTEIMwfabqT8i", Username: "delete", Token: Token_13}
 	err = suite.DbInstance.AddNewUser(&deleteUser)
 	suite.Require().NoError(err, "Error adding user before testing")
 
@@ -59,7 +66,7 @@ func (suite *DatabaseTestSuite) SetupSuite() {
 	err = suite.DbInstance.AddNewLink(&editLink)
 	suite.Require().NoError(err, "Error creating link record")
 
-	analytics := model.Analytics{ClickCount:3, GuestUsername: "newusdfername", UserID: 11}
+	analytics := model.Analytics{ClickCount: 3, GuestUsername: "newusdfername", UserID: 11}
 	err = suite.DbInstance.AddNewVisitor(&analytics)
 	suite.Require().NoError(err, "Error creating link record")
 }
@@ -92,6 +99,11 @@ func NewTestConfigController() model.Config {
 		TokenHourLifeTime: os.Getenv("TOKEN_HOUR_LIFESPAN"),
 		BaseUrl:           os.Getenv("BASE_URL"),
 	}
+}
+
+func createTestToken(id uint, secretToken string) (string, error) {
+
+	return utils.CreateToken(id, 24, secretToken)
 }
 
 func setEnvVariables() {

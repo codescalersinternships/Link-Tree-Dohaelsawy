@@ -14,13 +14,16 @@ func (suite *DatabaseTestSuite) TestGetAnalytics() {
 	router := SetupAnalyticsRouter(suite)
 	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
 
+	Token_11, err := createTestToken(11, suite.config.JwtSecret)
+	suite.Require().NoError(err, "Error token generating err")
+
 	router.GET("/get_analytics/:user_id", dbService.GetAnalytics)
 
 	req, err := http.NewRequest("GET", "/get_analytics/11", nil)
 	suite.Require().NoError(err, "Error create http request")
 	req.AddCookie(&http.Cookie{
 		Name:     "Authorization",
-		Value:    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk4NTU0ODIsImlhdCI6MTcyOTc2OTA4Miwic3VwIjoxMX0.gtfXET5b2AFUqAja2Dv8T2VM3tR7YNtq6EPIlsmvV3Q",
+		Value:   Token_11,
 		Path:     "",
 		Domain:   "",
 		Secure:   false,
