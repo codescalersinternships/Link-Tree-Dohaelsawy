@@ -31,6 +31,8 @@ const onSubmitLinkTree = () => {
     }
 }
 
+const profileUrl = ref("/account/get_account/")
+
 const onSubmitLogin = async () => {
     router.push('/auth/login');
 };
@@ -52,13 +54,15 @@ const onSubmitProfile = async () => {
                     <a href="#" class="nav-link">About</a>
                 </li>
                 <li class="nav-item">
-                    <a @click="onSubmitLinkTree" class="nav-link">Link Tree</a>
+                    <a @click="onSubmitLinkTree" class="nav-link" href="">Link Tree</a>
                 </li>
                 <li v-if="!isLogin" class="nav-item">
                     <Button variant="secondary" @click="onSubmitLogin">Login</Button>
                 </li>
-                <li v-else class="nav-item">
-                    <a class="nav-link" @click="onSubmitProfile">Profile</a>
+                <li v-if="isLogin" class="nav-item">
+                    <a class="nav-link" :href="profileUrl">Profile</a>
+                </li>
+                <li v-if="isLogin" class="nav-item">
                     <Button variant="secondary" @click="onSubmitLogout">Logout</Button>
                 </li>
             </ul>
