@@ -28,7 +28,8 @@ const onSubmit = async () => {
     await store.loginUser(form.value);
     router.push('/');
   } catch (error) {
-    console.log(error);
+    alert(error);
+    console.error('Logout failed', error);
   } finally {
   }
 };

@@ -15,7 +15,7 @@ const userReq = ref({
     phone: accountStore.user.phone,
     bio: accountStore.user.bio,
 });
-console.log(userReq.value)
+// const userImgUrl = new URL(accountStore.user.image).href
 
 const formData = new FormData();
 const handleImageUpload = async (event: Event) => {
@@ -32,6 +32,7 @@ const getAccountData = async () => {
         userReq.value = await accountStore.getAccount();
     } catch (error) {
         console.error("Error fetching user:", error);
+        alert(error)
     }
 }
 
@@ -44,10 +45,15 @@ const updateProfile = async () => {
 
     } catch (error) {
         console.error("Error fetching user:", error);
+        alert(error)
     }
 }
 onMounted(getAccountData);
+
+// ../../../backend/database/users_photo/d2002@.png
 </script>
+
+
 
 <template>
     <h2>Edit Profile</h2>
@@ -57,7 +63,7 @@ onMounted(getAccountData);
                 <!-- Profile Image -->
                 <div class="profile-image">
                     <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file">
-                    <img :src="accountStore.user.image || defaultImage" alt="Profile Image" />
+                    <img :src="defaultImage" alt="Profile Image" />
                 </div>
 
                 <!-- First Name -->

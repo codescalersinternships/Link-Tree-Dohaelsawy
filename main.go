@@ -33,7 +33,7 @@ func main() {
 	
 	router := gin.Default()
 	router.Use(cors.Default())
-
+	router.Static("/images", "./database/users_photo/")
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	config, err := utils.NewConfigController()

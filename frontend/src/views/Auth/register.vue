@@ -36,7 +36,8 @@ const onSubmit = async () => {
     await store.registerUser(form.value)
     router.push('/auth/login');
   } catch (error) {
-    console.log(error);
+    alert(error);
+    console.error('Logout failed', error);
   } finally {
   }
 
