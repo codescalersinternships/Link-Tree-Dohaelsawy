@@ -49,6 +49,7 @@ const onSubmitLink = async () => {
         window.location.reload();
     } catch (error) {
         console.error('Logout failed', error);
+        alert(error);
     }
 }
 const onSubmitLiveDemo = () => {
@@ -61,6 +62,7 @@ const onSubmitDeleteLink = async (link_id: number) => {
         window.location.reload();
     } catch (error) {
         console.error('Logout failed', error);
+        alert(error);
     }
 }
 
@@ -70,6 +72,7 @@ const onSubmitUpdateLink = async (link_id: number) => {
         window.location.reload();
     } catch (error) {
         console.error('Logout failed', error);
+        alert(error);
     }
 }
 
@@ -84,6 +87,7 @@ const fetchLinks = async () => {
         }
     } catch (error) {
         console.error("Error fetching links:", error);
+        alert(error);
     }
 }
 onMounted(fetchLinks);

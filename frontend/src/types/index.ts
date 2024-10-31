@@ -27,6 +27,6 @@ export type Link = {
     updatedAt: string,
 }
 
-export type Error = {
-    err: Error
+export type ErrorRes = {
+    error: string
 }

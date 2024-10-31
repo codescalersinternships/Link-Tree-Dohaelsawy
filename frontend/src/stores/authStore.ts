@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
-import type { APIResponse, User } from '../types/index'
+import type { APIResponse, User, ErrorRes } from '../types/index'
 import { ref } from 'vue';
 import router from '@/router';
+import type { AxiosError } from 'axios';
 
 axios.defaults.withCredentials = true;
 
@@ -15,11 +16,13 @@ export const useAuthStore = defineStore('AuthStore', {
     getters: {
         returnIsLogin(): boolean {
             return localStorage.getItem("currentUsername") !== ""
-          },
+        },
     },
 
 
     actions: {
+
+
 
         async registerUser(form: Record<string, string>) {
 
@@ -31,10 +34,12 @@ export const useAuthStore = defineStore('AuthStore', {
                         ...form
                     });
                     console.log('Success Registration', data.data);
-
                     resolve(data.data)
                 } catch (error) {
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
 
             })
@@ -48,7 +53,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
                 try {
 
-                    const { data } = await axios.post<APIResponse<{ access_token: string, user: User}>>('/auth/login', {
+                    const { data } = await axios.post<APIResponse<{ access_token: string, user: User }>>('/auth/login', {
                         ...form
                     });
                     console.log('Success Login ana henaaaaa', data.data.access_token);
@@ -66,15 +71,15 @@ export const useAuthStore = defineStore('AuthStore', {
 
                     resolve(data.data.access_token)
                 } catch (error) {
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
 
             })
 
         },
-
-
-
 
 
         async logoutUser() {
@@ -89,8 +94,10 @@ export const useAuthStore = defineStore('AuthStore', {
                     router.push("/");
                     resolve(data)
                 } catch (error) {
-                    console.log(error)
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
 
             })

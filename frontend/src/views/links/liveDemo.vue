@@ -23,6 +23,7 @@ const fetchLinks = async () => {
         }
     } catch (error) {
         console.error("Error fetching links:", error);
+        alert(error);
     }
 }
 

@@ -19,7 +19,7 @@ const onSubmitLogout = async () => {
         });
     } catch (error) {
         console.error('Logout failed', error);
-        alert(error)
+        alert(error);
     }
 };
 

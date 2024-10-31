@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
-import type { APIResponse, Link } from '../types/index'
+import type { APIResponse, ErrorRes, Link } from '../types/index'
 import type { promises } from 'dns'
+import type { AxiosError } from 'axios'
 
 export const useLinkStore = defineStore('LinkStore', {
     state: () => ({
@@ -24,7 +25,10 @@ export const useLinkStore = defineStore('LinkStore', {
 
                     resolve(data.data.link)
                 } catch (error) {
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
 
             })
@@ -44,7 +48,10 @@ export const useLinkStore = defineStore('LinkStore', {
                     console.log('Success updating link', data.data.link);
                     resolve(data.data.link)
                 } catch (error) {
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
             })
         },
@@ -56,7 +63,10 @@ export const useLinkStore = defineStore('LinkStore', {
                     // console.log('links', data.data);
                     resolve(data.data.links)
                 } catch (error) {
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
 
             })
@@ -71,7 +81,10 @@ export const useLinkStore = defineStore('LinkStore', {
                     console.log('products', data.data);                
                     resolve(data.data)
                 } catch (error) {
-                    reject(error)
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
                 }
 
             })
