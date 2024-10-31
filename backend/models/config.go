@@ -12,4 +12,5 @@ type Config struct {
 	BaseUrl           string
 	UserImagePath     string
 	LinkTreePath      string
+	StaticImagesPath  string
 }

@@ -26,5 +26,6 @@ func NewConfigController() (model.Config, error) {
 		BaseUrl:           os.Getenv("BASE_URL"),
 		UserImagePath:     os.Getenv("USERS_IMAGE_SAVE_PATH"),
 		LinkTreePath:      os.Getenv("LINK_TREE_URL"),
+		StaticImagesPath:  os.Getenv("STATIC_IMAGES"),
 	}, nil
 }
