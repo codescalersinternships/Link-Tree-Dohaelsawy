@@ -22,7 +22,7 @@ import (
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/analytics/get_analytics/{user_id} [get]
-func (ds *DBController) GetAnalytics(ctx *gin.Context) {
+func (c *Controller) GetAnalytics(ctx *gin.Context) {
 
 	var analytics []model.Analytics
 
@@ -34,7 +34,7 @@ func (ds *DBController) GetAnalytics(ctx *gin.Context) {
 		return
 	}
 
-	err = ds.store.GetAllAnalyticsForUser(&analytics, user_id)
+	err = c.store.GetAllAnalyticsForUser(&analytics, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -43,11 +43,11 @@ func (ds *DBController) GetAnalytics(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"analytics": analytics} )
 }
 
-func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername string, user_id int) {
+func (c *Controller) CalculateAnalytics(ctx *gin.Context, guestUsername string, user_id int) {
 
 	var analytics model.Analytics
 
-	if err := ds.store.GetAnalyticsForGuestUsername(&analytics, guestUsername, user_id); err != nil {
+	if err := c.store.GetAnalyticsForGuestUsername(&analytics, guestUsername, user_id); err != nil {
 
 		analytics = model.Analytics{
 			ClickCount:    1,
@@ -55,7 +55,7 @@ func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername strin
 			GuestUsername: guestUsername,
 		}
 
-		if err = ds.store.AddNewVisitor(&analytics); err != nil {
+		if err = c.store.AddNewVisitor(&analytics); err != nil {
 			ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 			return
 		}
@@ -63,7 +63,7 @@ func (ds *DBController) CalculateAnalytics(ctx *gin.Context, guestUsername strin
 	}
 	analytics.ClickCount += 1
 
-	if err := ds.store.UpdateAnalytics(&analytics, analytics.ID); err != nil {
+	if err := c.store.UpdateAnalytics(&analytics, analytics.ID); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}

@@ -33,3 +33,5 @@ backend/database/pg_data_test
 backend/database/users_photo/
 
 tests/*.jpeg*
+
+doha_accessKeys.csv

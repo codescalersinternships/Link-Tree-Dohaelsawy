@@ -41,9 +41,9 @@ var (
 //	@Failure		404				{object}	ErrResponse
 //	@Failure		500				{object}	ErrResponse
 //	@Router			/auth/login [post]
-func (ds *DBController) Login(ctx *gin.Context) {
+func (c *Controller) Login(ctx *gin.Context) {
 
-	config := ds.Config
+	config := c.Config
 
 	secretToken := config.JwtSecret
 
@@ -60,14 +60,14 @@ func (ds *DBController) Login(ctx *gin.Context) {
 		return
 	}
 
-	if err := ds.Validate.Struct(&reqBody); err != nil {
+	if err := c.Validate.Struct(&reqBody); err != nil {
 		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	var existingUser model.User
 
-	err = ds.store.GetUserEmail(&existingUser, reqBody.Email)
+	err = c.store.GetUserEmail(&existingUser, reqBody.Email)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusNotFound, err)
 		return
@@ -88,7 +88,7 @@ func (ds *DBController) Login(ctx *gin.Context) {
 
 	existingUser.Token = token
 
-	if err := ds.store.PutOneUser(&existingUser, existingUser.ID); err != nil {
+	if err := c.store.PutOneUser(&existingUser, existingUser.ID); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
@@ -116,7 +116,7 @@ func (ds *DBController) Login(ctx *gin.Context) {
 //	@Failure		404				{object}	ErrResponse
 //	@Failure		500				{object}	ErrResponse
 //	@Router			/auth/register [post]
-func (ds *DBController) Register(ctx *gin.Context) {
+func (c *Controller) Register(ctx *gin.Context) {
 
 	var reqBody RegisterRequest
 	if err := ctx.BindJSON(&reqBody); err != nil {
@@ -124,14 +124,14 @@ func (ds *DBController) Register(ctx *gin.Context) {
 		return
 	}
 
-	if err := ds.Validate.Struct(reqBody); err != nil {
+	if err := c.Validate.Struct(reqBody); err != nil {
 		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	var existingUser model.User
 
-	err := ds.store.GetUserEmail(&existingUser, reqBody.Email)
+	err := c.store.GetUserEmail(&existingUser, reqBody.Email)
 
 	if err == nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, ErrEmailExist)
@@ -151,10 +151,10 @@ func (ds *DBController) Register(ctx *gin.Context) {
 		Username:    reqBody.Username,
 		Email:       reqBody.Email,
 		Password:    password,
-		LinkTreeURL: utils.GenerateLinkTreeUrl(ds.Config.BaseUrl,ds.Config.LinkTreePath, reqBody.Username ),
+		LinkTreeURL: utils.GenerateLinkTreeUrl(c.Config.BaseUrl,c.Config.LinkTreePath, reqBody.Username ),
 	}
 	
-	if err := ds.store.AddNewUser(&newUser); err != nil {
+	if err := c.store.AddNewUser(&newUser); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
@@ -169,6 +169,6 @@ func (ds *DBController) Register(ctx *gin.Context) {
 //	@Security		basic
 //	@Success		200	{object}	SuccessResponse
 //	@Router			/auth/logout [get]
-func (ac *DBController) Logout(ctx *gin.Context) {
+func (c *Controller) Logout(ctx *gin.Context) {
 	ctx.SetCookie("Authorization", "", 0, "", "", false, true)
 }

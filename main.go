@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
 	"log"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	route "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
@@ -10,9 +13,9 @@ import (
 	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/docs"
 
 	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	cors "github.com/rs/cors/wrapper/gin"
 )
 
 //	@title			LinkTree
@@ -30,7 +33,15 @@ func main() {
 		log.Printf("Error: %s\n", err)
 		return
 	}
-	
+
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		log.Printf("error: %v", err)
+		return
+	}
+
+	client := s3.NewFromConfig(cfg)
+
 	router := gin.Default()
 	router.Use(cors.Default())
 	router.Static("/images", "./database/users_photo/")
@@ -44,10 +55,10 @@ func main() {
 
 	dbInstance := repository.NewDbInstance(db)
 
-	route.AccountRouters(dbInstance, config, router)
-	route.LinkRouters(dbInstance, config, router)
-	route.AuthRouters(dbInstance, config, router)
-	route.AnalyticsRouters(dbInstance, config, router)
+	route.AccountRouters(dbInstance, config, router, client)
+	route.LinkRouters(dbInstance, config, router,client)
+	route.AuthRouters(dbInstance, config, router,client)
+	route.AnalyticsRouters(dbInstance, config, router,client)
 
 	router.Run()
 }

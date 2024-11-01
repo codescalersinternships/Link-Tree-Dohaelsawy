@@ -39,23 +39,23 @@ var (
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/account/delete_account [delete]
-func (ds *DBController) DeleteAccount(ctx *gin.Context) {
+func (c *Controller) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	user_id, err := utils.ExtractTokenID(ctx, *c.Config)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = ds.store.GetUserID(&account, user_id)
+	err = c.store.GetUserID(&account, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = ds.store.DeleteUser(&account, user_id)
+	err = c.store.DeleteUser(&account, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -77,7 +77,7 @@ func (ds *DBController) DeleteAccount(ctx *gin.Context) {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/account/edit_account [put]
-func (ds *DBController) EditAccount(ctx *gin.Context) {
+func (c *Controller) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
 
@@ -86,12 +86,12 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 		return
 	}
 
-	if err := ds.Validate.Struct(&reqBody); err != nil {
+	if err := c.Validate.Struct(&reqBody); err != nil {
 		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	user_id, err := utils.ExtractTokenID(ctx, *c.Config)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -99,7 +99,7 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	err = ds.store.GetUserID(&account, user_id)
+	err = c.store.GetUserID(&account, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -118,7 +118,7 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 		account.Bio = reqBody.Bio
 	}
 
-	err = ds.store.PutOneUser(&account, account.ID)
+	err = c.store.PutOneUser(&account, account.ID)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -140,17 +140,17 @@ func (ds *DBController) EditAccount(ctx *gin.Context) {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/account/get_account [get]
-func (ds *DBController) GetAccount(ctx *gin.Context) {
+func (c *Controller) GetAccount(ctx *gin.Context) {
 
 	var account model.User
 
-	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	user_id, err := utils.ExtractTokenID(ctx, *c.Config)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = ds.store.GetUserID(&account, user_id)
+	err = c.store.GetUserID(&account, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -173,7 +173,7 @@ func (ds *DBController) GetAccount(ctx *gin.Context) {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/account/add_photo [post]
-func (ds *DBController) UploadUserImage(ctx *gin.Context) {
+func (c *Controller) UploadUserImage(ctx *gin.Context) {
 
 	file, err := ctx.FormFile("image")
 	if err != nil {
@@ -181,7 +181,7 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 		return
 	}
 
-	config := ds.Config
+	config := c.Config
 	user_id, err := utils.ExtractTokenID(ctx, *config)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
@@ -189,7 +189,7 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 	}
 
 	var account model.User
-	err = ds.store.GetUserID(&account, user_id)
+	err = c.store.GetUserID(&account, user_id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -203,7 +203,7 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 		return
 	}
 
-	newFileName := ds.Config.BaseUrl + ds.Config.StaticImagesPath + account.Username + extension
+	newFileName := c.Config.BaseUrl + c.Config.StaticImagesPath + account.Username + extension
 	if err := ctx.SaveUploadedFile(file, newFileName); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -211,7 +211,7 @@ func (ds *DBController) UploadUserImage(ctx *gin.Context) {
 
 	account.Image = newFileName
 
-	err = ds.store.PutOneUser(&account, account.ID)
+	err = c.store.PutOneUser(&account, account.ID)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return

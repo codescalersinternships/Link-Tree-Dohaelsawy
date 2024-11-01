@@ -33,7 +33,7 @@ type LinkReq struct {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/link/create_link [post]
-func (ds *DBController) CreateLink(ctx *gin.Context) {
+func (c *Controller) CreateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -42,12 +42,12 @@ func (ds *DBController) CreateLink(ctx *gin.Context) {
 		return
 	}
 
-	if err := ds.Validate.Struct(reqBody); err != nil {
+	if err := c.Validate.Struct(reqBody); err != nil {
 		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	user_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	user_id, err := utils.ExtractTokenID(ctx, *c.Config)
 
 	if err != nil {
 		errorMessage := fmt.Errorf("can't find your token %s", err)
@@ -61,7 +61,7 @@ func (ds *DBController) CreateLink(ctx *gin.Context) {
 		UserID: user_id,
 	}
 
-	err = ds.store.AddNewLink(&link)
+	err = c.store.AddNewLink(&link)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -83,7 +83,7 @@ func (ds *DBController) CreateLink(ctx *gin.Context) {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/link/delete_link/{link_id} [delete]
-func (ds *DBController) DeleteLink(ctx *gin.Context) {
+func (c *Controller) DeleteLink(ctx *gin.Context) {
 
 	var link model.Link
 
@@ -94,12 +94,12 @@ func (ds *DBController) DeleteLink(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
-	if err := ds.store.GetOneLink(&link, id); err != nil {
+	if err := c.store.GetOneLink(&link, id); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	err = ds.store.DeleteLink(&link, id)
+	err = c.store.DeleteLink(&link, id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -122,7 +122,7 @@ func (ds *DBController) DeleteLink(ctx *gin.Context) {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/link/update_link/{link_id} [put]
-func (ds *DBController) UpdateLink(ctx *gin.Context) {
+func (c *Controller) UpdateLink(ctx *gin.Context) {
 
 	var reqBody LinkReq
 
@@ -131,7 +131,7 @@ func (ds *DBController) UpdateLink(ctx *gin.Context) {
 		return
 	}
 
-	if err := ds.Validate.Struct(reqBody); err != nil {
+	if err := c.Validate.Struct(reqBody); err != nil {
 		ErrRespondJSON(ctx, http.StatusBadRequest, err)
 		return
 	}
@@ -146,7 +146,7 @@ func (ds *DBController) UpdateLink(ctx *gin.Context) {
 
 	var link model.Link
 
-	err = ds.store.GetOneLink(&link, id)
+	err = c.store.GetOneLink(&link, id)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -160,7 +160,7 @@ func (ds *DBController) UpdateLink(ctx *gin.Context) {
 		link.Url = reqBody.Url
 	}
 
-	err = ds.store.PutOneLink(&link, link.ID)
+	err = c.store.PutOneLink(&link, link.ID)
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
@@ -182,32 +182,32 @@ func (ds *DBController) UpdateLink(ctx *gin.Context) {
 //	@Failure		404	{object}	ErrResponse
 //	@Failure		500	{object}	ErrResponse
 //	@Router			/link_tree/{username} [get]
-func (ds *DBController) GetLinks(ctx *gin.Context) {
+func (c *Controller) GetLinks(ctx *gin.Context) {
 
 	var user model.User
 	username := ctx.Params.ByName("username")
 
-	if err := ds.store.GetUserUsername(&user, username); err != nil {
+	if err := c.store.GetUserUsername(&user, username); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	var links []model.Link
-	if err := ds.store.GetAllLinksForUser(&links, user.ID); err != nil {
+	if err := c.store.GetAllLinksForUser(&links, user.ID); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	getGuestUsername(ctx, ds, user.ID)
+	getGuestUsername(ctx, c, user.ID)
 
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"links": links})
 }
 
-func getGuestUsername(ctx *gin.Context, ds *DBController, user_id int) {
+func getGuestUsername(ctx *gin.Context, c *Controller, user_id int) {
 
-	guest_id, err := utils.ExtractTokenID(ctx, *ds.Config)
+	guest_id, err := utils.ExtractTokenID(ctx, *c.Config)
 	if err != nil {
-		ds.CalculateAnalytics(ctx, "unknown", user_id)
+		c.CalculateAnalytics(ctx, "unknown", user_id)
 		return
 	}
 
@@ -216,12 +216,12 @@ func getGuestUsername(ctx *gin.Context, ds *DBController, user_id int) {
 	}
 
 	var guest model.User
-	if err := ds.store.GetUserID(&guest, guest_id); err != nil {
+	if err := c.store.GetUserID(&guest, guest_id); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	ds.CalculateAnalytics(ctx, guest.Username, user_id)
+	c.CalculateAnalytics(ctx, guest.Username, user_id)
 }
 
 func checkEmpty(item string) bool {
