@@ -10,6 +10,7 @@ import router from '@/router';
 const accountStore = useAccountStore();
 const authStore = useAuthStore();
 const defaultImage = '/src/assets/user.png';
+let uploadedImage = ref<any>()
 const isImageExist = ref(false)
 const username = ref(localStorage.getItem("currentUsername"));
 const userReq = ref({
@@ -26,6 +27,7 @@ const handleImageUpload = async (event: Event) => {
 
     if (target && target.files && username.value) {
         formData.append("image", target.files[0], target.files[0].name);
+        uploadedImage.value = target.files[0]
         isImageExist.value = true
     }
 
@@ -85,7 +87,7 @@ onMounted(getAccountData);
                 <!-- Profile Image -->
                 <div class="profile-image">
                     <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file">
-                    <img :src="accountStore.user.image || defaultImage" alt="Profile Image" />
+                    <img :src="uploadedImage || accountStore.user.image || defaultImage" alt="Profile Image" />
                 </div>
 
                 <!-- First Name -->

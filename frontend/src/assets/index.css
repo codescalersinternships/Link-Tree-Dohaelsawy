@@ -88,9 +88,10 @@ Button {
 }
 
 .data {
-  font-weight: 800;
+  font-weight: 400;
   font-size: 20px;
   color: #ffffff;
+  /* text-align: left; */
 }
 
 .link {
@@ -209,8 +210,8 @@ textarea {
 }
 
 .profile-image img {
-  width: 80px;
-  height: 80px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ddd;
@@ -282,6 +283,12 @@ tbody tr:hover {
   background-color: #fff6 !important;
 }
 
+a:hover {
+  background-color: #fff6 !important;
+  border-radius: 10px;
+  
+}
+
 tbody tr td,
 tbody tr td p {
   transition: 0.2s ease-in-out;
@@ -294,11 +301,6 @@ tbody tr.hide td p {
   transition: 0.2s ease-in-out 0.5s;
 }
 
-tbody tr.hide td img {
-  width: 0;
-  height: 0;
-  transition: 0.2s ease-in-out 0.5s;
-}
 
 thead th span.icon-arrow {
   display: inline-block;

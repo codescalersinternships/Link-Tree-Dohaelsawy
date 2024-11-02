@@ -30,7 +30,15 @@ const onSubmit = async () => {
     <div class="content">
       <Header></Header>
       <div class="main">
-        <p class="fancy-word">Your Links, Your Story</p>
+          <h1 class="fancy-word">Your Links, Your Story
+            <div class="aurora">
+              <div class="aurora__item"></div>
+              <div class="aurora__item"></div>
+              <div class="aurora__item"></div>
+              <div class="aurora__item"></div>
+            </div>
+          </h1>
+        <!-- <p class="fancy-word">Your Links, Your Story</p> -->
         <p class="normal">share it!</p>
         <Button class="start-button" @click="onSubmit">Get Started!</Button>
       </div>
