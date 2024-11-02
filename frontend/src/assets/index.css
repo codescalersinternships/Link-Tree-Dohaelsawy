@@ -2,10 +2,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap');
 * {
   padding: 0;
   margin: 0;
+  font-family: "Noto Sans Mono", monospace;
 }
 
 .main {
@@ -27,14 +30,14 @@
 
 .normal {
   font-size: 50px;
-  font-family: "Poiret One", sans-serif;
+  font-family: "Noto Sans Mono", monospace;
   font-weight: 100;
 }
 
 .start-button {
   width: 200px;
   height: 50px;
-  font-size: large;
+  font-size: 25px;
 }
 
 .wrapper {
@@ -98,20 +101,6 @@ Button {
   color: #ffffff;
 }
 
-.circular--landscape {
-  display: inline-block;
-  position: relative;
-  width: 200px;
-  height: 120px;
-  overflow: hidden;
-  border-radius: 50%;
-}
-
-.circular--landscape img {
-  width: 100px;
-  height: 100px;
-  margin-left: 50px;
-}
 
 .link {
   display: flex;
@@ -175,7 +164,8 @@ Input {
 .nav-item a {
   color: #fff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 800;
+  font-size: 25px;
   margin: 0px 20px;
   padding: 10px;
 }
@@ -210,8 +200,8 @@ textarea {
   padding: 10px;
   border: 1px solid #120909;
   border-radius: 4px;
-  font-size: 16px;
-  color: #fff;
+  font-size: 18px;
+  /* color: #fff; */
 }
 
 textarea {
@@ -222,6 +212,7 @@ textarea {
 .profile-image {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 15px;
   margin-bottom: 20px;
 }
@@ -239,7 +230,7 @@ textarea {
   padding: 12px;
   background-color: #007bff;
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -257,7 +248,7 @@ textarea {
 }
 .profile-bar a {
   color: #fff;
-  font-size: large;
+  font-size: 20px;
   padding: 20px;
   font-weight: bold;
 }
@@ -328,7 +319,7 @@ thead th span.icon-arrow {
   border: 1.4px solid transparent;
 
   text-align: center;
-  font-size: 1rem;
+  font-size: 20px;
 
   margin-left: 0.5rem;
   transition: 0.2s ease-in-out;
@@ -356,9 +347,19 @@ tbody td.active {
   color: #6c00bd;
 }
 
-@media (max-width: 635px) {
+
+@media (max-width: 1418px) {
   .content {
-    padding: 7px;
+    padding: 30px;
+  }
+
+}
+@media (max-width: 635px) {
+  /* .container{
+    padding:30px;
+  } */
+  .content {
+    padding: 30px;
   }
 
   .fancy-word {
@@ -379,6 +380,9 @@ tbody td.active {
 }
 
 @media (max-width: 476px) {
+  .container{
+    padding:30px;
+  }
   .content {
     padding: 30px;
   }
@@ -422,27 +426,5 @@ tbody td.active {
   }
   .profile-bar a {
     padding: 5px;
-  }
-}
-
-
-.fancy-word {
-  width: 23ch;
-  animation: typing 2s steps(22), blink .5s step-end infinite alternate;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 3px solid;
-  /* font-family: monospace; */
-}
-
-@keyframes typing {
-  from {
-    width: 0
-  }
-}
-    
-@keyframes blink {
-  50% {
-    border-color: transparent
   }
 }

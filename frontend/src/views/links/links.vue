@@ -5,16 +5,17 @@ import { useRouter } from 'vue-router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLinkStore } from '@/stores/linkStore'
-
+import { useAuthStore } from '@/stores/authStore'
 import Header from '@/components/header.vue';
+import type { Link, User } from '@/types/index';
 
-import type { Link } from '@/types/index';
-
-
+const authStore = useAuthStore();
 const isEmpty = ref(true);
-
 const username = ref(localStorage.getItem("currentUsername"));
 const linkStore = useLinkStore();
+const defaultImage = 'src/assets/profile.png';
+const userImage = ref(localStorage.getItem("currentUserImage"))
+
 
 const links: Ref<Link[]> = ref([]);
 
@@ -104,11 +105,11 @@ onMounted(fetchLinks);
                 <div class="sub-container">
                     <div v-if="isEmpty" class="empty">
                         <h2>Nothing!..</h2>
-                        <img src="../../assets/website-design.png" alt="empty">
+                        <img src="/src/assets/website-design.png" alt="empty">
                     </div>
                     <div v-else>
-                        <div class="circular--landscape">
-                            <img src="../../assets/profile.png" />
+                        <div class="profile-image">
+                            <img :src="userImage || defaultImage" alt="Profile Image" />
                         </div>
                         <div class="username">
                             <p class="username">{{ username }}</p>

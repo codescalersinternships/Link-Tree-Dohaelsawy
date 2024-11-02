@@ -68,8 +68,11 @@ export const useAuthStore = defineStore('AuthStore', {
                     localStorage.setItem("currentUser", JSON.stringify(data.data.user));
                     localStorage.setItem("currentUserID", String(data.data.user.id));
                     localStorage.setItem("currentUsername", data.data.user.username);
+                    localStorage.setItem("currentUserImage", data.data.user.image);
                     this.isLogin = true;
+                    this.user = data.data.user
 
+                    console.log(this.user)
                     resolve(data.data.access_token)
                 } catch (error) {
                     const err = error as AxiosError
@@ -91,6 +94,8 @@ export const useAuthStore = defineStore('AuthStore', {
                     const { data } = await axios.get('/auth/logout', {});
                     localStorage.setItem("currentUser", "");
                     localStorage.setItem("currentUsername", "");
+                    localStorage.setItem("currentUserID", "");
+                    localStorage.setItem("currentUserImage", "");
                     this.isLogin = true;
                     router.push("/");
                     resolve(data)

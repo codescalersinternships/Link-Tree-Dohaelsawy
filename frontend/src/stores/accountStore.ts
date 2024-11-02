@@ -38,6 +38,7 @@ export const useAccountStore = defineStore('AccountStore', {
                         '/account/get_account'
                     );
                     this.user = data.data.user
+                    localStorage.setItem("currentUser", JSON.stringify(data.data.user));
                     console.log('Success fetching account', data.data.user);
                     resolve(this.user);
                 } catch (error) {
@@ -60,7 +61,6 @@ export const useAccountStore = defineStore('AccountStore', {
                     });
 
                     console.log('Success updating user', data.data.user);
-
                     resolve(data.data.user)
                 } catch (error) {
                     const err = error as AxiosError
@@ -101,6 +101,7 @@ export const useAccountStore = defineStore('AccountStore', {
                             headers:
                                 { 'Content-Type': 'multipart/form-data' }
                         });
+                    localStorage.setItem("currentUserImage", data.data.user.image);
                     resolve(data.data.user)
                 } catch (error) {
                     const err = error as AxiosError

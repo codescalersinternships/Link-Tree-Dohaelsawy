@@ -17,12 +17,13 @@ const userReq = ref({
 });
 // const userImgUrl = new URL(accountStore.user.image).href
 
+
 const formData = new FormData();
 const handleImageUpload = async (event: Event) => {
     const target = event.target as HTMLInputElement;
 
     if (target && target.files && username.value) {
-        formData.append("image", target.files[0],target.files[0].name);
+        formData.append("image", target.files[0], target.files[0].name);
         isImageExist.value = true
     }
 
@@ -35,6 +36,7 @@ const getAccountData = async () => {
         console.error("Error fetching user:", error);
         alert(error)
     }
+
 }
 
 
@@ -61,11 +63,14 @@ onMounted(getAccountData);
 <template>
     <div class="edit-profile-container">
         <div v-if="userReq">
+            <div class="username">
+                <p class="username">{{ username }}</p>
+            </div>
             <form @submit.prevent="updateProfile" enctype="multipart/form-data">
                 <!-- Profile Image -->
                 <div class="profile-image">
                     <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file">
-                    <img :src="defaultImage" alt="Profile Image" />
+                    <img :src="accountStore.user.image || defaultImage" alt="Profile Image" />
                 </div>
 
                 <!-- First Name -->

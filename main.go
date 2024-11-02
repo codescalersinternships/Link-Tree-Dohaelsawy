@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/aws/aws-sdk-go-v2/config"
+	awsConfig"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
@@ -34,7 +34,7 @@ func main() {
 		return
 	}
 
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := awsConfig.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Printf("error: %v", err)
 		return
@@ -44,7 +44,7 @@ func main() {
 
 	router := gin.Default()
 	router.Use(cors.Default())
-	router.Static("/images", "./database/users_photo/")
+	// router.Static("/images", "./database/users_photo/")
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	config, err := utils.NewConfigController()
