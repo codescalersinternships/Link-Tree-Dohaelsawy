@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
 import type { APIResponse, ErrorRes, Link } from '../types/index'
-import type { promises } from 'dns'
 import type { AxiosError } from 'axios'
 
 export const useLinkStore = defineStore('LinkStore', {

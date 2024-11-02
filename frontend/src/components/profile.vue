@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { User } from '@/types';
 import { onMounted, ref, type Ref } from 'vue';
 import { useAccountStore } from '@/stores/accountStore'
 import { Button } from '@/components/ui/button';

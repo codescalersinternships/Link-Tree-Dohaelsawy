@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
 import type { APIResponse, User, ErrorRes } from '../types/index'
-import { ref } from 'vue';
 import router from '@/router';
 import type { AxiosError } from 'axios';
 

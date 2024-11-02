@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { useLinkStore } from '@/stores/linkStore'
 import { useAuthStore } from '@/stores/authStore'
 import Header from '@/components/header.vue';
-import type { Link, User } from '@/types/index';
+import type { Link } from '@/types/index';
 
 const authStore = useAuthStore();
 const isEmpty = ref(true);
