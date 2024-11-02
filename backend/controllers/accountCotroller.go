@@ -9,6 +9,7 @@ import (
 	"slices"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	awsConfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
@@ -217,7 +218,13 @@ func (c *Controller) UploadUserImage(ctx *gin.Context) {
 		return
 	}
 
-	uploader := manager.NewUploader(c.Client)
+	client, err := prepareAwsClient(c)
+	if err != nil {
+		ErrRespondJSON(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	uploader := manager.NewUploader(client)
 	result, err := uploader.Upload(context.TODO(), &s3.PutObjectInput{
 		Bucket: aws.String("link-tree"),
 		Key:    aws.String(newFileName),
@@ -239,4 +246,14 @@ func (c *Controller) UploadUserImage(ctx *gin.Context) {
 	account.Password = ""
 
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
+}
+
+func prepareAwsClient(c *Controller) (*s3.Client, error) {
+	cfg, err := awsConfig.LoadDefaultConfig(context.TODO(), awsConfig.WithRegion(c.Config.AwsRegion))
+	if err != nil {
+		return nil, err
+	}
+
+	client := s3.NewFromConfig(cfg)
+	return client, nil
 }

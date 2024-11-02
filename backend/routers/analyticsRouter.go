@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/controllers"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
@@ -9,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AnalyticsRouters(db repository.DbInstance, config model.Config, router *gin.Engine, client *s3.Client) {
+func AnalyticsRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
 
-	DBController := controllers.NewController(&db, config, client)
+	DBController := controllers.NewController(&db, config)
 
 	routeGroup := router.Group("/analytics")
 
