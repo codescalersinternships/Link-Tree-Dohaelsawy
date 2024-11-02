@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"path/filepath"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/controllers"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
@@ -48,7 +47,7 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 	for _, test := range testcase {
 
 		router := SetupAccountRouter(suite)
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+		dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 		Token_11, err := createTestToken(11, suite.config.JwtSecret)
 		suite.Require().NoError(err, "Error token generating err")
@@ -80,7 +79,7 @@ func (suite *DatabaseTestSuite) TestEditAccount() {
 
 func (suite *DatabaseTestSuite) TestDeleteAccount() {
 	router := SetupAccountRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 	Token_13, err := createTestToken(13, suite.config.JwtSecret)
 	suite.Require().NoError(err, "Error token generating err")
@@ -107,7 +106,7 @@ func (suite *DatabaseTestSuite) TestDeleteAccount() {
 
 func (suite *DatabaseTestSuite) TestGetAccount() {
 	router := SetupAccountRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 	Token_11, err := createTestToken(11, suite.config.JwtSecret)
 	suite.Require().NoError(err, "Error token generating err")
@@ -133,31 +132,33 @@ func (suite *DatabaseTestSuite) TestGetAccount() {
 }
 
 func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
+	// region := suite.config.AwsRegion
+
 	router := SetupAccountRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 	Token_11, err := createTestToken(11, suite.config.JwtSecret)
 	suite.Require().NoError(err, "Error token generating err")
 
 	router.POST("/add_photo", dbService.UploadUserImage)
 
-	body := new(bytes.Buffer)
+	file, err := os.Open("testdata/image.jpeg")
+	if err != nil {
+		suite.Require().NoError(err, "Error opening image")
+	}
+	defer file.Close()
+
+	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
-	file, err := os.CreateTemp("testdata", "image.png")
-	suite.Require().NoError(err)
-	defer os.Remove(file.Name())
-
-	_, err = file.Write([]byte(""))
-	suite.Require().NoError(err)
-	file.Seek(0, io.SeekStart)
-
-	part, err := writer.CreateFormFile("image", filepath.Base(file.Name()))
-	suite.Require().NoError(err)
-
+	part, err := writer.CreateFormFile("image", file.Name())
+	if err != nil {
+		suite.Require().NoError(err, "Error Create Form File image")
+	}
 	_, err = io.Copy(part, file)
-	suite.Require().NoError(err)
-
+	if err != nil {
+		suite.Require().NoError(err, "Error copy image")
+	}
 	writer.Close()
 
 	req := httptest.NewRequest(http.MethodPost, "/add_photo", body)
@@ -175,7 +176,7 @@ func (suite *DatabaseTestSuite) TestUploadUserPhoto() {
 
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
-	suite.Require().Equal(http.StatusOK, w.Body.String())
+	suite.Require().Equal(http.StatusOK, w.Code)
 
 }
 

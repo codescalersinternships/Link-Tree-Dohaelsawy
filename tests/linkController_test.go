@@ -31,7 +31,7 @@ func (suite *DatabaseTestSuite) TestCreateLink() {
 	for _, test := range testcase {
 
 		router := SetupAccountRouter(suite)
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+		dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 		Token_11, err := createTestToken(11, suite.config.JwtSecret)
 		suite.Require().NoError(err, "Error token generating err")
@@ -63,7 +63,7 @@ func (suite *DatabaseTestSuite) TestCreateLink() {
 
 func (suite *DatabaseTestSuite) TestDeleteLink() {
 	router := SetupAccountRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 	Token_11, err := createTestToken(11, suite.config.JwtSecret)
 	suite.Require().NoError(err, "Error token generating err")
@@ -106,7 +106,7 @@ func (suite *DatabaseTestSuite) TestUpdateLink() {
 
 	for _, test := range testcase {
 		router := SetupAccountRouter(suite)
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+		dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 		Token_11, err := createTestToken(11, suite.config.JwtSecret)
 		suite.Require().NoError(err, "Error token generating err")
@@ -139,7 +139,7 @@ func (suite *DatabaseTestSuite) TestUpdateLink() {
 func (suite *DatabaseTestSuite) TestGetLinks() {
 
 	router := gin.Default()
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 	router.GET("/link_tree/:username", dbService.GetLinks)
 

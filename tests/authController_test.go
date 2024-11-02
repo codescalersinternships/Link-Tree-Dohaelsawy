@@ -56,7 +56,7 @@ func (suite *DatabaseTestSuite) TestRegister() {
 	for _, test := range testcase {
 
 		router := SetupAuthRouter(suite)
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+		dbService := controllers.NewController(&suite.DbInstance, suite.config)
 		router.POST("/register", dbService.Register)
 
 		jsonValue, err := json.Marshal(test.user)
@@ -100,7 +100,7 @@ func (suite *DatabaseTestSuite) TestLogin() {
 
 		router := SetupAuthRouter(suite)
 
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+		dbService := controllers.NewController(&suite.DbInstance, suite.config)
 		router.POST("/login", dbService.Login)
 
 		jsonValue, err := json.Marshal(test.user)
@@ -119,7 +119,7 @@ func (suite *DatabaseTestSuite) TestLogin() {
 func (suite *DatabaseTestSuite) TestLogout() {
 	router := SetupAuthRouter(suite)
 
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 	router.GET("/logout", dbService.Logout)
 
 	req, err := http.NewRequest("GET", "/logout", nil)

@@ -8,6 +8,7 @@ import (
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -20,15 +21,14 @@ type DatabaseTestSuite struct {
 }
 
 func TestSuite(t *testing.T) {
-
-	setEnvVariables()
-
 	suite.Run(t, new(DatabaseTestSuite))
 }
 
 func (suite *DatabaseTestSuite) SetupSuite() {
 
-	suite.config = NewTestConfigController()
+	config, err := NewTestConfigController()
+	suite.Require().NoError(err, "Error loading envs")
+	suite.config = config
 	conString := prepareDbTestingConnectionString(suite.config)
 	fmt.Println(conString)
 
@@ -84,36 +84,31 @@ func (suite *DatabaseTestSuite) TearDownSuite() {
 // TestSuite runs the test suite.
 
 func prepareDbTestingConnectionString(config model.Config) string {
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbName, config.DbPort)
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbHost ,config.DbUser, config.DbPassword, config.DbName, config.DbPort)
 }
 
-func NewTestConfigController() model.Config {
-	return model.Config{
-		DbHost:            os.Getenv("DB_TEST_HOST"),
-		DbUser:            os.Getenv("DB_TEST_USER"),
-		DbPassword:        os.Getenv("DB_TEST_PASSWORD"),
-		DbName:            os.Getenv("DB_TEST_NAME"),
-		DbPort:            os.Getenv("DB_TEST_PORT"),
-		Port:              os.Getenv("PORT"),
-		JwtSecret:         os.Getenv("JWT_SECRET"),
-		TokenHourLifeTime: os.Getenv("TOKEN_HOUR_LIFESPAN"),
-		BaseUrl:           os.Getenv("BASE_URL"),
+func NewTestConfigController() (model.Config , error) {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		return model.Config{}, err
 	}
+
+	return model.Config{
+		DbHost:             os.Getenv("DB_TEST_HOST"),
+		DbUser:             os.Getenv("DB_TEST_USER"),
+		DbPassword:         os.Getenv("DB_TEST_PASSWORD"),
+		DbName:             os.Getenv("DB_TEST_NAME"),
+		DbPort:             os.Getenv("DB_TEST_PORT"),
+		Port:               os.Getenv("PORT"),
+		JwtSecret:          os.Getenv("JWT_SECRET"),
+		TokenHourLifeTime:  os.Getenv("TOKEN_HOUR_LIFESPAN"),
+		BaseUrl:            os.Getenv("BASE_URL"),
+		AwsRegion:          os.Getenv("AWS_REGION"),
+		AwsAccessKeyID:     os.Getenv("AWS_ACCESS_KEY_ID"),
+		AwsSecretAccessKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
+	}, nil
 }
 
 func createTestToken(id uint, secretToken string) (string, error) {
-
 	return utils.CreateToken(id, 24, secretToken)
-}
-
-func setEnvVariables() {
-	os.Setenv("DB_TEST_HOST", "localhost")
-	os.Setenv("DB_TEST_USER", "admin")
-	os.Setenv("DB_TEST_PASSWORD", "adminpassword")
-	os.Setenv("DB_TEST_NAME", "linktreedbtest")
-	os.Setenv("DB_TEST_PORT", "4568")
-	os.Setenv("PORT", "8010")
-	os.Setenv("JWT_SECRET", "super_secure")
-	os.Setenv("TOKEN_HOUR_LIFESPAN", "24")
-	os.Setenv("BASE_URL", "http://localhost:8010")
 }

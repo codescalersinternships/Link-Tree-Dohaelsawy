@@ -12,7 +12,7 @@ import (
 
 func (suite *DatabaseTestSuite) TestGetAnalytics() {
 	router := SetupAnalyticsRouter(suite)
-	dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+	dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 	Token_11, err := createTestToken(11, suite.config.JwtSecret)
 	suite.Require().NoError(err, "Error token generating err")
@@ -56,7 +56,7 @@ func (suite *DatabaseTestSuite) TestCalculateAnalytics() {
 	}
 
 	for _, test := range testcase {
-		dbService := controllers.NewDBService(&suite.DbInstance, suite.config)
+		dbService := controllers.NewController(&suite.DbInstance, suite.config)
 
 		w := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(w)
