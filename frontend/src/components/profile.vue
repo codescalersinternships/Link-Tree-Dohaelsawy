@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { useAccountStore } from '@/stores/accountStore'
+import { useAuthStore } from '@/stores/authStore'
+
 import { Button } from '@/components/ui/button';
+import router from '@/router';
 
 
 const accountStore = useAccountStore();
+const authStore = useAuthStore();
 const defaultImage = '/src/assets/user.png';
 const isImageExist = ref(false)
 const username = ref(localStorage.getItem("currentUsername"));
@@ -14,7 +18,6 @@ const userReq = ref({
     phone: accountStore.user.phone,
     bio: accountStore.user.bio,
 });
-// const userImgUrl = new URL(accountStore.user.image).href
 
 
 const formData = new FormData();
@@ -52,6 +55,19 @@ const updateProfile = async () => {
         alert(error)
     }
 }
+
+const deleteProfile = async () => {
+    try {
+        await accountStore.deleteAccount();
+        await authStore.logoutUser();
+        router.push('/').then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        alert(error)
+    }
+}
 onMounted(getAccountData);
 
 // ../../../backend/database/users_photo/d2002@.png
@@ -62,8 +78,8 @@ onMounted(getAccountData);
 <template>
     <div class="edit-profile-container">
         <div v-if="userReq">
-            <div class="username">
-                <p class="username">{{ username }}</p>
+            <div class="data">
+                <p>{{ username }}</p>
             </div>
             <form @submit.prevent="updateProfile" enctype="multipart/form-data">
                 <!-- Profile Image -->
@@ -100,6 +116,7 @@ onMounted(getAccountData);
                 <Button variant="default" @click="updateProfile">Submit</Button>
             </form>
         </div>
-
     </div>
+    <Button variant="destructive" @click="deleteProfile" class="buttons">Delete Account</Button>
+
 </template>

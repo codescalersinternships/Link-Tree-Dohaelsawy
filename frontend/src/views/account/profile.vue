@@ -38,7 +38,7 @@ onMounted(fetchLinks);
         <div class="content">
             <Header></Header>
             <div class="container">
-                <div class="sub-container">
+                <div class="flex flex-col justify-center items-center">
                     <div class="profile-bar">
                         <a href="/account/get_account/">Edit Profile</a>
                         <a :href="analyticsUrl"> Show Analytics</a>

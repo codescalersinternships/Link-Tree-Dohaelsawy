@@ -50,7 +50,7 @@ const onSubmitProfile = async () => {
                     <a href="/" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">About</a>
+                    <a href="/about" class="nav-link">About Me</a>
                 </li>
                 <li class="nav-item">
                     <a @click="onSubmitLinkTree" class="nav-link" href="">Link Tree</a>

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { useLinkStore } from '@/stores/linkStore'
 import { useAuthStore } from '@/stores/authStore'
 import Header from '@/components/header.vue';
-import type { Link } from '@/types/index';
+import type { Link, User } from '@/types/index';
 
 const authStore = useAuthStore();
 const isEmpty = ref(true);
@@ -15,6 +15,8 @@ const username = ref(localStorage.getItem("currentUsername"));
 const linkStore = useLinkStore();
 const defaultImage = 'src/assets/profile.png';
 const userImage = ref(localStorage.getItem("currentUserImage"))
+const userData = ref<User | null>(JSON.parse(localStorage.getItem("currentUser") || "null") as User | null);
+
 
 
 const links: Ref<Link[]> = ref([]);
@@ -102,7 +104,7 @@ onMounted(fetchLinks);
             <Header></Header>
 
             <div class="container">
-                <div class="sub-container">
+                <div class="flex flex-col justify-center items-center">
                     <div v-if="isEmpty" class="empty">
                         <h2>Nothing!..</h2>
                         <img src="/src/assets/website-design.png" alt="empty">
@@ -111,15 +113,20 @@ onMounted(fetchLinks);
                         <div class="profile-image">
                             <img :src="userImage || defaultImage" alt="Profile Image" />
                         </div>
-                        <div class="username">
-                            <p class="username">{{ username }}</p>
+                        <div class="data">
+                            <p class="username">{{ userData?.username }}</p>
                         </div>
-
+                        <div class="data">
+                            <p class="username">{{ userData?.phone }}</p>
+                        </div>
+                        <div class="data">
+                            <p class="username">{{ userData?.bio }}</p>
+                        </div>
                         <div v-for="link in links" class="link">
                             <div class="link-content">
                                 <div v-if="wantUpdateLink.wantUpdate === true && wantUpdateLink.link_id === link.id">
                                     <form @submit.prevent="onSubmitUpdateLink(link.id)">
-                                        <div class="grid gap-2 flex flex-col justify-center items-center">
+                                        <div class="grid gap-2 flex-col justify-center items-center">
                                             <div class="link-content">
                                                 <Input id="name" type="text" v-model="form.name" />
                                                 <Input id="url" type="text" v-model="form.url" />
@@ -142,7 +149,7 @@ onMounted(fetchLinks);
                     </div>
                     <div v-if="wantAddLink === true" class="">
                         <form @submit.prevent="onSubmitLink">
-                            <div class="grid gap-2  flex flex-col justify-center items-center link">
+                            <div class="grid gap-2 flex-col justify-center items-center link">
                                 <div class="link-content ">
                                     <Input id="name" type="text" placeholder="link name" v-model="form.name" />
                                     <Input id="url" type="text" placeholder="link url" v-model="form.url" />

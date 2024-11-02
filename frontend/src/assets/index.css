@@ -2,9 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Noto+Sans+Mono:wght@100..900&family=Poiret+One&display=swap");
 * {
   padding: 0;
   margin: 0;
@@ -74,14 +74,6 @@
   flex-direction: column;
 }
 
-.sub-container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  height: max-content;
-}
-
 Button {
   width: 150px;
   height: 100px;
@@ -95,12 +87,11 @@ Button {
   margin-top: 20px;
 }
 
-.username {
+.data {
   font-weight: 800;
   font-size: 20px;
   color: #ffffff;
 }
-
 
 .link {
   display: flex;
@@ -257,18 +248,16 @@ table {
   width: 100%;
 }
 
-
 table,
-th
-{
+th {
   border-collapse: collapse;
   padding: 1rem;
   text-align: center;
-  color:#fff;
+  color: #fff;
 }
 
 td {
-  color:#000;
+  color: #000;
 }
 
 thead th {
@@ -294,7 +283,7 @@ tbody tr:hover {
 }
 
 tbody tr td,
-tbody tr td p,{
+tbody tr td p {
   transition: 0.2s ease-in-out;
 }
 
@@ -348,13 +337,29 @@ tbody td.active {
 }
 
 
+.about {
+  display:flex;
+  flex-direction:row;
+}
+.about img {
+  max-width:500px;
+  max-height:500px;
+}
+
 @media (max-width: 1418px) {
   .content {
     padding: 30px;
   }
-
+  .about {
+    display:flex;
+    flex-direction:column;
+  }
+  .about img {
+    max-width:200px;
+    max-height:200px;
+  }
 }
-@media (max-width: 635px) {
+@media (max-width: 833px) {
   /* .container{
     padding:30px;
   } */
@@ -363,25 +368,28 @@ tbody td.active {
   }
 
   .fancy-word {
-    font-size: 70px;
+    font-size: 100px;
   }
   .nav-item a {
     margin: 0px 10px;
     padding: 5px;
-    font-weight: 300;
+    font-weight: 400;
+    font-size:15px;
   }
   .navbar {
     padding-top: 10px;
   }
   Button {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
   }
+
+
 }
 
-@media (max-width: 476px) {
-  .container{
-    padding:30px;
+@media (max-width: 515px) {
+  .container {
+    padding: 30px;
   }
   .content {
     padding: 30px;
@@ -390,13 +398,13 @@ tbody td.active {
     padding-top: 20px;
   }
   .fancy-word {
-    font-size: 40px;
+    font-size: 60px;
   }
   .navbar {
     padding-top: 5px;
   }
   Button {
-    width: 90px;
+    width: 140px;
     height: 90px;
   }
   .normal {
@@ -417,8 +425,8 @@ tbody td.active {
   }
   .profile-image {
     margin-bottom: 5px;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
   }
   .profile-image img {
     width: 40px;
