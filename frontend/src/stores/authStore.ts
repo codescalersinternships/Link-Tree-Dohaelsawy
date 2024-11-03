@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('AuthStore', {
 
     getters: {
         returnIsLogin(): boolean {
-            return localStorage.getItem("currentUsername") !== ""
+            return localStorage.getItem("currentUser")?.length !== 0 && localStorage.length !== 0
         },
     },
 
@@ -75,8 +75,8 @@ export const useAuthStore = defineStore('AuthStore', {
                     resolve(data.data.access_token)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
+                    console.log(response.error)
                     reject(response.error)
                 }
 

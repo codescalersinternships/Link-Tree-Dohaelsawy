@@ -40,8 +40,8 @@ onMounted(fetchLinks);
             <div class="container">
                 <div class="flex flex-col justify-center items-center">
                     <div class="profile-bar">
-                        <a href="/account/get_account/">Edit Profile</a>
-                        <a :href="analyticsUrl"> Show Analytics</a>
+                        <a href="/account/get_account/" cy="profile-edit">Edit Profile</a>
+                        <a :href="analyticsUrl" cy="profile-analysis"> Show Analytics</a>
                     </div>
                     <Profile></Profile>
                 </div>

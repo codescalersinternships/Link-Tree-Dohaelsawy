@@ -128,9 +128,9 @@ onMounted(fetchLinks);
                                     <form @submit.prevent="onSubmitUpdateLink(link.id)">
                                         <div class="grid gap-2 flex-col justify-center items-center">
                                             <div class="link-content">
-                                                <Input id="name" type="text" v-model="form.name" />
-                                                <Input id="url" type="text" v-model="form.url" />
-                                                <Button variant="outline">Submit</Button>
+                                                <Input id="name" type="text" v-model="form.name" cy="edit-name"/>
+                                                <Input id="url" type="text" v-model="form.url" cy="edit-url"/>
+                                                <Button variant="outline" cy="edit-btn">Submit</Button>
                                             </div>
                                         </div>
                                     </form>
@@ -141,9 +141,9 @@ onMounted(fetchLinks);
                                 </div>
                             </div>
                             <div class="link-icon">
-                                <i class="fa-solid fa-trash" @click="onSubmitDeleteLink(link.id)"></i>
+                                <i class="fa-solid fa-trash" @click="onSubmitDeleteLink(link.id)" cy="link-delete"></i>
                                 <i class="fa-regular fa-pen-to-square"
-                                    @click="wantUpdateLink.wantUpdate = opposite(wantUpdateLink.wantUpdate); wantUpdateLink.link_id = link.id"></i>
+                                    @click="wantUpdateLink.wantUpdate = opposite(wantUpdateLink.wantUpdate); wantUpdateLink.link_id = link.id" cy="link-edit"></i>
                             </div>
                         </div>
                     </div>
@@ -151,16 +151,16 @@ onMounted(fetchLinks);
                         <form @submit.prevent="onSubmitLink">
                             <div class="grid gap-2 flex-col justify-center items-center link">
                                 <div class="link-content ">
-                                    <Input id="name" type="text" placeholder="link name" v-model="form.name" />
-                                    <Input id="url" type="text" placeholder="link url" v-model="form.url" />
-                                    <Button variant="outline">Submit</Button>
+                                    <Input id="name" type="text" v-model="form.name" cy="add-name"/>
+                                    <Input id="url" type="text" v-model="form.url" cy="add-url"/>
+                                    <Button variant="outline" cy="add-btn">Submit</Button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="buttons">
-                        <Button @click="wantAddLink = opposite(wantAddLink)">Add Link</Button>
-                        <Button @click="onSubmitLiveDemo">Live Demo</Button>
+                        <Button @click="wantAddLink = opposite(wantAddLink)" cy="add-link-btn">Add Link</Button>
+                        <Button @click="onSubmitLiveDemo" cy="live-demo-btn">Live Demo</Button>
                     </div>
 
                 </div>

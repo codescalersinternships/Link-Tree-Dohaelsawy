@@ -30,7 +30,7 @@ const onSubmit = async () => {
     <div class="content">
       <Header></Header>
       <div class="main">
-          <h1 class="fancy-word">Your Links, Your Story
+          <h1 class="fancy-word" cy="welcome-word">Your Links, Your Story
             <div class="aurora">
               <div class="aurora__item"></div>
               <div class="aurora__item"></div>
@@ -38,9 +38,8 @@ const onSubmit = async () => {
               <div class="aurora__item"></div>
             </div>
           </h1>
-        <!-- <p class="fancy-word">Your Links, Your Story</p> -->
         <p class="normal">share it!</p>
-        <Button class="start-button" @click="onSubmit">Get Started!</Button>
+        <Button class="start-button" @click="onSubmit" cy="get-start-btn">Get Started!</Button>
       </div>
     </div>
   </div>

@@ -37,7 +37,7 @@ const onSubmit = async () => {
     router.push('/auth/login');
   } catch (error) {
     alert(error);
-    console.error('Logout failed', error);
+    console.error('register failed', error);
   } finally {
   }
 
@@ -73,11 +73,11 @@ const onSubmit = async () => {
                 </div>
                 <div class="grid gap-2">
                   <Label for="password">Password</Label>
-                  <Input id="password" type="password" v-model="form.password" />
+                  <Input id="password" type="password" v-model="form.password" cy="password"/>
                 </div>
               </CardContent>
               <CardFooter class="flex-col space-y-2">
-                <Button class="w-full" type="submit"> Register </Button>
+                <Button class="w-full" type="submit" cy="register-btn"> Register </Button>
                 <p>
                   Already have an account?
                   <RouterLink to="/auth/login"

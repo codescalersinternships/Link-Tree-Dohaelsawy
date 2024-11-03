@@ -40,6 +40,6 @@ func (db *DbInstance) PutOneUser(u *model.User, id int) (err error) {
 }
 
 func (db *DbInstance) DeleteUser(u *model.User, id int) (err error) {
-	db.DB.Where("id = ?", id).Delete(u)
+	db.DB.Unscoped().Delete(&model.User{}, id)
 	return nil
 }

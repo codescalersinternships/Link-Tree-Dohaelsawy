@@ -27,7 +27,7 @@ const handleImageUpload = async (event: Event) => {
 
     if (target && target.files && username.value) {
         formData.append("image", target.files[0], target.files[0].name);
-        uploadedImage.value = target.files[0]
+        uploadedImage.value = URL.createObjectURL(target.files[0]);
         isImageExist.value = true
     }
 
@@ -72,7 +72,6 @@ const deleteProfile = async () => {
 }
 onMounted(getAccountData);
 
-// ../../../backend/database/users_photo/d2002@.png
 </script>
 
 
@@ -86,8 +85,8 @@ onMounted(getAccountData);
             <form @submit.prevent="updateProfile" enctype="multipart/form-data">
                 <!-- Profile Image -->
                 <div class="profile-image">
-                    <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file">
-                    <img :src="uploadedImage || accountStore.user.image || defaultImage" alt="Profile Image" />
+                    <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file" cy="img">
+                    <img :src="uploadedImage || accountStore.user.image || defaultImage" alt="Profile Image"  />
                 </div>
 
                 <!-- First Name -->
@@ -111,14 +110,14 @@ onMounted(getAccountData);
                 <!-- Bio -->
                 <div class="form-group">
                     <label for="bio">Bio</label>
-                    <textarea id="bio" v-model="userReq.bio"></textarea>
+                    <textarea id="bio" v-model="userReq.bio" cy="bio"></textarea>
                 </div>
 
                 <!-- Submit Button -->
-                <Button variant="default" @click="updateProfile">Submit</Button>
+                <Button variant="default" @click="updateProfile" cy="profile-update-btn">Submit</Button>
             </form>
         </div>
     </div>
-    <Button variant="destructive" @click="deleteProfile" class="buttons">Delete Account</Button>
+    <Button variant="destructive" @click="deleteProfile" class="buttons" cy="profile-delete-btn">Delete Account</Button>
 
 </template>

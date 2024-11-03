@@ -50,15 +50,15 @@ const onSubmit = async () => {
               <CardContent class="grid gap-4">
                 <div class="grid gap-2">
                   <Label for="username">Email</Label>
-                  <Input id="email" type="text" placeholder="email" v-model="form.email" />
+                  <Input id="email" type="text" placeholder="email" v-model="form.email" cy="login-email" />
                 </div>
                 <div class="grid gap-2">
                   <Label for="password">Password</Label>
-                  <Input id="password" type="password" v-model="form.password" />
+                  <Input id="password" type="password" v-model="form.password" cy="login-password"/>
                 </div>
               </CardContent>
               <CardFooter class="flex-col space-y-2">
-                <Button class="w-full" type="submit"> Login </Button>
+                <Button class="w-full" type="submit" cy="login-btn"> Login </Button>
                 <p>
                   Don't have an account?
                   <RouterLink to="/auth/register"

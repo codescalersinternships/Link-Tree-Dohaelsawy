@@ -16,7 +16,7 @@ import Header from '@/components/header.vue'
             <div class="container">
                 <div class="flex justify-center items-center gap-4 about">
                     <div>
-                        <img src="/src/assets/me.jpg" alt="me" class="rounded-lg">
+                        <img src="/src/assets/me.jpg" alt="me" class="rounded-lg" cy="me-img">
                     </div>
                     <div class="data text-left">
                         <p>Hi, welcome! It's me, Doha, a recent graduate from Helwan University,<br>class of 2024.<br> This

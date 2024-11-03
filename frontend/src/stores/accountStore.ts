@@ -56,7 +56,7 @@ export const useAccountStore = defineStore('AccountStore', {
 
                 try {
 
-                    const { data } = await axios.put<APIResponse<{ user: User }>>('account/edit_account/', {
+                    const { data } = await axios.put<APIResponse<{ user: User }>>('account/edit_account', {
                         ...form
                     });
 
@@ -95,7 +95,7 @@ export const useAccountStore = defineStore('AccountStore', {
 
                 try {
                     const { data } = await axios.post(
-                        '/account/add_photo/',
+                        '/account/add_photo',
                         image,
                         {
                             headers:
