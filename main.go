@@ -4,13 +4,13 @@ import (
 	"log"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
 	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
 	route "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/routers"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
 	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/docs"
 
 	"github.com/gin-gonic/gin"
-	cors "github.com/rs/cors/wrapper/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -32,12 +32,7 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.Use(cors.New(cors.Options{
-		AllowedOrigins:     []string{"http://localhost:5173"},
-        AllowedMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-        AllowedHeaders:     []string{"Content-Type", "Authorization"}, 
-        AllowCredentials: true, 
-	}))
+	router.Use(middleware.CorsMiddleware())
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
