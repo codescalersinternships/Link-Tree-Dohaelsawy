@@ -32,7 +32,13 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Options{
+		AllowedOrigins:     []string{"http://localhost:5173"},
+        AllowedMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+        AllowedHeaders:     []string{"Content-Type", "Authorization"}, 
+        AllowCredentials: true, 
+	}))
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	config, err := utils.NewConfigController()
