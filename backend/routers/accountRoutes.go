@@ -14,6 +14,7 @@ func AccountRouters(db repository.DbInstance, config model.Config, router *gin.E
 
 	routeGroup := router.Group("/account")
 	routeGroup.GET("/search",Controller.UsernameSearch)
+	routeGroup.GET("/:username",Controller.GetAccountByUsername)
 
 	routeGroup.Use(middleware.AuthMiddleware(config))
 	routeGroup.PUT("/edit_account", Controller.EditAccount)
