@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from '@/plugins/axios'
-import type { APIResponse, ErrorRes, Link } from '../types/index'
+import type { APIResponse, ErrorRes, Link, User } from '../types/index'
 import type { AxiosError } from 'axios'
 
 export const useLinkStore = defineStore('LinkStore', {
@@ -59,17 +59,15 @@ export const useLinkStore = defineStore('LinkStore', {
             return new Promise<Link[]>(async (resolve, reject) => {
                 try {
                     const { data } = await axios.get<APIResponse<{links:Link[]}>>(`/link_tree/${username}`);
-                    // console.log('links', data.data);
                     resolve(data.data.links)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
                     reject(response.error)
                 }
 
             })
-
+                    
         },
 
         async deleteLink(link_id: number) {

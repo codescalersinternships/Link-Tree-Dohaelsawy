@@ -19,7 +19,6 @@ export const useAccountStore = defineStore('AccountStore', {
                     const { data } = await axios.get<APIResponse<{ analytics: Analytics[]}>>(
                         `/analytics/get_analytics/${user_id}`
                     );
-                    console.log('Success getting analytics', data.data.analytics);
                     resolve(data.data.analytics);
                 } catch (error) {
                     const err = error as AxiosError
@@ -39,7 +38,6 @@ export const useAccountStore = defineStore('AccountStore', {
                     );
                     this.user = data.data.user
                     localStorage.setItem("currentUser", JSON.stringify(data.data.user));
-                    console.log('Success fetching account', data.data.user);
                     resolve(this.user);
                 } catch (error) {
                     const err = error as AxiosError
@@ -50,6 +48,25 @@ export const useAccountStore = defineStore('AccountStore', {
                 }
             })
         },
+
+        async getAccountByUsername(username: string): Promise<User> {
+            return new Promise<User>(async (resolve, reject) => {
+                try {
+                    const { data } = await axios.get<APIResponse<{ user: User }>>(
+                        `/account/${username}`
+                    );
+                    this.user = data.data.user
+                    resolve(data.data.user);
+                } catch (error) {
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
+                    reject(error);
+                }
+            })
+        },
+
 
         async updateAccount(form: Record<string, string>): Promise<User> {
             return new Promise<User>(async (resolve, reject) => {
@@ -76,7 +93,6 @@ export const useAccountStore = defineStore('AccountStore', {
             return new Promise(async (resolve, reject) => {
                 try {
                     const { data } = await axios.delete('/account/delete_account');
-                    console.log('user', data.data);
                     resolve(data.data)
                 } catch (error) {
                     const err = error as AxiosError
@@ -114,5 +130,26 @@ export const useAccountStore = defineStore('AccountStore', {
 
         },
 
+        async getUsernameSearch(searchTerm: string): Promise<string> {
+            return new Promise<string>(async (resolve, reject) => {
+                try {
+                    const { data } = await axios.get<APIResponse<{ usernames: string[] }>>(
+                        '/account/search'
+                    );
+                    const username = data.data.usernames.find((username)=> username === searchTerm)
+                    if (username !== undefined) {
+                        resolve(username);
+                    }else {
+                        reject("can't find username")
+                    }                    
+                } catch (error) {
+                    const err = error as AxiosError
+                    console.log(err.response?.data)
+                    const response = err.response?.data as ErrorRes
+                    reject(response.error)
+                    reject(error);
+                }
+            })
+        }
     },
 })
