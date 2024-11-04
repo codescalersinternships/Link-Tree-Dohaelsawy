@@ -71,6 +71,45 @@ info:
   title: LinkTree
   version: "1.0"
 paths:
+  /account/{username}:
+    get:
+      consumes:
+      - application/json
+      description: Get Account data
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+      security:
+      - basic: []
+      summary: Get Account by username
+      tags:
+      - account
   /account/add_photo:
     post:
       consumes:
@@ -215,6 +254,39 @@ paths:
       security:
       - basic: []
       summary: Get Account
+      tags:
+      - account
+  /account/search:
+    get:
+      consumes:
+      - application/json
+      description: returns all usernames
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrResponse'
+      security:
+      - basic: []
+      summary: returns all usernames
       tags:
       - account
   /analytics/get_analytics/{user_id}:

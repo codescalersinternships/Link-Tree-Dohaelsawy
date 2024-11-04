@@ -11,14 +11,6 @@
   font-family: "Noto Sans Mono", monospace;
 }
 
-.main {
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: #fff;
-  min-height: auto;
-}
 
 .fancy-word {
   display: inline-block;
@@ -43,23 +35,12 @@
 .wrapper {
   position: relative;
   width: 100%;
-  background-image: url("pexels-codioful-7130560.jpg");
+  background-image: url("background2.png");
   background-size: cover;
   background-position: center;
   background-repeat: repeat-y;
   font-family: "Noto Sans Mono", monospace;
-}
-
-.content {
-  background-color: #00000050;
-  padding-bottom: 30px;
-  min-height: auto;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 100vh;
+  min-height:100vh;
 }
 
 .container {
@@ -69,6 +50,7 @@
   border-radius: 20px;
   background-color: rgba(255, 245, 232, 0.341);
   text-align: center;
+  align-items:center;
   justify-content: center;
   flex-direction: column;
 }
@@ -135,7 +117,7 @@ Input {
 }
 
 .navbar {
-  background-color: #00000050;
+  /* background-color: #00000050; */
   min-width: 100px;
   padding-top: 30px;
   display: flex;
@@ -160,6 +142,7 @@ Input {
   font-size: 25px;
   margin: 0px 20px;
   padding: 10px;
+  flex-direction:row;
 }
 
 .edit-profile-container {
@@ -361,7 +344,7 @@ tbody td.active {
     max-height:200px;
   }
 }
-@media (max-width: 833px) {
+@media (max-width: 1098px) {
   /* .container{
     padding:30px;
   } */
@@ -374,7 +357,7 @@ tbody td.active {
   }
   .nav-item a {
     margin: 0px 10px;
-    padding: 5px;
+    padding: 3px;
     font-weight: 400;
     font-size:15px;
   }
@@ -389,9 +372,9 @@ tbody td.active {
 
 }
 
-@media (max-width: 515px) {
+@media (max-width: 798px) {
   .container {
-    padding: 30px;
+    padding: 35px;
   }
   .content {
     padding: 30px;
@@ -406,7 +389,7 @@ tbody td.active {
     padding-top: 5px;
   }
   Button {
-    width: 140px;
+    width: 130px;
     height: 90px;
   }
   .normal {
@@ -423,7 +406,7 @@ tbody td.active {
   .edit-profile-container {
     max-width: 150;
     margin: 5px;
-    padding: 10px;
+    padding: 5px;
   }
   .profile-image {
     margin-bottom: 5px;
