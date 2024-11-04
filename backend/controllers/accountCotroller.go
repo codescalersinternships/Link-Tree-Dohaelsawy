@@ -248,6 +248,24 @@ func (c *Controller) UploadUserImage(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
+
+func (c *Controller) UsernameSearch(ctx *gin.Context) {
+	var users []model.User
+	var usernames []string
+
+	err := c.store.GetAllUsers(&users)
+	if err != nil {
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	for _, user := range users{
+		usernames = append(usernames, user.Username)
+	}
+
+	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"usernames": usernames})
+}
+
 func prepareAwsClient(c *Controller) (*s3.Client, error) {
 	cfg, err := awsConfig.LoadDefaultConfig(context.TODO(), awsConfig.WithRegion(c.Config.AwsRegion))
 	if err != nil {

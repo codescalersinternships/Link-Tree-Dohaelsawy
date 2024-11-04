@@ -43,3 +43,11 @@ func (db *DbInstance) DeleteUser(u *model.User, id int) (err error) {
 	db.DB.Unscoped().Delete(&model.User{}, id)
 	return nil
 }
+
+
+func (db *DbInstance) GetAllUsers(u *[]model.User) (err error) {
+	if err := db.DB.Find(u).Error; err != nil {
+		return err
+	}
+	return nil
+}

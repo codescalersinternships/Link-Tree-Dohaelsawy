@@ -28,6 +28,7 @@ type Store interface {
 	UpdateAnalytics(a *model.Analytics, id int) (err error)
 	GetAnalyticsForGuestUsername(a *model.Analytics, guestUsername string, userId int) (err error)
 	GetUserUsername(u *model.User, username string) (err error)
+	GetAllUsers(u *[]model.User) (err error)
 }
 
 type DbInstance struct {
