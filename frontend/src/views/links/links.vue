@@ -55,8 +55,9 @@ const onSubmitLink = async () => {
         alert(error);
     }
 }
+
 const onSubmitLiveDemo = () => {
-    router.push('/link_tree/' + localStorage.getItem("currentUsername"));
+    router.push(`/link_tree/${username.value}`)
 }
 
 const onSubmitDeleteLink = async (link_id: number) => {
@@ -104,7 +105,7 @@ onMounted(fetchLinks);
             <div class="container">
                 <div class="flex flex-col justify-center items-center">
                     <div v-if="isEmpty" class="empty">
-                        <h2>Nothing!..</h2>
+                        <h2 class="text-white font-bold text-lg">Nothing!..</h2>
                         <img src="/src/assets/website-design.png" alt="empty">
                     </div>
                     <div v-else>
@@ -122,18 +123,18 @@ onMounted(fetchLinks);
                         </div>
                         <div v-for="link in links" class="link">
                             <div class="link-content">
-                                <div v-if="wantUpdateLink.wantUpdate === true && wantUpdateLink.link_id === link.id">
+                                <div v-show="wantUpdateLink.wantUpdate && wantUpdateLink.link_id === link.id">
                                     <form @submit.prevent="onSubmitUpdateLink(link.id)">
                                         <div class="grid gap-2 flex-col justify-center items-center">
                                             <div class="link-content">
-                                                <Input id="name" type="text" v-model="form.name" cy="edit-name"/>
-                                                <Input id="url" type="text" v-model="form.url" cy="edit-url"/>
+                                                <Input id="name" type="text" v-model="form.name" class="placeholder:text-white" placeholder="description of url"cy="edit-name"/>
+                                                <Input id="url" type="text" v-model="form.url" class="placeholder:text-white" placeholder="url" cy="edit-url"/>
                                                 <Button variant="outline" cy="edit-btn">Submit</Button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                                <div v-else>
+                                <div v-show="wantUpdateLink.wantUpdate">
                                     <p class="link-name">{{ link.name }}</p>
                                     <a :href="link.url" class="link-url">{{ link.url }}</a>
                                 </div>
@@ -145,12 +146,12 @@ onMounted(fetchLinks);
                             </div>
                         </div>
                     </div>
-                    <div v-if="wantAddLink === true" class="">
+                    <div v-show="wantAddLink" class="">
                         <form @submit.prevent="onSubmitLink">
                             <div class="grid gap-2 flex-col justify-center items-center link">
                                 <div class="link-content ">
-                                    <Input id="name" type="text" v-model="form.name" cy="add-name"/>
-                                    <Input id="url" type="text" v-model="form.url" cy="add-url"/>
+                                    <Input id="name" type="text" v-model="form.name" class="placeholder:text-white" placeholder="description of url" cy="add-name"/>
+                                    <Input id="url" type="text" v-model="form.url" class="placeholder:text-white" placeholder="url" cy="add-url"/>
                                     <Button variant="outline" cy="add-btn">Submit</Button>
                                 </div>
                             </div>

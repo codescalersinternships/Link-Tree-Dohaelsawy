@@ -27,19 +27,17 @@ const onSubmit = async () => {
 <template>
   <div class="wrapper">
     <Header></Header>
-    <div class="content">
-      <div class="main">
-          <h1 class="fancy-word" cy="welcome-word">Your Links, Your Story
-            <div class="aurora">
-              <div class="aurora__item"></div>
-              <div class="aurora__item"></div>
-              <div class="aurora__item"></div>
-              <div class="aurora__item"></div>
-            </div>
-          </h1>
-        <p class="normal">share it!</p>
-        <Button class="start-button" @click="onSubmit" cy="get-start-btn">Get Started!</Button>
-      </div>
+    <div class="content flex flex-col justify-center items-center text-center py-40">
+      <h1 class="fancy-word" cy="welcome-word">Your Links, Your Story
+        <div class="aurora">
+          <div class="aurora__item"></div>
+          <div class="aurora__item"></div>
+          <div class="aurora__item"></div>
+          <div class="aurora__item"></div>
+        </div>
+      </h1>
+      <p class="normal text-white">share it!</p>
+      <Button class="start-button" @click="onSubmit" cy="get-start-btn">Get Started!</Button>
     </div>
   </div>
 

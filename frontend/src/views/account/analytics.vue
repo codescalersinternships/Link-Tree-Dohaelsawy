@@ -37,7 +37,7 @@ onMounted(getAnalyticsData);
         <div class="content">
             <div class="container">
                 <div class="flex flex-col justify-center items-center">
-                    <div class="profile-bar">
+                    <div class="profile-bar py-3">
                         <a href="/account/get_account/" cy="profile-edit">Edit Profile</a>
                         <a :href="analyticsUrl" cy="profile-analysis"> Show Analytics</a>
                     </div>
@@ -46,7 +46,7 @@ onMounted(getAnalyticsData);
                             <tr>
                                 <th> Click Count </th>
                                 <th> Guest Username</th>
-                                <th> Created At </th>
+                                <th> Last Time </th>
                             </tr>
                         </thead>
                         <tbody v-for="analytic in analytics">
