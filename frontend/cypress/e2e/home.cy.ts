@@ -6,7 +6,7 @@ describe('Home page test', () => {
     cy.visit('/')
     // home page
     cy.get('[cy="welcome-word"]').contains("Your Links, Your Story")
-    cy.get('[cy="logout-btn"]').should('not.exist')
+    cy.get('[cy="logout-btn"]').should('not.visible')
 
     // about page
     cy.get('[cy="about-me"').click()

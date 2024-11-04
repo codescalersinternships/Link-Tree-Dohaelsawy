@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { ref } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 import {
   Card,
   CardContent,
@@ -8,39 +8,37 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useAuthStore } from '@/stores/authStore'
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuthStore } from "@/stores/authStore";
 type PAYLOAD = {
   first_name: string;
   last_name: string;
   username: string;
   email: string;
   password: string;
-
 };
-const confirm_password = ""
+const confirm_password = "";
 const form = ref<PAYLOAD>({
-  password: '',
-  username: '',
-  first_name: '',
-  last_name: '',
-  email: '',
+  password: "",
+  username: "",
+  first_name: "",
+  last_name: "",
+  email: "",
 });
 const router = useRouter();
 const store = useAuthStore();
 const onSubmit = async () => {
   try {
-    await store.registerUser(form.value)
-    router.push('/auth/login');
+    await store.registerUser(form.value);
+    router.push("/auth/login");
   } catch (error) {
     alert(error);
-    console.error('register failed', error);
+    console.error("register failed", error);
   } finally {
   }
-
 };
 </script>
 
@@ -57,31 +55,59 @@ const onSubmit = async () => {
               <CardContent class="grid gap-4">
                 <div class="grid gap-2">
                   <Label for="first_name">First Name</Label>
-                  <Input id="first_name" type="text" placeholder="first name" v-model="form.first_name" />
+                  <Input
+                    id="first_name"
+                    type="text"
+                    placeholder="first name"
+                    v-model="form.first_name"
+                  />
                 </div>
                 <div class="grid gap-2">
                   <Label for="last_name">Last Name</Label>
-                  <Input id="last_name" type="text" placeholder="last name" v-model="form.last_name" />
+                  <Input
+                    id="last_name"
+                    type="text"
+                    placeholder="last name"
+                    v-model="form.last_name"
+                  />
                 </div>
                 <div class="grid gap-2">
                   <Label for="email">Email</Label>
-                  <Input id="email" type="text" placeholder="email" v-model="form.email" />
+                  <Input
+                    id="email"
+                    type="text"
+                    placeholder="email"
+                    v-model="form.email"
+                  />
                 </div>
                 <div class="grid gap-2">
                   <Label for="username">Username</Label>
-                  <Input id="username" type="text" placeholder="username" v-model="form.username" />
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="username"
+                    v-model="form.username"
+                  />
                 </div>
                 <div class="grid gap-2">
                   <Label for="password">Password</Label>
-                  <Input id="password" type="password" v-model="form.password" cy="password"/>
+                  <Input
+                    id="password"
+                    type="password"
+                    v-model="form.password"
+                    cy="password"
+                  />
                 </div>
               </CardContent>
               <CardFooter class="flex-col space-y-2">
                 <Button class="w-full" type="submit" cy="register-btn"> Register </Button>
                 <p>
                   Already have an account?
-                  <RouterLink to="/auth/login"
-                    class="border-b border-gray-500 text-muted-foreground hover:text-primary">
+                  <RouterLink
+                    to="/auth/login"
+                    class="border-b border-gray-500 text-muted-foreground hover:text-primary"
+                    cy="login-btn"
+                  >
                     Login
                   </RouterLink>
                 </p>
