@@ -7,6 +7,7 @@ import LiveDemo from '@/views/links/liveDemo.vue'
 import Profile from "@/views/account/profile.vue"
 import analytics from "@/views/account/analytics.vue"
 import about from "@/views/about.vue"
+import NotFound from '@/views/notFound.vue'
 
 
 
@@ -53,6 +54,11 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: about
+    },
+    {
+      path: '/error',
+      name: 'notfound',
+      component: NotFound
     },
   ]
 })
