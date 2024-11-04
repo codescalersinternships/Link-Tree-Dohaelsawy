@@ -11,14 +11,14 @@ import (
 
 func LinkRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
 
-	DBController := controllers.NewController(&db, config)
+	Controller := controllers.NewController(&db, config)
 
-	router.GET("/link_tree/:username", DBController.GetLinks)
+	router.GET("/link_tree/:username", Controller.GetLinks)
 
 	routeGroup := router.Group("/link")
 
 	routeGroup.Use(middleware.AuthMiddleware(config))
-	routeGroup.POST("/create_link", DBController.CreateLink)
-	routeGroup.DELETE("/delete_link/:link_id", DBController.DeleteLink)
-	routeGroup.PUT("/update_link/:link_id", DBController.UpdateLink)
+	routeGroup.POST("/create_link", Controller.CreateLink)
+	routeGroup.DELETE("/delete_link/:link_id", Controller.DeleteLink)
+	routeGroup.PUT("/update_link/:link_id", Controller.UpdateLink)
 }

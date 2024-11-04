@@ -10,14 +10,16 @@ import (
 
 func AccountRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
 
-	DBController := controllers.NewController(&db, config)
+	Controller := controllers.NewController(&db, config)
 
 	routeGroup := router.Group("/account")
+	routeGroup.GET("/search",Controller.UsernameSearch)
 
 	routeGroup.Use(middleware.AuthMiddleware(config))
-	routeGroup.PUT("/edit_account", DBController.EditAccount)
-	routeGroup.DELETE("/delete_account", DBController.DeleteAccount)
-	routeGroup.GET("/get_account", DBController.GetAccount)
-	routeGroup.POST("/add_photo", DBController.UploadUserImage)
+	routeGroup.PUT("/edit_account", Controller.EditAccount)
+	routeGroup.DELETE("/delete_account", Controller.DeleteAccount)
+	routeGroup.GET("/get_account", Controller.GetAccount)
+	routeGroup.POST("/add_photo", Controller.UploadUserImage)
+	
 
 }

@@ -10,10 +10,10 @@ import (
 
 func AnalyticsRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
 
-	DBController := controllers.NewController(&db, config)
+	Controller := controllers.NewController(&db, config)
 
 	routeGroup := router.Group("/analytics")
 
 	routeGroup.Use(middleware.AuthMiddleware(config))
-	routeGroup.GET("/get_analytics/:user_id", DBController.GetAnalytics)
+	routeGroup.GET("/get_analytics/:user_id", Controller.GetAnalytics)
 }

@@ -10,11 +10,11 @@ import (
 
 func AuthRouters(db repository.DbInstance, config model.Config, router *gin.Engine) {
 
-	DBController := controllers.NewController(&db, config)
+	Controller := controllers.NewController(&db, config)
 
 	routeGroup := router.Group("/auth")
 
-	routeGroup.POST("/register", DBController.Register)
-	routeGroup.POST("/login", DBController.Login)
-	routeGroup.GET("/logout", middleware.AuthMiddleware(config), DBController.Logout)
+	routeGroup.POST("/register", Controller.Register)
+	routeGroup.POST("/login", Controller.Login)
+	routeGroup.GET("/logout", middleware.AuthMiddleware(config), Controller.Logout)
 }
