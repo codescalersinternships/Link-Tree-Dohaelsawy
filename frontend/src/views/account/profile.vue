@@ -35,8 +35,8 @@ onMounted(fetchLinks);
 
 <template>
     <div class="wrapper">
+        <Header></Header>
         <div class="content">
-            <Header></Header>
             <div class="container">
                 <div class="flex flex-col justify-center items-center">
                     <div class="profile-bar">

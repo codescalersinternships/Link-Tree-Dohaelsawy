@@ -25,10 +25,9 @@ const onSubmit = async () => {
 </script>
 
 <template>
-
   <div class="wrapper">
+    <Header></Header>
     <div class="content">
-      <Header></Header>
       <div class="main">
           <h1 class="fancy-word" cy="welcome-word">Your Links, Your Story
             <div class="aurora">

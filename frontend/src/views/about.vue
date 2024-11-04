@@ -11,8 +11,8 @@ import Header from '@/components/header.vue'
 <template>
 
     <div class="wrapper">
+        <Header></Header>
         <div class="content">
-            <Header></Header>
             <div class="container">
                 <div class="flex justify-center items-center gap-4 about">
                     <div>
