@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linktree-deployment
+  labels:
+    app: linktree
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: linktree
+  template:
+    metadata:
+      labels:
+        app: linktree
+    spec:
+      containers:
+      - name: linktree
+        image: dohaelsawi/linktreeapp:latest
+        ports:
+        - containerPort: 8010
+        env:
+        - name: DB_HOST
+          value: postgres-service
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: linktree-service
+spec:
+  type: NodePort
+  selector:
+    app: linktree
+  ports:
+    - protocol: TCP
+      port: 8010
+      targetPort: 8010
+      nodePort: 31111
