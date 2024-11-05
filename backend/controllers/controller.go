@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/database/repository"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 	"github.com/go-playground/validator/v10"
 )
 

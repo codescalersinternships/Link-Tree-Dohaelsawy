@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/controllers"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/database/repository"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/middleware"
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/controllers"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/database/repository"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/middleware"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 
 	"github.com/gin-gonic/gin"
 )

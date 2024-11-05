@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )

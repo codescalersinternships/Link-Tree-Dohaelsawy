@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/utils"
 	"github.com/gin-gonic/gin"
 )
 

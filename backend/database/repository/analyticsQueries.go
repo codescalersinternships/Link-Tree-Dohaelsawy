@@ -1,6 +1,6 @@
 package repository
 
-import model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+import model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 
 func (db *DbInstance) GetAllAnalyticsForUser(a *[]model.Analytics, user_id int) (err error) {
 	if err := db.DB.Where("user_id = ?", user_id).Find(a).Error; err != nil {

@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/utils"
 )
 
 type LoginRequest struct {

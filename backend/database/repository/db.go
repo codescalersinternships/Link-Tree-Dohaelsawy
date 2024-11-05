@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/utils"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
+	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/utils"
 	"github.com/go-playground/validator/v10"
 
 	"gorm.io/driver/postgres"

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 )
 
 func (db *DbInstance) GetUserID(u *model.User, id int) (err error) {

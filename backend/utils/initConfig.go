@@ -1,15 +1,24 @@
 package utils
 
 import (
+	"fmt"
 	"os"
+	"strings"
 
-	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/backend/models"
-	"github.com/joho/godotenv"
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 )
 
 func NewConfigController() (model.Config, error) {
+	// pwd, err := os.
+	// fmt.Println(pwd)
+	// fmt.Println(err)
+	// if err != nil {
+	// 	return model.Config{}, err
+	// }
 
-	err := godotenv.Load(".env")
+	fmt.Println(os.ReadDir("./"))
+
+	err := readFile(".env")
 	if err != nil {
 		return model.Config{}, err
 	}
@@ -31,4 +40,28 @@ func NewConfigController() (model.Config, error) {
 		AwsAccessKeyID:     os.Getenv("AWS_ACCESS_KEY_ID"),
 		AwsSecretAccessKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
 	}, nil
+}
+
+func readFile(filename string) error {
+	file, err := os.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	return parse(string(file))
+}
+
+func parse(file string) error {
+
+	lines := strings.Split(file, "\n")
+
+	for _, line := range lines {
+
+		iniLine := strings.TrimSpace(line)
+
+		key, value, ok := strings.Cut(iniLine, "=")
+		if ok {
+			os.Setenv(key, value)
+		}
+	}
+	return nil
 }
