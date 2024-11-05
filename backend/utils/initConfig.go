@@ -17,14 +17,20 @@ func NewConfigController() (model.Config, error) {
 	// }
 
 	fmt.Println(os.ReadDir("./"))
+	fmt.Println(os.Environ())
+	fmt.Println(getEnv("DB_HOST", "postgres-service"))
+
+	var config model.Config
+
+
 
 	err := readFile(".env")
 	if err != nil {
 		return model.Config{}, err
 	}
 
-	return model.Config{
-		DbHost:             os.Getenv("DB_HOST"),
+	config = model.Config{
+		DbHost:             getEnv("DB_HOST", "postgres-service"),
 		DbUser:             os.Getenv("DB_USER"),
 		DbPassword:         os.Getenv("DB_PASSWORD"),
 		DbName:             os.Getenv("DB_NAME"),
@@ -39,7 +45,17 @@ func NewConfigController() (model.Config, error) {
 		AwsRegion:          os.Getenv("AWS_REGION"),
 		AwsAccessKeyID:     os.Getenv("AWS_ACCESS_KEY_ID"),
 		AwsSecretAccessKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
-	}, nil
+	}
+
+	return config, nil
+
+}
+
+func getEnv(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
 }
 
 func readFile(filename string) error {

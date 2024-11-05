@@ -31,7 +31,7 @@ services:
     networks:
       - linktreenet
   
-  app:
+  backend:
     container_name: golang_container
     environment:
       - POSTGRES_USER=${DB_USER}
@@ -44,15 +44,35 @@ services:
       - TEST_POSTGRES_DB=${DB_TEST_NAME}
       - TEST_DATABASE_HOST=${DB_TEST_HOST}
       - TEST_DATABASE_PORT=${DB_TEST_PORT}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     tty: true
-    build: .
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.golang
     ports:
       - 8010:8010
     restart: on-failure
-    volumes:
-      - .:/app
     depends_on:
       - postgresdb
+    networks:
+      - linktreenet
+
+
+  frontend:
+    container_name: vue_container
+    tty: true
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.vue
+    environment:
+      VUE_APP_API_URL: "http://backend:8010"
+    ports:
+      - 8020:80
+    restart: on-failure
+    depends_on:
+      - backend
     networks:
       - linktreenet
 
