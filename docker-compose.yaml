@@ -37,7 +37,7 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
-      - DATABASE_HOST=${DB_HOST}
+      - DB_HOST=${DB_HOST}
       - DATABASE_PORT=${DB_PORT}
       - TEST_POSTGRES_USER=${DB_TEST_USER}
       - TEST_POSTGRES_PASSWORD=${DB_TEST_PASSWORD}
@@ -47,6 +47,7 @@ services:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - ALLOW_ORIGIN=http://localhost:5173
     tty: true
     build: 
       context: ./backend
@@ -67,9 +68,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.vue
     environment:
-      VUE_APP_API_URL: "http://backend:8010"
+      VUE_APP_API_URL: http://localhost:8010
     ports:
-      - 8020:80
+      - 8020:8020
     restart: on-failure
     depends_on:
       - backend

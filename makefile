@@ -9,3 +9,6 @@ docker-postgres-container:
 
 createdb:
 	docker exec -it postgres createdb --username=admin --owner=root linktreeDB
+
+k8s-db-connect:
+	kubectl exec -it postgres-5bcd4d868b-6g5hb -- psql -h localhost -U admin --password -p 5432 linktreedb
