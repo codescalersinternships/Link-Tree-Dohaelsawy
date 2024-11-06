@@ -34,18 +34,18 @@ var (
 	ErrCouldNotUploadImage   = errors.New("couldn't upload file")
 )
 
-// @Summary		Delete Account
-// @Description	delete account
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/delete_account [delete]
+//	@Summary		Delete Account
+//	@Description	delete account
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/delete_account [delete]
 func (c *Controller) DeleteAccount(ctx *gin.Context) {
 
 	var account model.User
@@ -71,19 +71,19 @@ func (c *Controller) DeleteAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, "deleted")
 }
 
-// @Summary		Edit Account
-// @Description	Edit Account data
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/edit_account [put]
+//	@Summary		Edit Account
+//	@Description	Edit Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Param			AccountReq	body	AccountReq	true	"first name, last name, phone, bio"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/edit_account [put]
 func (c *Controller) EditAccount(ctx *gin.Context) {
 
 	var reqBody AccountReq
@@ -135,18 +135,18 @@ func (c *Controller) EditAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		Get Account
-// @Description	Get Account data
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/get_account [get]
+//	@Summary		Get Account
+//	@Description	Get Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/get_account [get]
 func (c *Controller) GetAccount(ctx *gin.Context) {
 
 	var account model.User
@@ -167,19 +167,19 @@ func (c *Controller) GetAccount(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		Get Account by username
-// @Description	Get Account data
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Param			username	path	string	true	"username"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/{username} [get]
+//	@Summary		Get Account by username
+//	@Description	Get Account data
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Param			username	path	string	true	"username"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/{username} [get]
 func (c *Controller) GetAccountByUsername(ctx *gin.Context) {
 
 	var account model.User
@@ -196,19 +196,19 @@ func (c *Controller) GetAccountByUsername(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		Upload User Image
-// @Description	Upload User Image
-// @Tags			account
-// @Accept			mpfd
-// @Produce		json
-// @Param			UserImageReq	body	UserImageReq	true	"image"
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/add_photo [post]
+//	@Summary		Upload User Image
+//	@Description	Upload User Image
+//	@Tags			account
+//	@Accept			mpfd
+//	@Produce		json
+//	@Param			UserImageReq	body	UserImageReq	true	"image"
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/add_photo [post]
 func (c *Controller) UploadUserImage(ctx *gin.Context) {
 
 	user_id, err := utils.ExtractTokenID(ctx, *c.Config)
@@ -277,18 +277,18 @@ func (c *Controller) UploadUserImage(ctx *gin.Context) {
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"user": account})
 }
 
-// @Summary		returns all usernames
-// @Description	returns all usernames
-// @Tags			account
-// @Accept			json
-// @Produce		json
-// @Security		basic
-// @Success		200	{object}	SuccessResponse
-// @Failure		400	{object}	ErrResponse
-// @Failure		401	{object}	ErrResponse
-// @Failure		404	{object}	ErrResponse
-// @Failure		500	{object}	ErrResponse
-// @Router			/account/search [get]
+//	@Summary		returns all usernames
+//	@Description	returns all usernames
+//	@Tags			account
+//	@Accept			json
+//	@Produce		json
+//	@Security		basic
+//	@Success		200	{object}	SuccessResponse
+//	@Failure		400	{object}	ErrResponse
+//	@Failure		401	{object}	ErrResponse
+//	@Failure		404	{object}	ErrResponse
+//	@Failure		500	{object}	ErrResponse
+//	@Router			/account/search [get]
 func (c *Controller) UsernameSearch(ctx *gin.Context) {
 	var users []model.User
 	var usernames []string

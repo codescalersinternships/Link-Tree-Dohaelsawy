@@ -63,7 +63,7 @@ definitions:
     type: object
   controllers.UserImageReq:
     type: object
-host: localhost:8010
+host: 185.206.122.17:31010
 info:
   contact: {}
   description: platform that allows users to share social media profiles, or other

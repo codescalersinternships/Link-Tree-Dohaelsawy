@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8010",
+    "host": "185.206.122.17:31010",
     "paths": {
         "/account/add_photo": {
             "post": {

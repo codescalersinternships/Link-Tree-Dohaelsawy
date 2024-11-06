@@ -20,7 +20,7 @@ import (
 //	@version		1.0
 //	@description	platform that allows users to share social media profiles, or other important links defined in a single place
 
-//	@host	localhost:8010
+//	@host	185.206.122.17:31010
 //	@BasePath
 
 //	@securityDefinitions.basic	BasicAuth
