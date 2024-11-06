@@ -22,8 +22,6 @@ func NewConfigController() (model.Config, error) {
 
 	var config model.Config
 
-
-
 	err := readFile(".env")
 	if err != nil {
 		return model.Config{}, err
@@ -31,6 +29,7 @@ func NewConfigController() (model.Config, error) {
 
 	config = model.Config{
 		DbHost:             getEnv("DB_HOST", "postgres-service"),
+		Origin:             getEnv("ALLOW_ORIGIN", "http://localhost:5173"),
 		DbUser:             os.Getenv("DB_USER"),
 		DbPassword:         os.Getenv("DB_PASSWORD"),
 		DbName:             os.Getenv("DB_NAME"),

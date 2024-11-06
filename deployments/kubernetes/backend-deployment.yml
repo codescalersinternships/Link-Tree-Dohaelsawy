@@ -22,6 +22,8 @@ spec:
         env:
         - name: DB_HOST
           value: postgres-service
+        - name: ALLOW_ORIGIN
+          value: http://185.206.122.17:31111
       
 ---
 apiVersion: v1

@@ -31,18 +31,19 @@ func main() {
 		log.Printf("Error: %s\n", err)
 		return
 	}
-
-	router := gin.Default()
-	router.Use(middleware.CorsMiddleware())
-
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 	config, err := utils.NewConfigController()
 	if err != nil {
 		log.Printf("Error: %s\n", err)
 		return
 	}
 	fmt.Println(config.BaseUrl)
+
+	router := gin.Default()
+	router.Use(middleware.CorsMiddleware(config.Origin))
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	
 
 	dbInstance := repository.NewDbInstance(db)
 

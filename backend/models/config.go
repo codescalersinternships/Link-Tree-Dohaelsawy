@@ -16,4 +16,5 @@ type Config struct {
 	AwsRegion          string
 	AwsAccessKeyID     string
 	AwsSecretAccessKey string
+	Origin             string
 }
