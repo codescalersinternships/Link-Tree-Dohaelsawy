@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: linktree-deployment
+  name: backend-deployment
   labels:
-    app: linktree
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: linktree
+      app: backend
   template:
     metadata:
       labels:
-        app: linktree
+        app: backend
     spec:
       containers:
-      - name: linktree
+      - name: backend
         image: dohaelsawi/linktreeapp:latest
         ports:
         - containerPort: 8010
@@ -27,13 +27,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: linktree-service
+  name: backend-service
 spec:
   type: NodePort
   selector:
-    app: linktree
+    app: backend
   ports:
     - protocol: TCP
       port: 8010
       targetPort: 8010
-      nodePort: 31111
+      nodePort: 31010
