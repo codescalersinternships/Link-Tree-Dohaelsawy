@@ -49,12 +49,10 @@ const onSubmit = async () => {
               </CardHeader>
               <CardContent class="grid gap-4">
                 <div class="grid gap-2">
-                  <Label for="username">Email</Label>
                   <Input id="email" type="text" placeholder="email" v-model="form.email" cy="login-email" />
                 </div>
                 <div class="grid gap-2">
-                  <Label for="password">Password</Label>
-                  <Input id="password" type="password" v-model="form.password" cy="login-password"/>
+                  <Input id="password" type="password" placeholder="password" v-model="form.password" cy="login-password"/>
                 </div>
               </CardContent>
               <CardFooter class="flex-col space-y-2">

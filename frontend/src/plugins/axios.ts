@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8010"
+    baseURL: "http://185.206.122.17:31010"
 })
 
 
@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use((config) => {
     if (token) {
 
         config.headers = config.headers || {};
-        const unprotectedURls = ['/auth/login/', '/auth/register/'];
+        const unprotectedURls = ['/auth/login/', '/auth/register/','/account/search'];
 
         if (config.url && !unprotectedURls.includes(config.url)) {
 

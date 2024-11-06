@@ -39,7 +39,7 @@ onMounted(fetchLinks);
         <div class="content">
             <div class="container">
                 <div class="flex flex-col justify-center items-center">
-                    <div class="profile-bar">
+                    <div class="profile-bar py-3">
                         <a href="/account/get_account/" cy="profile-edit" >Edit Profile</a>
                         <a :href="analyticsUrl" cy="profile-analysis"> Show Analytics</a>
                     </div>

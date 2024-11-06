@@ -13,7 +13,7 @@ const authStore = useAuthStore();
 const isEmpty = ref(true);
 const username = ref(localStorage.getItem("currentUsername"));
 const linkStore = useLinkStore();
-const defaultImage = 'src/assets/profile.png';
+const defaultImage = '/src/assets/profile.png';
 const userImage = ref(localStorage.getItem("currentUserImage"))
 const userData = ref<User | null>(JSON.parse(localStorage.getItem("currentUser") || "null") as User | null);
 
@@ -109,7 +109,7 @@ onMounted(fetchLinks);
           </div>
           <div v-else>
             <div class="profile-image">
-              <img :src="userImage || defaultImage" alt="Profile Image" />
+              <img :src="userImage || 'https://link-tree.s3.eu-north-1.amazonaws.com/profile.png'" alt="Profile Image" />
             </div>
             <div class="data">
               <p class="username">{{ userData?.username }}</p>

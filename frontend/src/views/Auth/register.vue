@@ -54,7 +54,6 @@ const onSubmit = async () => {
               </CardHeader>
               <CardContent class="grid gap-4">
                 <div class="grid gap-2">
-                  <Label for="first_name">First Name</Label>
                   <Input
                     id="first_name"
                     type="text"
@@ -63,7 +62,6 @@ const onSubmit = async () => {
                   />
                 </div>
                 <div class="grid gap-2">
-                  <Label for="last_name">Last Name</Label>
                   <Input
                     id="last_name"
                     type="text"
@@ -72,7 +70,6 @@ const onSubmit = async () => {
                   />
                 </div>
                 <div class="grid gap-2">
-                  <Label for="email">Email</Label>
                   <Input
                     id="email"
                     type="text"
@@ -81,7 +78,6 @@ const onSubmit = async () => {
                   />
                 </div>
                 <div class="grid gap-2">
-                  <Label for="username">Username</Label>
                   <Input
                     id="username"
                     type="text"
@@ -90,10 +86,10 @@ const onSubmit = async () => {
                   />
                 </div>
                 <div class="grid gap-2">
-                  <Label for="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
+                    placeholder="password"
                     v-model="form.password"
                     cy="password"
                   />

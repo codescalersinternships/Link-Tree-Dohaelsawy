@@ -9,7 +9,7 @@ import router from '@/router';
 
 const accountStore = useAccountStore();
 const authStore = useAuthStore();
-const defaultImage = '/src/assets/user.png';
+// const defaultImage = '/src/assets/user.png';
 let uploadedImage = ref<any>()
 const isImageExist = ref(false)
 const username = ref(localStorage.getItem("currentUsername"));
@@ -85,8 +85,8 @@ onMounted(getAccountData);
             <form @submit.prevent="updateProfile" enctype="multipart/form-data">
                 <!-- Profile Image -->
                 <div class="profile-image">
-                    <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file" cy="img">
-                    <img :src="uploadedImage || accountStore.user.image || defaultImage" alt="Profile Image"  />
+                    <input type="file" @change="handleImageUpload($event)" capture accept="image/*" class="input-file min-w-10" cy="img">
+                    <img :src="uploadedImage || accountStore.user.image || 'https://link-tree.s3.eu-north-1.amazonaws.com/profile.png'" alt="Profile Image"  />
                 </div>
 
                 <!-- First Name -->

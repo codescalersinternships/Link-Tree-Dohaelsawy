@@ -42,7 +42,7 @@ onMounted(fetchLinks);
             <div class="container">
                 <div class="flex flex-col justify-center items-center">
                     <div class="profile-image">
-                        <img :src="user.image || defaultImage" />
+                        <img :src="user.image || 'https://link-tree.s3.eu-north-1.amazonaws.com/profile.png'" />
                     </div>
                     <div class="data">
                         <p class="username">{{ username.username }}</p>

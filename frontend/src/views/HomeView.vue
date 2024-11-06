@@ -27,7 +27,7 @@ const onSubmit = async () => {
 <template>
   <div class="wrapper">
     <Header></Header>
-    <div class="content flex flex-col justify-center items-center text-center py-40">
+    <div class="content flex flex-col justify-center items-center text-center py-20">
       <h1 class="fancy-word" cy="welcome-word">Your Links, Your Story
         <div class="aurora">
           <div class="aurora__item"></div>

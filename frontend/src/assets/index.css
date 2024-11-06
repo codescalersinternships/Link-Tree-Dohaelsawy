@@ -374,10 +374,10 @@ tbody td.active {
 
 @media (max-width: 798px) {
   .container {
-    padding: 35px;
+    padding: 20px;
   }
   .content {
-    padding: 30px;
+    padding: 20px;
   }
   .main {
     padding-top: 20px;
@@ -401,12 +401,12 @@ tbody td.active {
     gap: 15px;
   }
   .link {
-    min-width: 260px;
+    max-width: 260px;
   }
   .edit-profile-container {
-    max-width: 150;
+    max-width: 310px;
     margin: 5px;
-    padding: 5px;
+    padding: 13px;
   }
   .profile-image {
     margin-bottom: 5px;
@@ -419,5 +419,8 @@ tbody td.active {
   }
   .profile-bar a {
     padding: 5px;
+  }
+  input[type="file"]{
+    width:300px;
   }
 }
