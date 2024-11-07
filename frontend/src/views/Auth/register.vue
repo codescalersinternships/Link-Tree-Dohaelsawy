@@ -59,6 +59,7 @@ const onSubmit = async () => {
                     type="text"
                     placeholder="first name"
                     v-model="form.first_name"
+                    cy="first-name" 
                   />
                 </div>
                 <div class="grid gap-2">
@@ -67,6 +68,7 @@ const onSubmit = async () => {
                     type="text"
                     placeholder="last name"
                     v-model="form.last_name"
+                    cy="last-name"                    
                   />
                 </div>
                 <div class="grid gap-2">
@@ -75,6 +77,7 @@ const onSubmit = async () => {
                     type="text"
                     placeholder="email"
                     v-model="form.email"
+                    cy="email"
                   />
                 </div>
                 <div class="grid gap-2">
@@ -83,6 +86,7 @@ const onSubmit = async () => {
                     type="text"
                     placeholder="username"
                     v-model="form.username"
+                    cy="username"
                   />
                 </div>
                 <div class="grid gap-2">

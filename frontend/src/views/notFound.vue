@@ -9,9 +9,12 @@ import Header from '@/components/header.vue'
 <template>
     <div class="wrapper">
         <Header></Header>
-        <div class="content">
-            <p class="text-white text-lg font-bold">NOT FOUND :{</p>
-            <img src="/src/assets/search-engine.png" alt="">
+        <div class="container">
+            <dir >
+                <p class="text-white text-lg font-bold ">NOT FOUND :{</p>
+                <img src="/src/assets/search-engine.png" alt="">
+            </dir>
+
         </div>
     </div>
 </template>

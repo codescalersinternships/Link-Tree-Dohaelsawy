@@ -73,7 +73,7 @@ const sendSearchTerm = async () => {
                     <a href="/about" class="nav-link" cy="about-me">About Me</a>
                 </li>
                 <li class="nav-item">
-                    <a @click="onSubmitLinkTree" class="nav-link" href="">Link Tree</a>
+                    <a @click="onSubmitLinkTree" class="nav-link" cy="link-tree">Link Tree</a>
                 </li>
                 <li v-show="isLogin" class="nav-item">
                     <a class="nav-link" :href="profileUrl" cy="profile">Profile</a>
@@ -81,8 +81,8 @@ const sendSearchTerm = async () => {
                 <li class="nav-item">
                     <input type="search" name="search" id="search" placeholder="search username"
                         class="bg-transparent  text-white outline-white px-3 py-3 border-white placeholder:text-white rounded-lg border-2"
-                        :onchange="setSearchTerm">
-                    <i class="fa-solid fa-magnifying-glass text-white px-3" @click="sendSearchTerm"></i>
+                        :onchange="setSearchTerm" cy="search-input">
+                    <i class="fa-solid fa-magnifying-glass text-white px-3" @click="sendSearchTerm" cy="search-btn"></i>
                 </li>
                 <li v-show="!isLogin" class="nav-item">
                     <Button variant="secondary" @click="onSubmitLogin" cy="login-btn">Login</Button>
