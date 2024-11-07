@@ -1,0 +1,7 @@
+label: backend1
+image: dohaelsawi/linktreeapp:latest
+servicePort: 8010
+replicas: 1
+nodePortBackend: 31010
+nodePortFront: 31111
+clusterIP: http://185.206.122.17

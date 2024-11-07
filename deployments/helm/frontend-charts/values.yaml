@@ -1,0 +1,5 @@
+label: frontend1
+image: dohaelsawi/linktree-ui:latest
+servicePort: 8020
+replicas: 1
+nodePortFront: 31111
