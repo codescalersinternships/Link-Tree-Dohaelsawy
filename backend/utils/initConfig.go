@@ -29,7 +29,7 @@ func NewConfigController() (model.Config, error) {
 
 	config = model.Config{
 		DbHost:             getEnv("DB_HOST", "postgres-service"),
-		Origin:             getEnv("ALLOW_ORIGIN", "http://localhost:5173"),
+		Origin:             getEnv("ALLOW_ORIGIN", "http://localhost:8020"),
 		DbUser:             os.Getenv("DB_USER"),
 		DbPassword:         os.Getenv("DB_PASSWORD"),
 		DbName:             os.Getenv("DB_NAME"),
