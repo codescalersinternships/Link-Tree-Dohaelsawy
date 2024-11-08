@@ -19,6 +19,9 @@ spec:
         image:  {{ .Values.image }}
         ports:
         - containerPort: 8020
+        env:
+        - name: VITE_AXIOS_API
+          value: {{ .Values.clusterIP }}:{{ .Values.nodePortBackend }}
       
 ---
 apiVersion: v1
