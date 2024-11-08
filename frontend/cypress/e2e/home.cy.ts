@@ -1,9 +1,9 @@
-// https://on.cypress.io/api
+/// https://on.cypress.io/api
 
 describe('Home page test', () => {
   it('visits the app root url', () => {
     cy.viewport(1500,1000)
-    cy.visit('http://localhost:8020/')
+    cy.visit("/")
     // home page
     cy.get('[cy="welcome-word"]').contains("Your Links, Your Story")
     cy.get('[cy="logout-btn"]').should('not.visible')

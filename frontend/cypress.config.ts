@@ -3,6 +3,6 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   e2e: {
     specPattern: 'cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}',
-    baseUrl: process.env.VUE_APP_API_URL,
+    baseUrl: "http://185.206.122.17:31111",
   }
 })

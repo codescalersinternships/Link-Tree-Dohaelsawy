@@ -2,10 +2,11 @@ import axios from 'axios'
 
 const axiosInstance = axios.create({
     baseURL: "http://185.206.122.17:31010"
-    // baseURL: "http://localhost:8010"
-
 })
 
+
+const envVars = import.meta.env;
+console.log(envVars);
 
 axiosInstance.interceptors.request.use((config) => {
 

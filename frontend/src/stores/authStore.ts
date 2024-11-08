@@ -14,11 +14,16 @@ export const useAuthStore = defineStore('AuthStore', {
 
     getters: {
         returnIsLogin(): boolean {
-            const value = localStorage.getItem("currentUser")
-            if (value === "" || value === null || localStorage.length === 0 ) {
-                return false
+            const cookies = document.cookie.split('; ');
+            console.log(cookies)
+            for (const cookie of cookies) {
+                console.log(cookie)
+                const [key, value] = cookie.split('=');
+                if (key === "Authorization") {
+                    return true
+                }
             }
-            return true
+            return false;
         },
     },
 
