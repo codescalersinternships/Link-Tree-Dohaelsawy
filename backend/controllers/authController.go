@@ -95,7 +95,7 @@ func (c *Controller) Login(ctx *gin.Context) {
 
 	ctx.SetSameSite(http.SameSiteLaxMode)
 
-	ctx.SetCookie("Authorization", token, 3600*tokenLifeTime, "", "", false, true)
+	ctx.SetCookie("Authorization", token, 3600*tokenLifeTime, "", "", false, false)
 
 	ctx.Header("Authorization", token)
 
