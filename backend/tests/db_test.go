@@ -8,7 +8,6 @@ import (
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/database/repository"
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/utils"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -88,21 +87,16 @@ func prepareDbTestingConnectionString(config model.Config) string {
 }
 
 func NewTestConfigController() (model.Config , error) {
-	err := godotenv.Load("../.env")
-	if err != nil {
-		return model.Config{}, err
-	}
-
 	return model.Config{
 		DbHost:             getEnv("DB_HOST", "localhost"),
-		DbUser:             os.Getenv("DB_TEST_USER"),
-		DbPassword:         os.Getenv("DB_TEST_PASSWORD"),
+		DbUser:             getEnv("DB_TEST_USER","admin"),
+		DbPassword:         getEnv("DB_TEST_PASSWORD","adminpassword"),
 		DbName:             getEnv("DB_TEST_NAME","linktreedbtest"),
 		DbPort:             getEnv("DB_TEST_PORT","4568"),
-		Port:               os.Getenv("PORT"),
+		Port:               getEnv("PORT","8010"),
 		JwtSecret:          os.Getenv("JWT_SECRET"),
-		TokenHourLifeTime:  os.Getenv("TOKEN_HOUR_LIFESPAN"),
-		BaseUrl:            os.Getenv("BASE_URL"),
+		TokenHourLifeTime:  getEnv("TOKEN_HOUR_LIFESPAN","24"),
+		BaseUrl:            getEnv("BASE_URL","http://185.206.122.17:31111"),
 		AwsRegion:          os.Getenv("AWS_REGION"),
 		AwsAccessKeyID:     os.Getenv("AWS_ACCESS_KEY_ID"),
 		AwsSecretAccessKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
