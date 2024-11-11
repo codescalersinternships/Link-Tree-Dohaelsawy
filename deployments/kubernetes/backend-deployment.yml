@@ -24,6 +24,8 @@ spec:
           value: postgres-service
         - name: ALLOW_ORIGIN
           value: http://185.206.122.17:31111
+        - name: BASE_URL
+          value: 185.206.122.17:31010
       
 ---
 apiVersion: v1

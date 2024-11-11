@@ -24,6 +24,8 @@ spec:
           value: postgres-service
         - name: ALLOW_ORIGIN
           value: {{ .Values.clusterIP }}:{{ .Values.nodePortFront }}
+        - name: BASE_URL
+          value: {{ .Values.clusterIP }}:{{ .Values.nodePortBackend }}
       
 ---
 apiVersion: v1
