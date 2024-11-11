@@ -5,5 +5,5 @@ import (
 )
 
 func GenerateLinkTreeUrl(baseURL string, linkTreePath string,username string) string {
-	return fmt.Sprintf("%s/%s/%s", baseURL,linkTreePath, username)
+	return fmt.Sprintf("http://%s/%s/%s", baseURL,linkTreePath, username)
 }

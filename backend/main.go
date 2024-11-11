@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/database/repository"
-	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/docs"
+	docs "github.com/codescalersinternships/Link-Tree-Dohaelsawy/docs"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/middleware"
 	_ "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 	route "github.com/codescalersinternships/Link-Tree-Dohaelsawy/routers"
@@ -42,6 +42,8 @@ func main() {
 	router.Use(middleware.CorsMiddleware(config.Origin))
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	docs.SwaggerInfo.Host = config.BaseUrl
+	docs.SwaggerInfo.BasePath = "/"
 
 	
 
