@@ -18,10 +18,10 @@ jobs:
             POSTGRES_PASSWORD: adminpassword
             POSTGRES_DB: linktreedbtest
         options: >-
-            --health-cmd="pg_isready -U admin" 
-            --health-interval=10s 
-            --health-timeout=5s 
-            --health-retries=5 
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
 
     steps:
       - name: Checkout code
@@ -46,4 +46,4 @@ jobs:
           DB_USER: admin
           DB_PASSWORD: testpassword
           DB_NAME: linktreedbtest
-        run: cd backend/tests/ && go test
+        run: cd ./tests/ && go test
