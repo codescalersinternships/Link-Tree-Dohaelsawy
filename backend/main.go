@@ -52,5 +52,9 @@ func main() {
 	route.AuthRouters(dbInstance, config, router)
 	route.AnalyticsRouters(dbInstance, config, router)
 
-	router.Run()
+	err = router.Run()
+	if err != nil {
+		log.Printf("Error: %s\n", err)
+		return
+	}
 }

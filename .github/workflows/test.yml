@@ -1,0 +1,49 @@
+name: go-test
+on:  
+  push:
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  db-test-container:
+    runs-on: ubuntu-latest
+    container: golang:alpine
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 4568:5432
+        env:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: adminpassword
+            POSTGRES_DB: linktreedbtest
+        options: >-
+            --health-cmd="pg_isready -U admin" 
+            --health-interval=10s 
+            --health-timeout=5s 
+            --health-retries=5 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.21'
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U admin; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
+
+      - name: Run tests
+        env:
+          DB_HOST: localhost
+          DB_PORT: 4568
+          DB_USER: admin
+          DB_PASSWORD: testpassword
+          DB_NAME: linktreedbtest
+        run: cd backend/tests/ && go test

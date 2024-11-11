@@ -12,3 +12,9 @@ createdb:
 
 k8s-db-connect:
 	kubectl exec -it postgres-5bcd4d868b-6g5hb -- psql -h localhost -U admin --password -p 5432 linktreedb
+format:
+	gofmt -w .
+test:
+	go test -v ./...
+lint:
+	golangci-lint run ./...

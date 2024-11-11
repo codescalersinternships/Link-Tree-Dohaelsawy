@@ -67,8 +67,6 @@ services:
     build: 
       context: ./frontend
       dockerfile: Dockerfile.vue
-    environment:
-      VUE_APP_API_URL: http://localhost:8010
     ports:
       - 8020:8020
     restart: on-failure

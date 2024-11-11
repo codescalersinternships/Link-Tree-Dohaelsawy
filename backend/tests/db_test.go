@@ -94,11 +94,11 @@ func NewTestConfigController() (model.Config , error) {
 	}
 
 	return model.Config{
-		DbHost:             os.Getenv("DB_TEST_HOST"),
+		DbHost:             getEnv("DB_HOST", "localhost"),
 		DbUser:             os.Getenv("DB_TEST_USER"),
 		DbPassword:         os.Getenv("DB_TEST_PASSWORD"),
-		DbName:             os.Getenv("DB_TEST_NAME"),
-		DbPort:             os.Getenv("DB_TEST_PORT"),
+		DbName:             getEnv("DB_TEST_NAME","linktreedbtest"),
+		DbPort:             getEnv("DB_TEST_PORT","4568"),
 		Port:               os.Getenv("PORT"),
 		JwtSecret:          os.Getenv("JWT_SECRET"),
 		TokenHourLifeTime:  os.Getenv("TOKEN_HOUR_LIFESPAN"),
@@ -111,4 +111,11 @@ func NewTestConfigController() (model.Config , error) {
 
 func createTestToken(id uint, secretToken string) (string, error) {
 	return utils.CreateToken(id, 24, secretToken)
+}
+
+func getEnv(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
 }
