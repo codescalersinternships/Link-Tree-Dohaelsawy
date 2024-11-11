@@ -32,13 +32,6 @@ jobs:
         with:
           go-version: '1.21'
 
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          until pg_isready -h localhost -p 4568 -U admin; do
-            echo "Waiting for postgres..."
-            sleep 2
-          done
-
       - name: Run tests
         env:
           DB_HOST: localhost
