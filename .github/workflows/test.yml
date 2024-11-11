@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container: golang:alpine
     services:
-      postgres-test-container:
+      postgres-test:
         image: postgres
         ports:
           - 4568:5432
@@ -34,10 +34,10 @@ jobs:
 
       - name: Run tests
         env:
-          DB_TEST_HOST: localhost
+          DB_TEST_HOST: postgres-test
           DB_TEST_PORT: 4568
           DB_TEST_USER: admin
-          DB_TEST_PASSWORD: testpassword
+          DB_TEST_PASSWORD: adminpassword
           DB_TEST_NAME: linktreedbtest
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
