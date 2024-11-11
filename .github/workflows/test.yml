@@ -39,4 +39,4 @@ jobs:
           DB_USER: admin
           DB_PASSWORD: testpassword
           DB_NAME: linktreedbtest
-        run: cd ./tests/ && go test
+        run: cd backend/tests/ && go test
