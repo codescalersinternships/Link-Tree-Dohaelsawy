@@ -34,11 +34,11 @@ jobs:
 
       - name: Run tests
         env:
-          DB_HOST: localhost
-          DB_PORT: 4568
-          DB_USER: admin
-          DB_PASSWORD: testpassword
-          DB_NAME: linktreedbtest
+          DB_TEST_HOST: postgres
+          DB_TEST_PORT: 4568
+          DB_TEST_USER: admin
+          DB_TEST_PASSWORD: testpassword
+          DB_TEST_NAME: linktreedbtest
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

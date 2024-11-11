@@ -88,7 +88,7 @@ func prepareDbTestingConnectionString(config model.Config) string {
 
 func NewTestConfigController() (model.Config , error) {
 	return model.Config{
-		DbHost:             getEnv("DB_HOST", "localhost"),
+		DbHost:             getEnv("DB_TEST_HOST", "localhost"),
 		DbUser:             getEnv("DB_TEST_USER","admin"),
 		DbPassword:         getEnv("DB_TEST_PASSWORD","adminpassword"),
 		DbName:             getEnv("DB_TEST_NAME","linktreedbtest"),
