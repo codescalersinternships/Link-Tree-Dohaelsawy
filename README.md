@@ -52,5 +52,5 @@ platform that allows users to share social media profiles, or other important li
   ```
     docker-compose up
   ```
-
+> [!NOTE]
 > For more information about each section please check Readme file in each subdirectory
