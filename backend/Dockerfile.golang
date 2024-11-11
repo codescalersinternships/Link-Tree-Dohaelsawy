@@ -24,7 +24,7 @@ RUN go build -o ./build .
 # ENTRYPOINT CompileDaemon --build="go build -buildvcs=false -o ./build/build ." --command="./build/build" -build-dir=/app
 FROM alpine:edge
 WORKDIR /app
-COPY .env .
+# COPY .env .
 
 COPY --from=builder /app/build ./build
 

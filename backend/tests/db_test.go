@@ -87,10 +87,11 @@ func prepareDbTestingConnectionString(config model.Config) string {
 }
 
 func NewTestConfigController() (model.Config , error) {
+	fmt.Println(os.Environ())
 	return model.Config{
-		DbHost:             getEnv("DB_TEST_HOST", "localhost"),
+		DbHost:             getEnv("DB_TEST_HOST","localhost"),
 		DbUser:             getEnv("DB_TEST_USER","admin"),
-		DbPassword:         getEnv("DB_TEST_PASSWORD","adminpassword"),
+		DbPassword:         getEnv("DB_TEST_PASSWORD", "adminpassword"),
 		DbName:             getEnv("DB_TEST_NAME","linktreedbtest"),
 		DbPort:             getEnv("DB_TEST_PORT","4568"),
 		Port:               getEnv("PORT","8010"),
