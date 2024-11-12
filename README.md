@@ -49,8 +49,21 @@ platform that allows users to share social media profiles, or other important li
       ALLOW_ORIGIN=*****
   ```
 - 3. build your local environment using docker-compose
-  ```
+  ```sh
     docker-compose up
   ```
+  - Backend running on: http://localhost:8010/
+  - Frontend running on http://localhost:8020/
+- 3. build your production environment
+  - using **k8s**:
+  ```sh
+  kubectl apply -f deployments/kubernetes/
+  ```
+  - using **helm**:
+  ```sh
+  helm install backend-release helm/backend-charts
+  helm install fronted-release helm/frontend-charts
+  ```
+  - _visit_ `http://185.206.122.17:31111/`
 > [!NOTE]
 > For more information about each section please check Readme file in each subdirectory
