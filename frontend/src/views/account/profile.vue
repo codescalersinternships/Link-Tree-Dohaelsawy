@@ -27,7 +27,7 @@ const fetchLinks = async () => {
 }
 
 const analyticsUrl = ref(`/get_analytics/${localStorage.getItem("currentUserID")}`);
-console.log(analyticsUrl.value);
+// console.log(analyticsUrl.value);
 
 onMounted(fetchLinks);
 

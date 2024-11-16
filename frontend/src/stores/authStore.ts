@@ -15,9 +15,7 @@ export const useAuthStore = defineStore('AuthStore', {
     getters: {
         returnIsLogin(): boolean {
             const cookies = document.cookie.split('; ');
-            console.log(cookies)
             for (const cookie of cookies) {
-                console.log(cookie)
                 const [key, value] = cookie.split('=');
                 if (key === "Authorization") {
                     return true
@@ -41,11 +39,9 @@ export const useAuthStore = defineStore('AuthStore', {
                     const { data } = await axios.post<APIResponse<{ user: User }>>('/auth/register', {
                         ...form
                     });
-                    console.log('Success Registration', data.data);
                     resolve(data.data)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
                     reject(response.error)
                 }
@@ -78,12 +74,10 @@ export const useAuthStore = defineStore('AuthStore', {
                     this.isLogin = true;
                     this.user = data.data.user
 
-                    console.log(this.user)
                     resolve(data.data.access_token)
                 } catch (error) {
                     const err = error as AxiosError
                     const response = err.response?.data as ErrorRes
-                    console.log(response.error)
                     reject(response.error)
                 }
 
@@ -107,7 +101,6 @@ export const useAuthStore = defineStore('AuthStore', {
                     resolve(data)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
                     reject(response.error)
                 }

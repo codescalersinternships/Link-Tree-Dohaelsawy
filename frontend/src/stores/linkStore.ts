@@ -19,13 +19,10 @@ export const useLinkStore = defineStore('LinkStore', {
                     const { data } = await axios.post<APIResponse<{ link: Link }>>('/link/create_link', {
                         ...form
                     });
-                    console.log('Success creating link', data.data.link);
-
 
                     resolve(data.data.link)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
                     reject(response.error)
                 }
@@ -44,11 +41,9 @@ export const useLinkStore = defineStore('LinkStore', {
                     const { data } = await axios.put<APIResponse<{ link: Link }>>(`/link/update_link/${link_id}`, {
                         ...form
                     });
-                    console.log('Success updating link', data.data.link);
                     resolve(data.data.link)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
                     reject(response.error)
                 }
@@ -75,11 +70,9 @@ export const useLinkStore = defineStore('LinkStore', {
                 try {
 
                     const { data } = await axios.delete(`/link/delete_link/${link_id}`);
-                    console.log('products', data.data);                
                     resolve(data.data)
                 } catch (error) {
                     const err = error as AxiosError
-                    console.log(err.response?.data)
                     const response = err.response?.data as ErrorRes
                     reject(response.error)
                 }

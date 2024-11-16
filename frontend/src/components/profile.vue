@@ -51,7 +51,7 @@ const updateProfile = async () => {
             userReq.value = await accountStore.updateImageAccount(formData);
         }
         window.location.reload();
-        console.log(userReq.value)
+        // console.log(userReq.value)
     } catch (error) {
         console.error("Error fetching user:", error);
         alert(error)

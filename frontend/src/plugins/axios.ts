@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 
 
 const envVars = import.meta.env;
-console.log(envVars);
+
 
 axiosInstance.interceptors.request.use((config) => {
 

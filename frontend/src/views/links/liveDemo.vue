@@ -20,7 +20,6 @@ const fetchLinks = async () => {
         if (username.username !== null) {
             links.value = await linkStore.getLinks(username.username as string);
             user.value = await accountStore.getAccountByUsername(username.username as string);
-            console.log(user.value.image)
             if (links.value.length !== 0) {
                 isEmpty.value = false;
             }

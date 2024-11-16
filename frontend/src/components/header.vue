@@ -44,7 +44,7 @@ const searchResult = ref("")
 const setSearchTerm = (event: Event) => {
     const input = event.target as HTMLInputElement
     searchTerm.value = input.value
-    console.log(searchTerm.value)
+    // console.log(searchTerm.value)
 }
 
 const sendSearchTerm = async () => {
