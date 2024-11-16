@@ -6,7 +6,9 @@ import (
 
 	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
 	"github.com/codescalersinternships/Link-Tree-Dohaelsawy/utils"
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/redis/go-redis/v9"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,15 +31,18 @@ type Store interface {
 	GetAnalyticsForGuestUsername(a *model.Analytics, guestUsername string, userId int) (err error)
 	GetUserUsername(u *model.User, username string) (err error)
 	GetAllUsers(u *[]model.User) (err error)
+	SetCacheUsername(ctx *gin.Context, key, value string) (err error)
+	GetCacheUsername(ctx *gin.Context, key string, usernames *[]string) (err error)
 }
 
 type DbInstance struct {
 	DB       *gorm.DB
 	Validate *validator.Validate
+	Cache    *redis.Client
 }
 
-func NewDbInstance(db *gorm.DB) DbInstance {
-	return DbInstance{DB: db}
+func NewDbInstance(db *gorm.DB, cache *redis.Client) DbInstance {
+	return DbInstance{DB: db, Cache: cache}
 }
 
 func DbConnect() (*gorm.DB, error) {
@@ -76,4 +81,13 @@ func prepareDbConnectionString() (string, error) {
 
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbName, config.DbPort),
 		nil
+}
+
+func RedisConnect() *redis.Client {
+	client := redis.NewClient(&redis.Options{
+		Addr:     "redis-13986.c44.us-east-1-2.ec2.redns.redis-cloud.com:13986",
+		Password: "jmBBWIQkOwLdPCo8VG5o9ykcHrgzSSwZ", // No password set
+	})
+
+	return client
 }

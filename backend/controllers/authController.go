@@ -144,6 +144,11 @@ func (c *Controller) Register(ctx *gin.Context) {
 		Password:    password,
 		LinkTreeURL: utils.GenerateLinkTreeUrl(c.Config.BaseUrl,c.Config.LinkTreePath, reqBody.Username ),
 	}
+
+	if err := c.store.SetCacheUsername(ctx, "usernames",newUser.Username); err != nil {
+		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
+		return
+	} 
 	
 	if err := c.store.AddNewUser(&newUser); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)

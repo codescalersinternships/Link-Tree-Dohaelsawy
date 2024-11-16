@@ -31,6 +31,9 @@ func main() {
 		log.Printf("Error: %s\n", err)
 		return
 	}
+
+	cache := repository.RedisConnect()
+
 	config, err := utils.NewConfigController()
 	if err != nil {
 		log.Printf("Error: %s\n", err)
@@ -47,7 +50,7 @@ func main() {
 
 	
 
-	dbInstance := repository.NewDbInstance(db)
+	dbInstance := repository.NewDbInstance(db, cache)
 
 	route.AccountRouters(dbInstance, config, router)
 	route.LinkRouters(dbInstance, config, router)
