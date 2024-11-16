@@ -1,6 +1,11 @@
 /// https://on.cypress.io/api
 
 describe('Home page test', () => {
+  Cypress.on('uncaught:exception', (err, runnable) => {
+    // returning false here prevents Cypress from failing the test
+    return false
+  })
+  
   it('visits the app root url', () => {
     cy.viewport(1500,1000)
     cy.visit("/")

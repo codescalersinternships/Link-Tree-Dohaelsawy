@@ -3,6 +3,9 @@ on:
   push:
     paths-ignore:
       - 'README.md'
+      - 'backend/README.md'
+      - 'frontend/README.md'
+      - 'deployments/README.md'
 
 jobs:
   db-test-container:
