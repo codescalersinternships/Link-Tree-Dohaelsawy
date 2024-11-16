@@ -5,6 +5,7 @@
 - CRUD operations for Link manegment and Profile manegment.
 - Upload images to external storage - AWS S3.
 - Seperate testing database from production database.
+- Faster search using Redis cache db
 
 ## Project Structure:
 ```golang
@@ -42,4 +43,6 @@ go test
 export AWS_REGION=****
 export AWS_ACCESS_KEY_ID=****
 export AWS_SECRET_ACCESS_KEY=****
+export DB_CACHE_ADDR=*****
+export DB_CACHE_PASSWORD=*****
 ``` 
