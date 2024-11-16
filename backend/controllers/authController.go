@@ -44,7 +44,6 @@ var (
 func (c *Controller) Login(ctx *gin.Context) {
 
 	config := c.Config
-
 	secretToken := config.JwtSecret
 
 	tokenLifeTime, err := strconv.Atoi(config.TokenHourLifeTime)
@@ -74,7 +73,6 @@ func (c *Controller) Login(ctx *gin.Context) {
 	}
 
 	valid := utils.ComparePassword(reqBody.Password, existingUser.Password)
-
 	if !valid {
 		ErrRespondJSON(ctx, http.StatusUnauthorized, ErrWrongPassword)
 		return
@@ -85,22 +83,17 @@ func (c *Controller) Login(ctx *gin.Context) {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
-
+	
 	existingUser.Token = token
-
 	if err := c.store.PutOneUser(&existingUser, existingUser.ID); err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	ctx.SetSameSite(http.SameSiteLaxMode)
-
 	ctx.SetCookie("Authorization", token, 3600*tokenLifeTime, "", "", false, false)
-
 	ctx.Header("Authorization", token)
-
 	existingUser.Password = ""
-
 	SuccessRespondJSON(ctx, http.StatusOK, gin.H{"access_token": token, "user": existingUser})
 }
 
@@ -132,14 +125,12 @@ func (c *Controller) Register(ctx *gin.Context) {
 	var existingUser model.User
 
 	err := c.store.GetUserEmail(&existingUser, reqBody.Email)
-
 	if err == nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, ErrEmailExist)
 		return
 	}
 
 	password, err := utils.EncryptPassword(reqBody.Password)
-
 	if err != nil {
 		ErrRespondJSON(ctx, http.StatusInternalServerError, err)
 		return

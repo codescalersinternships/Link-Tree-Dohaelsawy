@@ -48,7 +48,6 @@ func CreateToken(id uint, token_lifespan int, secretToken string) (string, error
 
 func TokenValid(c *gin.Context, config model.Config) error {
 
-
 	tokenString, ok := ExtractToken(c)
 	if !ok {
 		return ErrNoTokenCookie
@@ -88,7 +87,6 @@ func ExtractTokenID(c *gin.Context, config model.Config) (int, error) {
 		}
 		return []byte(config.JwtSecret), nil
 	})
-
 	if err != nil || !token.Valid {
 		return 0, err
 	}

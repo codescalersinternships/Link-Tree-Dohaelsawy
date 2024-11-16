@@ -56,9 +56,11 @@ services:
     tty: true
     build: 
       context: ./backend
-      dockerfile: Dockerfile.golang
+      dockerfile: Dockerfile.go.dev
     ports:
       - 8010:8010
+    volumes:
+      - ./backend:/app
     restart: on-failure
     depends_on:
       - postgresdb
@@ -68,13 +70,18 @@ services:
 
   frontend:
     container_name: vue_container
+    environment:
+      - NODE_ENV=development
+      - vue_app=dev
     tty: true
     build: 
       context: ./frontend
-      dockerfile: Dockerfile.vue
+      dockerfile: Dockerfile.vue.dev
+    restart: on-failure
     ports:
       - 8020:8020
-    restart: on-failure
+    volumes:
+      - ./frontend:/app
     depends_on:
       - backend
     networks:

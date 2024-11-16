@@ -1,12 +1,7 @@
 FROM golang:alpine as builder
 
-LABEL maintainer="Agus Wibawantara"
-
 
 RUN apk update && apk add --no-cache git && apk add --no-cache bash && apk add build-base
-# RUN mkdir /app
-# RUN go install github.com/githubnemo/CompileDaemon@latest
-# RUN go install -v golang.org/x/tools/gopls@latest
 
 WORKDIR /app
 COPY ./go.mod .
@@ -21,11 +16,10 @@ RUN go install -v ./...
 
 RUN go build -o ./build .
 
-# ENTRYPOINT CompileDaemon --build="go build -buildvcs=false -o ./build/build ." --command="./build/build" -build-dir=/app
 FROM alpine:edge
 WORKDIR /app
-# COPY .env .
 
 COPY --from=builder /app/build ./build
+EXPOSE 8010
 
 ENTRYPOINT ["./build"]
