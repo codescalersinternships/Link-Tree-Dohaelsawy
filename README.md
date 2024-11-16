@@ -9,7 +9,8 @@ platform that allows users to share social media profiles, or other important li
 - Docker & docker-compose
 - Kubernetes
 - Helm
-- AWS S3 
+- AWS S3
+- Redis cache
 
 ## Project structure:
 ```
@@ -47,6 +48,8 @@ platform that allows users to share social media profiles, or other important li
       AWS_ACCESS_KEY_ID=*****
       AWS_SECRET_ACCESS_KEY=*****
       ALLOW_ORIGIN=*****
+      DB_CACHE_ADDR=*****
+      DB_CACHE_PASSWORD=*****
   ```
 - 3. build your local environment using docker-compose
   ```sh
