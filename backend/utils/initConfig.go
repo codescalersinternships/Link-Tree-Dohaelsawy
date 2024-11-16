@@ -9,7 +9,6 @@ import (
 
 func NewConfigController() (model.Config, error) {
 
-
 	fmt.Println(os.ReadDir("./"))
 	fmt.Println(os.Environ())
 	fmt.Println(getEnv("DB_HOST", "postgres-service"))
@@ -21,6 +20,8 @@ func NewConfigController() (model.Config, error) {
 		DbPassword:         os.Getenv("DB_PASSWORD"),
 		DbName:             os.Getenv("DB_NAME"),
 		DbPort:             os.Getenv("DB_PORT"),
+		DB_CACHE_ADDR:      os.Getenv("DB_CACHE_ADDR"),
+		DB_CACHE_PASSWORD:  os.Getenv("DB_CACHE_PASSWORD"),
 		Port:               os.Getenv("PORT"),
 		JwtSecret:          os.Getenv("JWT_SECRET"),
 		TokenHourLifeTime:  os.Getenv("TOKEN_HOUR_LIFESPAN"),

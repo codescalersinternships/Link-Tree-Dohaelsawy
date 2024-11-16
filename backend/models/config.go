@@ -17,4 +17,6 @@ type Config struct {
 	AwsAccessKeyID     string
 	AwsSecretAccessKey string
 	Origin             string
+	DB_CACHE_ADDR      string
+	DB_CACHE_PASSWORD  string
 }

@@ -43,6 +43,9 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DB_CACHE_ADDR: ${{ secrets.DB_CACHE_ADDR }}
+          DB_CACHE_PASSWORD: ${{ secrets.DB_CACHE_PASSWORD }}
+
         run: cd backend/tests/ && go test
 
   cypress-run:

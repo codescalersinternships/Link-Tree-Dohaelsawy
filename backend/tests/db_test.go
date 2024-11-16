@@ -27,14 +27,15 @@ func (suite *DatabaseTestSuite) SetupSuite() {
 
 	config, err := NewTestConfigController()
 	suite.Require().NoError(err, "Error loading envs")
+	
 	suite.config = config
 	conString := prepareDbTestingConnectionString(suite.config)
-	fmt.Println(conString)
 
 	db, err := gorm.Open(postgres.Open(conString), &gorm.Config{})
 	suite.Require().NoError(err, "Error connecting to the test database")
 
 	suite.DbInstance.DB = db.Debug()
+	suite.DbInstance.Cache = repository.RedisConnect()
 
 	err = suite.DbInstance.DB.AutoMigrate(&model.User{}, &model.Link{}, &model.Analytics{})
 	suite.Require().NoError(err, "Error auto-migrating database tables")
@@ -83,21 +84,23 @@ func (suite *DatabaseTestSuite) TearDownSuite() {
 // TestSuite runs the test suite.
 
 func prepareDbTestingConnectionString(config model.Config) string {
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbHost ,config.DbUser, config.DbPassword, config.DbName, config.DbPort)
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbName, config.DbPort)
 }
 
-func NewTestConfigController() (model.Config , error) {
+func NewTestConfigController() (model.Config, error) {
 	fmt.Println(os.Environ())
 	return model.Config{
-		DbHost:             getEnv("DB_TEST_HOST","localhost"),
-		DbUser:             getEnv("DB_TEST_USER","admin"),
+		DbHost:             getEnv("DB_TEST_HOST", "localhost"),
+		DbUser:             getEnv("DB_TEST_USER", "admin"),
 		DbPassword:         getEnv("DB_TEST_PASSWORD", "adminpassword"),
-		DbName:             getEnv("DB_TEST_NAME","linktreedbtest"),
-		DbPort:             getEnv("DB_TEST_PORT","4568"),
-		Port:               getEnv("PORT","8010"),
+		DbName:             getEnv("DB_TEST_NAME", "linktreedbtest"),
+		DbPort:             getEnv("DB_TEST_PORT", "4568"),
+		Port:               getEnv("PORT", "8010"),
+		DB_CACHE_ADDR:      os.Getenv("DB_CACHE_ADDR"),
+		DB_CACHE_PASSWORD:  os.Getenv("DB_CACHE_PASSWORD"),
 		JwtSecret:          os.Getenv("JWT_SECRET"),
-		TokenHourLifeTime:  getEnv("TOKEN_HOUR_LIFESPAN","24"),
-		BaseUrl:            getEnv("BASE_URL","http://185.206.122.17:31111"),
+		TokenHourLifeTime:  getEnv("TOKEN_HOUR_LIFESPAN", "24"),
+		BaseUrl:            getEnv("BASE_URL", "http://185.206.122.17:31111"),
 		AwsRegion:          os.Getenv("AWS_REGION"),
 		AwsAccessKeyID:     os.Getenv("AWS_ACCESS_KEY_ID"),
 		AwsSecretAccessKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),

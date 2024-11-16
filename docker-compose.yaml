@@ -53,6 +53,8 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - ALLOW_ORIGIN=${ALLOW_ORIGIN}
+      - DB_CACHE_ADDR=${DB_CACHE_ADDR}
+      - DB_CACHE_PASSWORD=${DB_CACHE_PASSWORD}
     tty: true
     build: 
       context: ./backend
