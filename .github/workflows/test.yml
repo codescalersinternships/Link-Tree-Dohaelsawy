@@ -1,0 +1,63 @@
+name: go-test
+on:  
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'backend/README.md'
+      - 'frontend/README.md'
+      - 'deployments/README.md'
+
+jobs:
+  db-test-container:
+    runs-on: ubuntu-latest
+    container: golang:alpine
+    services:
+      postgres-test:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: adminpassword
+            POSTGRES_DB: linktreedbtest
+        options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.21'
+
+      - name: Run tests
+        env:
+          DB_TEST_HOST: postgres-test
+          DB_TEST_PORT: 5432
+          DB_TEST_USER: admin
+          DB_TEST_PASSWORD: adminpassword
+          DB_TEST_NAME: linktreedbtest
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DB_CACHE_ADDR: ${{ secrets.DB_CACHE_ADDR }}
+          DB_CACHE_PASSWORD: ${{ secrets.DB_CACHE_PASSWORD }}
+
+        run: cd backend/tests/ && go test
+
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+            working-directory: frontend

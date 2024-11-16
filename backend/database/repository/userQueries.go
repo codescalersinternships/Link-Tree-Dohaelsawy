@@ -1,0 +1,70 @@
+package repository
+
+import (
+	model "github.com/codescalersinternships/Link-Tree-Dohaelsawy/models"
+	"github.com/gin-gonic/gin"
+)
+
+func (db *DbInstance) GetUserID(u *model.User, id int) (err error) {
+	if err := db.DB.Where("id = ?", id).First(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *DbInstance) GetUserEmail(u *model.User, email string) (err error) {
+	if err := db.DB.Where("email = ?", email).First(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *DbInstance) GetUserUsername(u *model.User, username string) (err error) {
+	if err := db.DB.Where("username = ?", username).First(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *DbInstance) AddNewUser(u *model.User) (err error) {
+	if err = db.DB.Create(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *DbInstance) PutOneUser(u *model.User, id int) (err error) {
+	if err = db.DB.Model(&model.User{}).Where("id = ?", id).Updates(model.User{FirstName: u.FirstName, LastName: u.LastName, Phone: u.Phone, Bio: u.Bio, Image: u.Image}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *DbInstance) DeleteUser(u *model.User, id int) (err error) {
+	db.DB.Unscoped().Delete(&model.User{}, id)
+	return nil
+}
+
+func (db *DbInstance) GetAllUsers(u *[]model.User) (err error) {
+	if err := db.DB.Find(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *DbInstance) SetCacheUsername(ctx *gin.Context, key, value string) (err error) {
+	if err := db.Cache.SAdd(ctx, key, value).Err(); err != nil {
+		return err
+	}
+	return nil
+}
+
+
+func (db *DbInstance) GetCacheUsername(ctx *gin.Context, key string, usernames *[]string) (err error) {
+	*usernames, err = db.Cache.SMembers(ctx, key).Result()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

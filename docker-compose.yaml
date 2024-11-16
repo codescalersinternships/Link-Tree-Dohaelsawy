@@ -1,0 +1,98 @@
+version: '3.9'
+services:
+  postgresdb:
+      image: postgres:latest
+      container_name: postgres_container
+      environment:
+        - POSTGRES_USER=${DB_USER}
+        - POSTGRES_PASSWORD=${DB_PASSWORD}
+        - POSTGRES_DB=${DB_NAME}
+        - DATABASE_HOST=${DB_HOST}
+        
+      ports:
+        - '1234:5432'
+      volumes:
+        - ./backend/database/pg_data:/var/lib/postgresql/data
+      networks:
+        - linktreenet
+
+  postgresdbtest:
+    image: postgres:latest
+    container_name: postgres_test_container
+    environment:
+      - POSTGRES_USER=${DB_TEST_USER}
+      - POSTGRES_PASSWORD=${DB_TEST_PASSWORD}
+      - POSTGRES_DB=${DB_TEST_NAME}
+      - DATABASE_HOST=${DB_TEST_HOST}
+    ports:
+      - '4568:5432'
+    volumes:
+      - ./backend/database/pg_data_test:/var/lib/postgresql/data
+    networks:
+      - linktreenet
+  
+  backend:
+    container_name: golang_container
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_TEST_USER=${DB_TEST_USER}
+      - DB_TEST_PASSWORD=${DB_TEST_PASSWORD}
+      - DB_TEST_NAME=${DB_TEST_NAME}
+      - DB_TEST_HOST=${DB_TEST_HOST}
+      - DB_TEST_PORT=${DB_TEST_PORT}
+      - PORT=${PORT}
+      - BASE_URL=${BASE_URL}
+      - LINK_TREE_URL=${LINK_TREE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - TOKEN_HOUR_LIFESPAN=${TOKEN_HOUR_LIFESPAN}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - ALLOW_ORIGIN=${ALLOW_ORIGIN}
+      - DB_CACHE_ADDR=${DB_CACHE_ADDR}
+      - DB_CACHE_PASSWORD=${DB_CACHE_PASSWORD}
+    tty: true
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.go.dev
+    ports:
+      - 8010:8010
+    volumes:
+      - ./backend:/app
+    restart: on-failure
+    depends_on:
+      - postgresdb
+    networks:
+      - linktreenet
+
+
+  frontend:
+    container_name: vue_container
+    environment:
+      - NODE_ENV=development
+      - vue_app=dev
+    tty: true
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.vue.dev
+    restart: on-failure
+    ports:
+      - 8020:8020
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+    networks:
+      - linktreenet
+
+  
+volumes:
+  pg_data:
+
+networks:
+  linktreenet:
+    driver: bridge

@@ -1,0 +1,42 @@
+export interface APIResponse<T> {
+    statusCode: number,
+    data: T
+}
+
+export type User = {
+    id: number,
+    first_name: string,
+    last_name: string,
+    username: string,
+    image: string,
+    email: string,
+    password: string,
+    phone: string,
+    link_tree_url: string,
+    bio: string,
+    token: string,
+    createdAt: string,
+}
+
+export type Link = {
+    id: number,
+    name: string,
+    url: string,
+    userId: number,
+    createdAt: string,
+    updatedAt: string,
+}
+
+export type ErrorRes = {
+    error: string
+}
+
+export type Analytics = {
+    id: number,
+    click_count: number,
+    url: string,
+    user_id: number,
+    guest_username: string,
+    created_at: string,
+    updated_at: string,
+}

@@ -23,3 +23,17 @@ go.work.sum
 
 # env file
 .env
+
+backend/database/pg_data
+
+build/
+
+backend/database/pg_data_test
+
+backend/database/users_photo/
+
+tests/*.jpeg*
+
+doha_accessKeys.csv
+
+frontend/.env.production
