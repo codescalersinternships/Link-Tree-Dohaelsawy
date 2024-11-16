@@ -41,7 +41,7 @@ const router = createRouter({
       component: LiveDemo
     },
     {
-      path: '/account/get_account/',
+      path: '/account/get_account',
       name: 'profile',
       component: Profile
     },
